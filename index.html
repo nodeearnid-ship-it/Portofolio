@@ -8,15 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- 1. TRADING THEME VARIABLES --- */
         :root {
             --bg-dark: #0b0e11;
             --bg-card: #151a21;
             --text-main: #e2e8f0;
             --text-muted: #64748b;
-            --bullish: #00c076; /* Green Candle */
-            --bearish: #ff3b30;
-            --gold: #fbbf24;   /* Luxury Accent */
+            --bullish: #00c076; /* Hijau Trading */
+            --gold: #fbbf24;
             --glow: 0 0 20px rgba(0, 192, 118, 0.15);
         }
 
@@ -41,7 +39,6 @@
                 linear-gradient(rgba(11, 14, 17, 0.95), rgba(11, 14, 17, 0.98)),
                 url('https://images.unsplash.com/photo-1611974765270-ca1258634369?q=80&w=2000&auto=format&fit=crop');
             background-size: cover;
-            background-position: center;
             z-index: -1;
         }
 
@@ -55,18 +52,17 @@
             align-items: center;
         }
 
-        /* --- LEFT SIDE: IDENTITY --- */
+        /* Identitas Kiri */
         .identity h2 {
             font-family: 'Rajdhani', sans-serif;
             color: var(--gold);
             letter-spacing: 2px;
-            font-size: 1.2rem;
             text-transform: uppercase;
             margin-bottom: 10px;
         }
 
         .identity h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 20px;
@@ -85,23 +81,19 @@
             padding-left: 15px;
         }
 
-        .stats-row {
-            display: flex;
-            gap: 40px;
-        }
-        .stat-item h4 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: var(--bullish); }
-        .stat-item span { font-size: 0.9rem; color: var(--text-muted); }
+        /* Statistik Kiri */
+        .stats-row { display: flex; gap: 30px; }
+        .stat-item h4 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: var(--bullish); margin-bottom: 0; }
+        .stat-item span { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* --- RIGHT SIDE: TELEGRAM CARD (TRADING TERMINAL STYLE) --- */
+        /* Widget Kanan (Grup Telegram) */
         .terminal-card {
             background: var(--bg-card);
             border: 1px solid #2d3748;
             border-radius: 16px;
-            padding: 2px; /* For border gradient if needed */
             position: relative;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
         }
 
         .terminal-header {
@@ -123,66 +115,30 @@
             margin-right: 6px;
         }
 
-        .terminal-body {
-            padding: 30px;
-            text-align: center;
-        }
+        .terminal-body { padding: 30px; text-align: center; }
 
         .channel-info { margin-bottom: 25px; }
-        
-        .channel-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        
-        .channel-username {
-            color: var(--bullish);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
+        .channel-name { font-size: 1.4rem; font-weight: 600; color: #fff; margin-bottom: 5px; }
+        .channel-username { color: var(--bullish); font-family: 'Rajdhani', sans-serif; font-size: 1rem; letter-spacing: 1px; }
 
-        /* Realtime Counter Box */
         .ticker-box {
             background: #0f1318;
             border: 1px solid #2d3748;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 25px;
-            position: relative;
         }
 
-        .ticker-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            display: block;
-        }
-
+        .ticker-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        
         .ticker-value {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 700;
             color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: 10px;
         }
 
-        .ticker-change {
-            font-size: 1rem;
-            color: var(--bullish);
-            background: rgba(0, 192, 118, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        /* Action Button */
+        /* Tombol Join */
         .btn-join {
             display: flex;
             justify-content: center;
@@ -206,12 +162,12 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive */
-        @media (max-width: 968px) {
+        /* Responsif HP */
+        @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; text-align: center; gap: 40px; }
             .identity p { margin: 0 auto 30px; border-left: none; border-bottom: 3px solid var(--bullish); padding-bottom: 15px; }
             .stats-row { justify-content: center; }
-            .identity h1 { font-size: 3rem; }
+            .identity h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -224,9 +180,8 @@
             <h2>Professional Forex Trader</h2>
             <h1>Pratama<br>Trading System</h1>
             <p>
-                Analisa pasar teknikal dengan probabilitas tinggi. 
-                Bergabunglah dengan komunitas eksklusif saya untuk sinyal harian, 
-                edukasi chart pattern, dan psikologi trading.
+                Analisa teknikal XAUUSD & Major Pairs dengan akurasi tinggi.
+                Gabung sekarang untuk sinyal harian dan edukasi trading.
             </p>
             
             <div class="stats-row">
@@ -248,88 +203,79 @@
         <div class="terminal-card">
             <div class="terminal-header">
                 <div style="display:flex; align-items:center; color: var(--text-muted); font-size: 0.8rem;">
-                    <span class="status-dot"></span> LIVE DATA
+                    <span class="status-dot"></span> LIVE SIGNAL
                 </div>
                 <i class="fab fa-telegram" style="color: #229ED9; font-size: 1.2rem;"></i>
             </div>
 
             <div class="terminal-body">
                 <div class="channel-info">
-                    <div class="channel-name" id="channel-name">Loading Signal...</div>
-                    <div class="channel-username" id="channel-username">@loading...</div>
+                    <div class="channel-name" id="channel-name">Connecting...</div>
+                    <div class="channel-username" id="channel-username">@PratamaFX_grup</div>
                 </div>
 
                 <div class="ticker-box">
-                    <span class="ticker-label">Total Subscribers</span>
+                    <span class="ticker-label">Total Traders Joined</span>
                     <div class="ticker-value">
-                        <span id="sub-count">0000</span>
-                    </div>
-                    <div style="margin-top:10px; font-size: 0.85rem; color: var(--text-muted);">
-                        <i class="fas fa-chart-line" style="color: var(--bullish);"></i> Realtime Growth
+                        <span id="sub-count">---</span>
                     </div>
                 </div>
 
-                <a href="#" id="join-link" target="_blank" class="btn-join">
-                    Join Signal Group <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
+                <a href="https://t.me/PratamaFX_grup" target="_blank" class="btn-join">
+                    Join Grup Sekarang <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // === KONFIGURASI USER ===
+        // === KONFIGURASI FINAL ===
         const CONFIG = {
-            botToken: '8503985331:AAHhcap_1pYf_IElaY4umrctYZkcVF8j1rE', // Token Anda
-            channelId: '@USERNAME_CHANNEL_KAMU' // <--- WAJIB GANTI INI DENGAN USERNAME ASLI (Cth: @pratamafx)
+            botToken: '8503985331:AAHhcap_1pYf_IElaY4umrctYZkcVF8j1rE', // Token Bot Anda
+            channelId: '@PratamaFX_grup' // Username Grup Anda
         };
 
         const els = {
             name: document.getElementById('channel-name'),
             username: document.getElementById('channel-username'),
-            count: document.getElementById('sub-count'),
-            link: document.getElementById('join-link')
+            count: document.getElementById('sub-count')
         };
-
-        // Update Link HREF saat load
-        els.link.href = `https://t.me/${CONFIG.channelId.replace('@', '')}`;
 
         async function fetchTelegramData() {
             try {
-                // 1. Request Data Info Channel (Nama, Deskripsi, dll)
+                // 1. Ambil Data Grup
                 const infoRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChat?chat_id=${CONFIG.channelId}`);
                 const infoData = await infoRes.json();
 
-                // 2. Request Jumlah Member
+                // 2. Ambil Jumlah Member
                 const countRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChatMembersCount?chat_id=${CONFIG.channelId}`);
                 const countData = await countRes.json();
 
-                if (infoData.ok && countData.ok) {
-                    // Update Nama Channel Real dari Telegram
-                    els.name.innerText = infoData.result.title; 
-                    els.username.innerText = `@${infoData.result.username}`;
+                if (countData.ok) {
+                    // Update Angka
+                    const currentVal = parseInt(els.count.innerText) || 0;
+                    animateValue(els.count, currentVal, countData.result, 1000);
                     
-                    // Update Angka dengan efek Counter
-                    animateValue(els.count, parseInt(els.count.innerText.replace(/,/g, '') || 0), countData.result, 1500);
+                    // Update Nama Grup (Jika berhasil ambil info)
+                    if (infoData.ok) {
+                        els.name.innerText = infoData.result.title;
+                    }
                 } else {
-                    console.log("Error API:", infoData, countData);
-                    els.name.innerText = "Check Username";
+                    console.log("Error API Telegram:", countData);
                 }
 
             } catch (error) {
-                console.error("Koneksi Gagal:", error);
-                els.name.innerText = "Offline Mode";
+                console.error("Gagal koneksi:", error);
             }
         }
 
-        // Fungsi Animasi Angka a la Ticker Saham
         function animateValue(obj, start, end, duration) {
             if (start === end) return;
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                // Format angka dengan koma (cth: 1,250)
-                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('en-US');
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('id-ID'); // Format Indonesia
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 }
@@ -337,9 +283,9 @@
             window.requestAnimationFrame(step);
         }
 
-        // Init
+        // Jalankan Script
         fetchTelegramData();
-        setInterval(fetchTelegramData, 10000); // Update tiap 10 detik (Cepat, ala trading)
+        setInterval(fetchTelegramData, 10000); // Update tiap 10 detik
 
     </script>
 </body>
