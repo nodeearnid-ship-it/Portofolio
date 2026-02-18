@@ -4,138 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratama | Professional Forex Trader</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- 1. LIGHT THEME VARIABLES --- */
         :root {
-            --bg-dark: #0b0e11;
-            --bg-card: #151a21;
-            --text-main: #e2e8f0;
-            --text-muted: #64748b;
-            --bullish: #00c076; /* Hijau Trading */
-            --gold: #fbbf24;
-            --glow: 0 0 20px rgba(0, 192, 118, 0.15);
+            --bg-main: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-dark: #0f172a; /* Warna teks utama gelap */
+            --text-muted: #64748b; /* Warna teks pendukung */
+            --bullish-color: #059669; /* Hijau yang lebih elegan untuk light mode */
+            --accent-gold: #d97706; /* Emas yang lebih hangat */
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            --glow-effect: 0 0 30px rgba(5, 150, 105, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background-color: var(--bg-secondary);
+            color: var(--text-dark);
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Subtle Chart Pattern Background */
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- 2. ANIMATIONS --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-up { opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        /* --- 3. LAYOUT & CONTAINER --- */
+        .container {
+            max-width: 1100px;
+            width: 90%;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Split 50/50 */
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- 4. LEFT SIDE: PROFILE PHOTO --- */
+        .profile-section {
+            position: relative;
+            display: flex;
             justify-content: center;
         }
 
-        /* Background Chart Effect */
-        .bg-chart {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(11, 14, 17, 0.95), rgba(11, 14, 17, 0.98)),
-                url('https://images.unsplash.com/photo-1611974765270-ca1258634369?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
+        /* Efek Glow di belakang foto */
+        .photo-glow {
+            position: absolute;
+            width: 320px; height: 400px;
+            background: linear-gradient(45deg, var(--bullish-color), transparent);
+            filter: blur(60px);
+            opacity: 0.2;
             z-index: -1;
+            border-radius: 50%;
+            top: 10%; left: 10%;
+            animation: float 8s ease-in-out infinite reverse;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
+        .profile-card {
+            background: var(--bg-main);
+            padding: 15px;
+            border-radius: 30px;
+            box-shadow: var(--card-shadow);
+            animation: float 6s ease-in-out infinite; /* Foto Melayang */
         }
 
-        /* Identitas Kiri */
+        .profile-image {
+            width: 300px;
+            height: 400px; /* Portrait aspect ratio */
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* --- 5. RIGHT SIDE: CONTENT & WIDGET --- */
+        .content-section {
+            padding-left: 20px;
+        }
+
         .identity h2 {
             font-family: 'Rajdhani', sans-serif;
-            color: var(--gold);
+            color: var(--accent-gold);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: #fffbeb;
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
         .identity h1 {
             font-size: 3.5rem;
-            font-weight: 700;
+            font-weight: 800;
             line-height: 1.1;
             margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-dark);
         }
 
         .identity p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 450px;
+            font-size: 1.15rem;
             line-height: 1.7;
-            margin-bottom: 30px;
-            border-left: 3px solid var(--bullish);
-            padding-left: 15px;
+            margin-bottom: 40px;
         }
 
-        /* Statistik Kiri */
-        .stats-row { display: flex; gap: 30px; }
-        .stat-item h4 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: var(--bullish); margin-bottom: 0; }
-        .stat-item span { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; }
-
-        /* Widget Kanan (Grup Telegram) */
+        /* --- TELEGRAM CARD (LIGHT THEME) --- */
         .terminal-card {
-            background: var(--bg-card);
-            border: 1px solid #2d3748;
-            border-radius: 16px;
-            position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
+            background: var(--bg-main); /* White background */
+            border-radius: 24px;
+            box-shadow: 0 20px 60px -15px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid #e2e8f0;
         }
+        
+        .terminal-card:hover { transform: translateY(-5px); }
 
         .terminal-header {
-            background: #1e2630;
+            background: #f1f5f9; /* Light gray header */
             padding: 15px 25px;
-            border-radius: 14px 14px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #2d3748;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .status-dot {
-            height: 8px; width: 8px;
-            background: var(--bullish);
+            height: 10px; width: 10px;
+            background: var(--bullish-color);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--bullish);
+            box-shadow: 0 0 10px var(--bullish-color);
             display: inline-block;
-            margin-right: 6px;
+            margin-right: 8px;
         }
 
         .terminal-body { padding: 30px; text-align: center; }
 
-        .channel-info { margin-bottom: 25px; }
-        .channel-name { font-size: 1.4rem; font-weight: 600; color: #fff; margin-bottom: 5px; }
-        .channel-username { color: var(--bullish); font-family: 'Rajdhani', sans-serif; font-size: 1rem; letter-spacing: 1px; }
+        .channel-name { font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+        .channel-username { color: var(--bullish-color); font-weight: 600; }
 
         .ticker-box {
-            background: #0f1318;
-            border: 1px solid #2d3748;
-            border-radius: 8px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 25px;
+            margin: 25px 0;
         }
 
-        .ticker-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        .ticker-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
         
         .ticker-value {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-dark);
         }
 
         /* Tombol Join */
@@ -144,92 +192,88 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            padding: 16px;
-            background: var(--bullish);
-            color: #000;
+            padding: 18px;
+            background: var(--bullish-color);
+            color: white;
             font-weight: 700;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 16px;
             transition: all 0.3s;
-            text-transform: uppercase;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
+            font-size: 1.1rem;
+            box-shadow: var(--glow-effect);
         }
 
         .btn-join:hover {
-            background: #00e68e;
-            box-shadow: var(--glow);
-            transform: translateY(-2px);
+            background: #047857;
+            transform: scale(1.02);
         }
 
         /* Responsif HP */
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-            .identity p { margin: 0 auto 30px; border-left: none; border-bottom: 3px solid var(--bullish); padding-bottom: 15px; }
-            .stats-row { justify-content: center; }
-            .identity h1 { font-size: 2.5rem; }
+        @media (max-width: 968px) {
+            .container { 
+                grid-template-columns: 1fr; /* Stack vertikal di HP */
+                text-align: center; 
+                gap: 40px; 
+                margin: 60px auto;
+            }
+            .profile-section { order: -1; /* Foto pindah ke atas di HP */ }
+            .profile-image { width: 250px; height: 330px; }
+            .content-section { padding-left: 0; }
+            .identity h1 { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-chart"></div>
-
     <div class="container">
-        <div class="identity">
-            <h2>Professional Forex Trader</h2>
-            <h1>Pratama<br>Trading System</h1>
-            <p>
-                Analisa teknikal XAUUSD & Major Pairs dengan akurasi tinggi.
-                Gabung sekarang untuk sinyal harian dan edukasi trading.
-            </p>
-            
-            <div class="stats-row">
-                <div class="stat-item">
-                    <h4>4+</h4>
-                    <span>Years Exp</span>
-                </div>
-                <div class="stat-item">
-                    <h4>85%</h4>
-                    <span>Win Rate</span>
-                </div>
-                <div class="stat-item">
-                    <h4>XAUUSD</h4>
-                    <span>Specialist</span>
-                </div>
+        <div class="profile-section animate-up">
+            <div class="photo-glow"></div>
+            <div class="profile-card">
+                <img src="https://i.ibb.co.com/xb4ygjJ/IMG-20250919-131529-797.webp" alt="Pratama Forex Trader" class="profile-image">
             </div>
         </div>
 
-        <div class="terminal-card">
-            <div class="terminal-header">
-                <div style="display:flex; align-items:center; color: var(--text-muted); font-size: 0.8rem;">
-                    <span class="status-dot"></span> LIVE SIGNAL
-                </div>
-                <i class="fab fa-telegram" style="color: #229ED9; font-size: 1.2rem;"></i>
+        <div class="content-section">
+            <div class="identity animate-up delay-1">
+                <h2>Professional Forex Trader</h2>
+                <h1>Pratama<br>Trading System.</h1>
+                <p>
+                    Menguasai pasar XAUUSD dengan pendekatan teknikal yang presisi. 
+                    Tingkatkan profitabilitas trading Anda bersama komunitas eksklusif kami.
+                </p>
             </div>
 
-            <div class="terminal-body">
-                <div class="channel-info">
-                    <div class="channel-name" id="channel-name">Connecting...</div>
-                    <div class="channel-username" id="channel-username">@PratamaFX_grup</div>
-                </div>
-
-                <div class="ticker-box">
-                    <span class="ticker-label">Total Traders Joined</span>
-                    <div class="ticker-value">
-                        <span id="sub-count">---</span>
+            <div class="terminal-card animate-up delay-2">
+                <div class="terminal-header">
+                    <div style="display:flex; align-items:center; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;">
+                        <span class="status-dot"></span> LIVE SIGNAL ACTIVE
                     </div>
+                    <i class="fab fa-telegram" style="color: #229ED9; font-size: 1.4rem;"></i>
                 </div>
 
-                <a href="https://t.me/PratamaFX_grup" target="_blank" class="btn-join">
-                    Join Grup Sekarang <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
-                </a>
+                <div class="terminal-body">
+                    <div class="channel-info animate-up delay-3">
+                        <div class="channel-name" id="channel-name">Connecting to Server...</div>
+                        <div class="channel-username" id="channel-username">@PratamaFX_grup</div>
+                    </div>
+
+                    <div class="ticker-box animate-up delay-3">
+                        <span class="ticker-label">Total Active Traders</span>
+                        <div class="ticker-value">
+                            <span id="sub-count">---</span>
+                        </div>
+                    </div>
+
+                    <a href="https://t.me/PratamaFX_grup" target="_blank" class="btn-join animate-up delay-4">
+                        Join VIP Group Now <i class="fas fa-arrow-right" style="margin-left:10px;"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // === KONFIGURASI FINAL ===
+        // === KONFIGURASI ===
         const CONFIG = {
             botToken: '8503985331:AAHhcap_1pYf_IElaY4umrctYZkcVF8j1rE', // Token Bot Anda
             channelId: '@PratamaFX_grup' // Username Grup Anda
@@ -243,30 +287,17 @@
 
         async function fetchTelegramData() {
             try {
-                // 1. Ambil Data Grup
                 const infoRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChat?chat_id=${CONFIG.channelId}`);
                 const infoData = await infoRes.json();
-
-                // 2. Ambil Jumlah Member
                 const countRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChatMembersCount?chat_id=${CONFIG.channelId}`);
                 const countData = await countRes.json();
 
                 if (countData.ok) {
-                    // Update Angka
-                    const currentVal = parseInt(els.count.innerText) || 0;
-                    animateValue(els.count, currentVal, countData.result, 1000);
-                    
-                    // Update Nama Grup (Jika berhasil ambil info)
-                    if (infoData.ok) {
-                        els.name.innerText = infoData.result.title;
-                    }
-                } else {
-                    console.log("Error API Telegram:", countData);
+                    const currentVal = parseInt(els.count.innerText.replace(/\D/g,'')) || 0;
+                    animateValue(els.count, currentVal, countData.result, 1500);
+                    if (infoData.ok) els.name.innerText = infoData.result.title;
                 }
-
-            } catch (error) {
-                console.error("Gagal koneksi:", error);
-            }
+            } catch (error) { console.error("Gagal koneksi:", error); }
         }
 
         function animateValue(obj, start, end, duration) {
@@ -275,18 +306,14 @@
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('id-ID'); // Format Indonesia
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('id-ID');
+                if (progress < 1) window.requestAnimationFrame(step);
             };
             window.requestAnimationFrame(step);
         }
 
-        // Jalankan Script
         fetchTelegramData();
-        setInterval(fetchTelegramData, 10000); // Update tiap 10 detik
-
+        setInterval(fetchTelegramData, 10000); 
     </script>
 </body>
 </html>
