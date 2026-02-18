@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | Creative Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --telegram: #0088cc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        /* Navbar & Hero */
+        header { 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 2rem; }
+
+        /* Telegram Card */
+        .tg-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .tg-card:hover { transform: translateY(-5px); }
+        .tg-icon { font-size: 3rem; color: var(--telegram); margin-bottom: 10px; }
+        
+        .sub-count { 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--primary);
+            margin: 5px 0;
+        }
+
+        .btn-join {
+            background: var(--telegram);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="hero">
+            <h1>Halo, Saya [Nama Kamu]</h1>
+            <p>UI/UX Designer & Web Developer</p>
+
+            <a href="https://t.me/NAMA_CHANNEL_KAMU" target="_blank" class="tg-card">
+                <i class="fab fa-telegram tg-icon"></i>
+                <span>Join My Community</span>
+                <div class="sub-count" id="subscriber-count">Memuat...</div>
+                <span class="btn-join">Buka Telegram</span>
+            </a>
+        </div>
+    </header>
+
+    <script>
+        // KONFIGURASI TELEGRAM
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN_DISINI';
+        const CHANNEL_ID = '@NAMA_CHANNEL_KAMU'; // Gunakan @ di depan username
+
+        async function fetchTelegramSubs() {
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChatMembersCount?chat_id=${CHANNEL_ID}`);
+                const data = await response.json();
+                
+                if (data.ok) {
+                    document.getElementById('subscriber-count').innerText = `${data.result.toLocaleString()} Subscribers`;
+                } else {
+                    document.getElementById('subscriber-count').innerText = "Update Error";
+                }
+            } catch (error) {
+                console.error("Gagal mengambil data:", error);
+                document.getElementById('subscriber-count').innerText = "Offline";
+            }
+        }
+
+        // Jalankan saat load & update setiap 60 detik (realtime-ish)
+        fetchTelegramSubs();
+        setInterval(fetchTelegramSubs, 60000); 
+    </script>
+</body>
+</html>
