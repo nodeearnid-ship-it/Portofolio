@@ -8,356 +8,177 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- 1. CORE VARIABLES & RESET --- */
         :root {
-            --bg-color: #ffffff;
-            --bg-secondary: #f8fafc;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --accent: #2563eb; /* Royal Blue */
-            --accent-hover: #1d4ed8;
-            --telegram-color: #229ED9;
-            --card-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05);
-            --card-hover: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
+            --bg: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --insta-color: #E1306C;
+            --accent: #2563eb;
+            --card-shadow: 0 20px 40px rgba(0,0,0,0.06);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- 2. ANIMATIONS --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(34, 158, 217, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(34, 158, 217, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 158, 217, 0); }
-        }
-
-        .animate-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0; /* Mulai invisible */
-        }
-
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-
-        /* --- 3. LAYOUT --- */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Navbar */
-        nav {
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 30px 0;
-            margin-bottom: 60px;
-        }
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
-        .logo span { color: var(--accent); }
-
-        /* Hero Section */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 80px;
-            position: relative;
-        }
-
-        /* Dekorasi Background Blob */
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(180deg, rgba(37, 99, 235, 0.1) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            top: -100px;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            background: -webkit-linear-gradient(45deg, #0f172a, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 40px;
-        }
-
-        /* --- 4. TELEGRAM WIDGET (MODERN) --- */
-        .tg-wrapper {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.4s ease;
-            max-width: 400px;
-            width: 100%;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            position: relative;
+            min-height: 100vh;
             overflow: hidden;
         }
 
-        .tg-wrapper:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-hover);
-            border-color: rgba(37, 99, 235, 0.2);
+        /* Animasi Muncul */
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header Kartu: Icon/Foto & Info */
-        .tg-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+        .container {
+            text-align: center;
+            animation: reveal 1s ease-out;
+            max-width: 400px;
+            width: 90%;
         }
 
-        .tg-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--telegram-color);
+        .logo { 
+            font-weight: 800; 
+            font-size: 1.8rem; 
+            margin-bottom: 10px; 
+        }
+        .logo span { color: var(--accent); }
+
+        .tagline { 
+            color: var(--muted); 
+            font-size: 1rem; 
+            margin-bottom: 40px; 
+        }
+
+        /* Link Card */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #f1f5f9;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
         }
-        
-        /* Status Online Dot */
-        .tg-avatar::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
-            background: #22c55e; /* Green */
-            border: 2px solid white;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
         }
 
-        .tg-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
-        .tg-info p { font-size: 0.9rem; color: var(--text-muted); }
-
-        /* Stats Section */
-        .tg-stats {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .live-count {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-main);
-            display: block;
-            line-height: 1;
-        }
-
-        .live-label {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-top: 5px;
-            display: block;
-        }
-
-        .tg-btn {
-            background: var(--telegram-color);
-            color: white;
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
-            text-align: center;
+        /* Ikon Instagram */
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: #fff5f8;
+            border-radius: 20px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: background 0.3s;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--insta-color);
         }
+
+        .card h3 { font-weight: 700; font-size: 1.2rem; }
         
-        .tg-btn:hover { background: #1c8ub4; }
-
-        /* Footer */
-        footer {
-            margin-top: 100px;
-            padding: 40px 0;
+        /* Stats Realtime */
+        .stats-box {
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 1px solid #f1f5f9;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
-        /* Responsive Mobile */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .tg-wrapper { padding: 20px; }
+        .count {
+            display: block;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -1px;
+        }
+
+        .label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Live Indicator */
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 5px;
+            box-shadow: 0 0 10px #22c55e;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <nav class="animate-up">
-            <div class="logo">Pratama<span>.</span></div>
-            <div>
-                </div>
-        </nav>
+        <div class="logo">Pratama<span>.</span></div>
+        <p class="tagline">Digital Creator & Developer</p>
 
-        <header class="hero">
-            <div class="blob"></div>
-            <h1 class="animate-up delay-1">Creating Digital<br>Experiences.</h1>
-            <p class="animate-up delay-2">
-                Halo, saya <strong>Pratama</strong>. Web Developer & UI Designer yang fokus pada tampilan bersih dan performa tinggi.
-            </p>
-
-            <div class="animate-up delay-3">
-                <a href="https://t.me/KOMUNITAS_SAYA" target="_blank" class="tg-wrapper" id="tg-link">
-                    <div class="tg-header">
-                        <div class="tg-avatar">
-                            <i class="fab fa-telegram-plane"></i>
-                            </div>
-                        <div class="tg-info">
-                            <h3 id="tg-title">Memuat Channel...</h3>
-                            <p id="tg-desc">Official Community</p>
-                        </div>
-                    </div>
-
-                    <div class="tg-stats">
-                        <span class="live-count" id="tg-count">0</span>
-                        <span class="live-label">Subscribers Real-time</span>
-                    </div>
-
-                    <div class="tg-btn">
-                        <span>Gabung Sekarang</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
+        <a href="https://t.me/USERNAME_CHANNEL_KAMU" target="_blank" class="card">
+            <div class="icon-box">
+                <i class="fab fa-instagram"></i>
             </div>
-        </header>
-
-        <footer>
-            &copy; 2024 Pratama. All rights reserved.
-        </footer>
+            <h3>Join My Community</h3>
+            
+            <div class="stats-box">
+                <span class="count" id="sub-count">0</span>
+                <span class="label">
+                    <span class="live-dot"></span>Subscribers
+                </span>
+            </div>
+        </a>
     </div>
 
     <script>
-        // === KONFIGURASI PENTING ===
-        // 1. Buat bot di @BotFather, dapatkan Token.
-        // 2. Masukkan bot ke channel kamu sebagai Admin.
-        // 3. Masukkan Channel Username (pakai @).
-        
-        const CONFIG = {
-            botToken: 'TOKEN_BOT_ANDA_DISINI', // Contoh: 123456:ABC-Def...
-            channelId: '@USERNAME_CHANNEL_ANDA' // Contoh: @komunitaspratama
-        };
+        // Data dari Pratama
+        const botToken = '8503985331:AAHhcap_1pYf_IElaY4umrctYZkcVF8j1rE';
+        const channelId = '@USERNAME_CHANNEL_KAMU'; // <--- GANTI INI DENGAN USERNAME CHANNEL KAMU
 
-        const els = {
-            title: document.getElementById('tg-title'),
-            desc: document.getElementById('tg-desc'),
-            count: document.getElementById('tg-count'),
-            link: document.getElementById('tg-link')
-        };
-
-        // Update Link href otomatis
-        els.link.href = `https://t.me/${CONFIG.channelId.replace('@', '')}`;
-
-        async function updateTelegramStats() {
+        async function fetchSubs() {
             try {
-                // 1. Ambil Jumlah Subscriber
-                const countRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChatMembersCount?chat_id=${CONFIG.channelId}`);
-                const countData = await countRes.json();
-
-                // 2. Ambil Info Channel (Nama & Deskripsi)
-                const infoRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChat?chat_id=${CONFIG.channelId}`);
-                const infoData = await infoRes.json();
-
-                if (countData.ok && infoData.ok) {
-                    // Update Angka dengan animasi text sederhana
-                    animateValue(els.count, parseInt(els.count.innerText.replace(/,/g, '')), countData.result, 1000);
-                    
-                    // Update Teks
-                    els.title.innerText = infoData.result.title;
-                    
-                    // Ambil deskripsi (jika ada), kalau terlalu panjang dipotong
-                    let desc = infoData.result.description || "Bergabunglah dengan komunitas saya.";
-                    if(desc.length > 30) desc = desc.substring(0, 30) + "...";
-                    els.desc.innerText = desc;
-                    
-                } else {
-                    console.warn("Gagal mengambil data Telegram API");
+                const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMembersCount?chat_id=${channelId}`);
+                const data = await res.json();
+                
+                if (data.ok) {
+                    const currentVal = parseInt(document.getElementById('sub-count').innerText.replace(/,/g, ''));
+                    animateValue(document.getElementById('sub-count'), currentVal, data.result, 1000);
                 }
-            } catch (error) {
-                console.error("Error koneksi:", error);
-                els.title.innerText = "Komunitas Pratama";
-                els.count.innerText = "Offline";
+            } catch (e) {
+                console.error("Gagal ambil data", e);
             }
         }
 
-        // Fungsi Animasi Angka (Counter Up)
         function animateValue(obj, start, end, duration) {
-            if (start === end) return;
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
+                if (progress < 1) window.requestAnimationFrame(step);
             };
             window.requestAnimationFrame(step);
         }
 
-        // Jalankan saat pertama kali
-        updateTelegramStats();
-        // Update setiap 30 detik
-        setInterval(updateTelegramStats, 30000);
-
+        // Jalankan & Update tiap 30 detik
+        fetchSubs();
+        setInterval(fetchSubs, 30000);
     </script>
 </body>
 </html>
