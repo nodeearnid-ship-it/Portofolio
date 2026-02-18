@@ -3,117 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio | Creative Developer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Pratama | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
         :root {
-            --primary: #2563eb;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --telegram: #0088cc;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb; /* Royal Blue */
+            --accent-hover: #1d4ed8;
+            --telegram-color: #229ED9;
+            --card-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05);
+            --card-hover: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
-
-        /* Navbar & Hero */
-        header { 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            text-align: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            padding: 20px;
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 2rem; }
+        /* --- 2. ANIMATIONS --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
 
-        /* Telegram Card */
-        .tg-card {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: inline-flex;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 158, 217, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(34, 158, 217, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 158, 217, 0); }
+        }
+
+        .animate-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0; /* Mulai invisible */
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        /* --- 3. LAYOUT --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            margin-bottom: 60px;
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        /* Dekorasi Background Blob */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(180deg, rgba(37, 99, 235, 0.1) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            top: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: -webkit-linear-gradient(45deg, #0f172a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* --- 4. TELEGRAM WIDGET (MODERN) --- */
+        .tg-wrapper {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s ease;
+            max-width: 400px;
+            width: 100%;
             text-decoration: none;
-            color: var(--dark);
-            transition: transform 0.3s ease;
-            max-width: 300px;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
         }
 
-        .tg-card:hover { transform: translateY(-5px); }
-        .tg-icon { font-size: 3rem; color: var(--telegram); margin-bottom: 10px; }
+        .tg-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        /* Header Kartu: Icon/Foto & Info */
+        .tg-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tg-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--telegram-color);
+            position: relative;
+        }
         
-        .sub-count { 
-            font-size: 1.5rem; 
-            font-weight: 700; 
-            color: var(--primary);
-            margin: 5px 0;
+        /* Status Online Dot */
+        .tg-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: #22c55e; /* Green */
+            border: 2px solid white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        .btn-join {
-            background: var(--telegram);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
+        .tg-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
+        .tg-info p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Stats Section */
+        .tg-stats {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .live-count {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: block;
+            line-height: 1;
+        }
+
+        .live-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-weight: 600;
-            margin-top: 10px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .tg-btn {
+            background: var(--telegram-color);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+        
+        .tg-btn:hover { background: #1c8ub4; }
+
+        /* Footer */
+        footer {
+            margin-top: 100px;
+            padding: 40px 0;
+            border-top: 1px solid #f1f5f9;
+            text-align: center;
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        /* Responsive */
+        /* Responsive Mobile */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .tg-wrapper { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="hero">
-            <h1>Halo, Saya [Nama Kamu]</h1>
-            <p>UI/UX Designer & Web Developer</p>
+    <div class="container">
+        <nav class="animate-up">
+            <div class="logo">Pratama<span>.</span></div>
+            <div>
+                </div>
+        </nav>
 
-            <a href="https://t.me/NAMA_CHANNEL_KAMU" target="_blank" class="tg-card">
-                <i class="fab fa-telegram tg-icon"></i>
-                <span>Join My Community</span>
-                <div class="sub-count" id="subscriber-count">Memuat...</div>
-                <span class="btn-join">Buka Telegram</span>
-            </a>
-        </div>
-    </header>
+        <header class="hero">
+            <div class="blob"></div>
+            <h1 class="animate-up delay-1">Creating Digital<br>Experiences.</h1>
+            <p class="animate-up delay-2">
+                Halo, saya <strong>Pratama</strong>. Web Developer & UI Designer yang fokus pada tampilan bersih dan performa tinggi.
+            </p>
+
+            <div class="animate-up delay-3">
+                <a href="https://t.me/KOMUNITAS_SAYA" target="_blank" class="tg-wrapper" id="tg-link">
+                    <div class="tg-header">
+                        <div class="tg-avatar">
+                            <i class="fab fa-telegram-plane"></i>
+                            </div>
+                        <div class="tg-info">
+                            <h3 id="tg-title">Memuat Channel...</h3>
+                            <p id="tg-desc">Official Community</p>
+                        </div>
+                    </div>
+
+                    <div class="tg-stats">
+                        <span class="live-count" id="tg-count">0</span>
+                        <span class="live-label">Subscribers Real-time</span>
+                    </div>
+
+                    <div class="tg-btn">
+                        <span>Gabung Sekarang</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <footer>
+            &copy; 2024 Pratama. All rights reserved.
+        </footer>
+    </div>
 
     <script>
-        // KONFIGURASI TELEGRAM
-        const BOT_TOKEN = 'YOUR_BOT_TOKEN_DISINI';
-        const CHANNEL_ID = '@NAMA_CHANNEL_KAMU'; // Gunakan @ di depan username
+        // === KONFIGURASI PENTING ===
+        // 1. Buat bot di @BotFather, dapatkan Token.
+        // 2. Masukkan bot ke channel kamu sebagai Admin.
+        // 3. Masukkan Channel Username (pakai @).
+        
+        const CONFIG = {
+            botToken: 'TOKEN_BOT_ANDA_DISINI', // Contoh: 123456:ABC-Def...
+            channelId: '@USERNAME_CHANNEL_ANDA' // Contoh: @komunitaspratama
+        };
 
-        async function fetchTelegramSubs() {
+        const els = {
+            title: document.getElementById('tg-title'),
+            desc: document.getElementById('tg-desc'),
+            count: document.getElementById('tg-count'),
+            link: document.getElementById('tg-link')
+        };
+
+        // Update Link href otomatis
+        els.link.href = `https://t.me/${CONFIG.channelId.replace('@', '')}`;
+
+        async function updateTelegramStats() {
             try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChatMembersCount?chat_id=${CHANNEL_ID}`);
-                const data = await response.json();
-                
-                if (data.ok) {
-                    document.getElementById('subscriber-count').innerText = `${data.result.toLocaleString()} Subscribers`;
+                // 1. Ambil Jumlah Subscriber
+                const countRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChatMembersCount?chat_id=${CONFIG.channelId}`);
+                const countData = await countRes.json();
+
+                // 2. Ambil Info Channel (Nama & Deskripsi)
+                const infoRes = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/getChat?chat_id=${CONFIG.channelId}`);
+                const infoData = await infoRes.json();
+
+                if (countData.ok && infoData.ok) {
+                    // Update Angka dengan animasi text sederhana
+                    animateValue(els.count, parseInt(els.count.innerText.replace(/,/g, '')), countData.result, 1000);
+                    
+                    // Update Teks
+                    els.title.innerText = infoData.result.title;
+                    
+                    // Ambil deskripsi (jika ada), kalau terlalu panjang dipotong
+                    let desc = infoData.result.description || "Bergabunglah dengan komunitas saya.";
+                    if(desc.length > 30) desc = desc.substring(0, 30) + "...";
+                    els.desc.innerText = desc;
+                    
                 } else {
-                    document.getElementById('subscriber-count').innerText = "Update Error";
+                    console.warn("Gagal mengambil data Telegram API");
                 }
             } catch (error) {
-                console.error("Gagal mengambil data:", error);
-                document.getElementById('subscriber-count').innerText = "Offline";
+                console.error("Error koneksi:", error);
+                els.title.innerText = "Komunitas Pratama";
+                els.count.innerText = "Offline";
             }
         }
 
-        // Jalankan saat load & update setiap 60 detik (realtime-ish)
-        fetchTelegramSubs();
-        setInterval(fetchTelegramSubs, 60000); 
+        // Fungsi Animasi Angka (Counter Up)
+        function animateValue(obj, start, end, duration) {
+            if (start === end) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Jalankan saat pertama kali
+        updateTelegramStats();
+        // Update setiap 30 detik
+        setInterval(updateTelegramStats, 30000);
+
     </script>
 </body>
 </html>
