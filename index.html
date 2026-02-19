@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <title>Asisten Gesture UI Futuristik</title>
+  <title>Asisten Gesture UI - Menu Interaktif</title>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 
@@ -12,15 +12,14 @@
       margin: 0; padding: 0; overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #121212;
-      /* Membuat pola grid menggunakan gradient */
       background-image:
           linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
           linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px);
-      background-size: 40px 40px; /* Ukuran kotak grid */
+      background-size: 40px 40px;
       color: white;
     }
 
-    /* --- Video (Disembunyikan tapi aktif) --- */
+    /* --- Video Kamera --- */
     video {
       position: absolute; bottom: 10px; right: 10px;
       width: 200px; border-radius: 10px; transform: scaleX(-1);
@@ -34,7 +33,7 @@
       background-color: rgba(255, 50, 50, 0.8); border-radius: 50%;
       pointer-events: none; 
       transform: translate(-50%, -50%);
-      z-index: 9999; /* Harus paling atas */
+      z-index: 9999;
       box-shadow: 0 0 10px rgba(255, 50, 50, 0.8);
       transition: background-color 0.1s, transform 0.1s;
     }
@@ -44,101 +43,109 @@
        transform: translate(-50%, -50%) scale(1.3);
     }
 
-    /* --- Kotak Draggable --- */
-    #target-box {
+    /* --- Area Konten Utama (Tengah Layar) --- */
+    #main-content {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 150px; height: 150px;
-      background: linear-gradient(135deg, rgba(0, 255, 204, 0.8), rgba(0, 102, 255, 0.8));
-      border-radius: 15px; display: flex;
+      width: 60%; height: 300px;
+      background: rgba(0, 20, 40, 0.6);
+      border: 1px solid rgba(0, 255, 204, 0.3);
+      border-radius: 15px; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      font-weight: bold; font-size: 16px; color: white;
-      box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
-      user-select: none;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center; transition: all 0.3s ease;
     }
+    #main-content h1 { margin: 0; font-size: 36px; color: #00ffcc; }
+    #main-content p { font-size: 18px; color: #aaa; margin-top: 10px; }
 
     /* --- Tombol Menu Bulat di Kiri --- */
     #menu-btn {
-        position: absolute;
-        left: 30px;
-        top: 50%;
+        position: absolute; left: 30px; top: 50%;
         transform: translateY(-50%);
         width: 60px; height: 60px;
         background: rgba(0, 0, 0, 0.5);
-        border: 2px solid #00ffcc;
-        border-radius: 50%;
+        border: 2px solid #00ffcc; border-radius: 50%;
         display: flex; justify-content: center; align-items: center;
         font-size: 24px; cursor: pointer;
         box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-        transition: all 0.3s ease;
-        z-index: 100;
+        transition: all 0.2s ease; z-index: 100;
     }
-    /* Efek hover visual jika kursor virtual di atasnya (opsional, butuh JS tambahan untuk deteksi hover) */
-    #menu-btn.hovered { background: rgba(0, 255, 204, 0.2); transform: translateY(-50%) scale(1.1); }
+    /* Efek visual ketika kursor jari berada di atas tombol menu */
+    #menu-btn.hover-effect { background: rgba(0, 255, 204, 0.3); box-shadow: 0 0 30px #00ffcc; }
 
-    /* --- Daftar Menu (Awalnya Tersembunyi) --- */
+    /* --- Daftar Menu --- */
     #menu-list {
-        position: absolute;
-        left: 100px; /* Di sebelah kanan tombol bulat */
-        top: 50%;
-        transform: translateY(-50%) translateX(-20px); /* Posisi awal sedikit geser */
-        background: rgba(0, 20, 40, 0.9);
-        border: 1px solid #00ffcc;
-        border-radius: 10px;
-        padding: 10px;
-        display: flex; flex-direction: column; gap: 5px;
-        opacity: 0; pointer-events: none; /* Sembunyikan */
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi elastis */
+        position: absolute; left: 100px; top: 50%;
+        transform: translateY(-50%) translateX(-20px);
+        background: rgba(0, 10, 20, 0.95);
+        border: 1px solid #00ffcc; border-radius: 10px;
+        padding: 10px; display: flex; flex-direction: column; gap: 8px;
+        opacity: 0; pointer-events: none; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         z-index: 99;
     }
     #menu-list.open {
         opacity: 1; pointer-events: auto;
-        transform: translateY(-50%) translateX(0px); /* Posisi akhir normal */
+        transform: translateY(-50%) translateX(0px);
     }
+    
+    /* Item di dalam menu */
     .menu-item {
-        padding: 10px 20px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 5px; font-size: 14px;
+        padding: 15px 25px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 5px; font-size: 16px; font-weight: bold;
+        transition: all 0.2s ease; border-left: 3px solid transparent;
+    }
+    /* Efek visual ketika kursor jari berada di atas daftar menu */
+    .menu-item.hover-effect {
+        background: rgba(0, 255, 204, 0.2);
+        border-left: 3px solid #00ffcc;
+        transform: translateX(5px);
     }
 
-    #info {
-      position: absolute; top: 20px; left: 20px; font-size: 16px; color: #aaa;
-    }
+    #info { position: absolute; top: 20px; left: 20px; font-size: 16px; color: #aaa; }
   </style>
 </head>
 
 <body>
-  <div id="info">Memuat AI...</div>
+  <div id="info">Memuat AI Kamera...</div>
 
   <div id="menu-btn">☰</div>
   <div id="menu-list">
-      <div class="menu-item">📊 Dashboard Chart</div>
-      <div class="menu-item">💰 Portofolio</div>
-      <div class="menu-item">⚙️ Pengaturan</div>
+      <div class="menu-item" data-title="📊 Dashboard Chart" data-desc="Menampilkan grafik pergerakan harga terkini.">📊 Dashboard Chart</div>
+      <div class="menu-item" data-title="💰 Portofolio" data-desc="Melihat total aset dan riwayat transaksi Anda.">💰 Portofolio</div>
+      <div class="menu-item" data-title="⚙️ Pengaturan" data-desc="Mengatur preferensi asisten dan akun.">⚙️ Pengaturan</div>
   </div>
 
-  <div id="target-box">Geser Saya!</div>
+  <div id="main-content">
+      <h1 id="content-title">Sistem Siap</h1>
+      <p id="content-desc">Buka menu di kiri dan klik salah satu opsi.</p>
+  </div>
 
   <div id="virtual-cursor"></div>
   <video id="input_video" autoplay playsinline></video>
 
   <script type="module">
-    // Referensi Elemen HTML
     const videoElement = document.getElementById('input_video');
     const virtualCursor = document.getElementById('virtual-cursor');
-    const targetBox = document.getElementById('target-box');
     const menuBtn = document.getElementById('menu-btn');
     const menuList = document.getElementById('menu-list');
+    const menuItems = document.querySelectorAll('.menu-item');
+    
+    // Elemen Konten Layar Tengah
+    const contentTitle = document.getElementById('content-title');
+    const contentDesc = document.getElementById('content-desc');
     const infoText = document.getElementById('info');
 
-    // Variabel State
-    let isDraggingBox = false;
-    let boxOffsetX = 0, boxOffsetY = 0;
     let isMenuOpen = false;
-    // Flag agar "klik" tidak terpanggil berulang kali saat mencubit lama
     let hasTriggeredClick = false; 
+
+    // Fungsi utilitas untuk mengecek apakah kursor (x,y) berada di dalam sebuah elemen
+    function isInside(x, y, element) {
+        const rect = element.getBoundingClientRect();
+        return (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom);
+    }
 
     function onResults(results) {
       if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
@@ -152,67 +159,70 @@
         virtualCursor.style.left = `${cursorX}px`;
         virtualCursor.style.top = `${cursorY}px`;
 
-        // 2. Deteksi Cubitan (Pinch)
-        const distance = Math.hypot(indexFinger.x - thumb.x, indexFinger.y - thumb.y);
-        const pinchThreshold = 0.05;
-        const isPinching = distance < pinchThreshold;
+        // 2. Cek Hover (Visual Feedback saat kursor di atas elemen)
+        // Hapus semua efek hover lama
+        menuBtn.classList.remove('hover-effect');
+        menuItems.forEach(item => item.classList.remove('hover-effect'));
 
-        // Update visual kursor saat mencubit
-        if (isPinching) {
-            virtualCursor.classList.add('pinching');
-        } else {
-            virtualCursor.classList.remove('pinching');
+        // Tambah efek hover baru jika berada di atas elemen
+        if (isInside(cursorX, cursorY, menuBtn)) {
+            menuBtn.classList.add('hover-effect');
+        }
+        if (isMenuOpen) {
+            menuItems.forEach(item => {
+                if (isInside(cursorX, cursorY, item)) item.classList.add('hover-effect');
+            });
         }
 
-        // --- LOGIKA INTERAKSI ---
+        // 3. Deteksi Cubitan (Pinch / Klik)
+        const distance = Math.hypot(indexFinger.x - thumb.x, indexFinger.y - thumb.y);
+        const isPinching = distance < 0.05;
 
         if (isPinching) {
-          // --- A. Logika "KLIK" Tombol Menu ---
-          const menuRect = menuBtn.getBoundingClientRect();
-          const isOverMenu = cursorX >= menuRect.left && cursorX <= menuRect.right &&
-                             cursorY >= menuRect.top && cursorY <= menuRect.bottom;
+            virtualCursor.classList.add('pinching');
 
-          // Jika kursor di atas tombol menu DAN belum pernah trigger klik sebelumnya
-          if (isOverMenu && !hasTriggeredClick && !isDraggingBox) {
-              isMenuOpen = !isMenuOpen; // Toggle status menu
-              menuList.classList.toggle('open', isMenuOpen); // Tambah/hapus class CSS 'open'
-              hasTriggeredClick = true; // Kunci agar tidak klik berulang
-              menuBtn.style.transform = "translateY(-50%) scale(0.9)"; // Efek tekan
-          }
+            // Jalankan "KLIK" hanya sekali setiap kali mencubit
+            if (!hasTriggeredClick) {
+                hasTriggeredClick = true;
 
-          // --- B. Logika "DRAG" Kotak Biru ---
-          const boxRect = targetBox.getBoundingClientRect();
-          const isOverBox = cursorX >= boxRect.left && cursorX <= boxRect.right &&
-                            cursorY >= boxRect.top && cursorY <= boxRect.bottom;
+                // A. Apakah meng-klik tombol menu utama?
+                if (isInside(cursorX, cursorY, menuBtn)) {
+                    isMenuOpen = !isMenuOpen;
+                    menuList.classList.toggle('open', isMenuOpen);
+                    
+                    // Beri efek tombol ditekan
+                    menuBtn.style.transform = "translateY(-50%) scale(0.8)";
+                    setTimeout(() => menuBtn.style.transform = "translateY(-50%) scale(1)", 150);
+                    return; // Selesai proses klik
+                }
 
-          // Mulai drag jika di atas kotak dan belum drag
-          if (!isDraggingBox && isOverBox && !hasTriggeredClick) {
-            isDraggingBox = true;
-            boxOffsetX = cursorX - boxRect.left;
-            boxOffsetY = cursorY - boxRect.top;
-            targetBox.style.boxShadow = "0 20px 50px rgba(0, 255, 204, 0.8)";
-            targetBox.innerText = "Dipegang!";
-          }
+                // B. Apakah meng-klik salah satu anak menu? (Hanya berlaku jika menu terbuka)
+                if (isMenuOpen) {
+                    menuItems.forEach(item => {
+                        if (isInside(cursorX, cursorY, item)) {
+                            // Ambil data dari menu yang di-klik
+                            const title = item.getAttribute('data-title');
+                            const desc = item.getAttribute('data-desc');
 
-          // Proses perpindahan posisi jika sedang drag
-          if (isDraggingBox) {
-            targetBox.style.left = `${cursorX - boxOffsetX}px`;
-            targetBox.style.top = `${cursorY - boxOffsetY}px`;
-          }
+                            // Ubah teks di layar tengah
+                            contentTitle.innerText = title;
+                            contentDesc.innerText = desc;
 
+                            // Beri efek tombol ditekan
+                            item.style.transform = "translateX(10px) scale(0.95)";
+                            setTimeout(() => item.style.transform = "", 150);
+
+                            // Tutup menu otomatis setelah memilih (opsional)
+                            isMenuOpen = false;
+                            menuList.classList.remove('open');
+                        }
+                    });
+                }
+            }
         } else {
-          // --- C. Logika Saat Cubitan Dilepas (Reset) ---
-          
-          // Reset flag klik agar bisa klik lagi nanti
-          hasTriggeredClick = false; 
-          menuBtn.style.transform = "translateY(-50%) scale(1)"; // Reset efek tekan tombol
-
-          // Stop drag kotak biru
-          if (isDraggingBox) {
-            isDraggingBox = false;
-            targetBox.style.boxShadow = "0 5px 15px rgba(0, 255, 204, 0.3)";
-            targetBox.innerText = "Geser Saya!";
-          }
+            // Jika tidak mencubit, reset status
+            virtualCursor.classList.remove('pinching');
+            hasTriggeredClick = false; 
         }
       }
     }
@@ -230,8 +240,8 @@
     const camera = new Camera(videoElement, {
       onFrame: async () => {
         await hands.send({image: videoElement});
-        if(infoText.innerHTML === "Memuat AI...") {
-             infoText.innerHTML = "Sistem Siap. Arahkan kursor, cubit untuk klik/geser.";
+        if(infoText.innerHTML === "Memuat AI Kamera...") {
+             infoText.innerHTML = "Sistem Aktif. Arahkan titik merah dan cubit untuk memilih menu.";
         }
       },
       width: 640,
