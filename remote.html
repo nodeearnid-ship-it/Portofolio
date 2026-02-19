@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Remote Control</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0; padding: 0; background-color: #0d0d0d; color: white;
+            font-family: sans-serif; display: flex; flex-direction: column;
+            height: 100vh; justify-content: center; align-items: center;
+            /* Mencegah highlight biru saat tombol ditekan di HP */
+            -webkit-tap-highlight-color: transparent; 
+        }
+        #status {
+            position: absolute; top: 30px; font-size: 16px; color: #ffcc00; text-align: center;
+            width: 100%; padding: 0 20px; box-sizing: border-box;
+        }
+        
+        /* Desain D-Pad */
+        .remote-container {
+            display: grid; grid-template-columns: 90px 90px 90px;
+            grid-template-rows: 90px 90px 90px; gap: 15px;
+        }
+        .btn {
+            background: #1a1a1a; border: 2px solid #00ffcc; border-radius: 15px;
+            color: #00ffcc; font-size: 30px; display: flex;
+            justify-content: center; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,255,204,0.1);
+            user-select: none; transition: background 0.1s;
+        }
+        .btn:active { background: #00ffcc; color: black; transform: scale(0.95); }
+        
+        #btn-up { grid-column: 2; grid-row: 1; border-radius: 15px 15px 5px 5px; }
+        #btn-down { grid-column: 2; grid-row: 3; border-radius: 5px 5px 15px 15px;}
+        #btn-ok { grid-column: 2; grid-row: 2; font-weight: bold; font-size: 20px; border-radius: 5px;}
+        
+        .title { position: absolute; bottom: 30px; color: #555; font-size: 14px; letter-spacing: 2px;}
+    </style>
+</head>
+<body>
+
+    <div id="status">Menyiapkan Remote...</div>
+
+    <div class="remote-container">
+        <div class="btn" id="btn-up">▲</div>
+        <div class="btn" id="btn-ok">OK</div>
+        <div class="btn" id="btn-down">▼</div>
+    </div>
+    
+    <div class="title">SMART REMOTE</div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        
+        // Ambil ID Layar Utama dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const hostId = urlParams.get('host');
+
+        if (!hostId) {
+            statusEl.innerText = "Error: ID Host tidak ditemukan.\nSilakan scan QR Code dari layar PC.";
+            statusEl.style.color = "red";
+        } else {
+            const peer = new Peer();
+            let connection;
+
+            peer.on('open', function() {
+                statusEl.innerText = "Menghubungkan ke Layar...";
+                connection = peer.connect(hostId);
+
+                connection.on('open', function() {
+                    statusEl.innerText = "🟢 Terhubung!\nSilakan tekan tombol di bawah.";
+                    statusEl.style.color = "#00ff00";
+                    // Getaran pendek tanda sukses konek
+                    if(navigator.vibrate) navigator.vibrate(100); 
+                });
+
+                connection.on('close', function() {
+                    statusEl.innerText = "Koneksi terputus. Silakan scan ulang QR.";
+                    statusEl.style.color = "red";
+                });
+            });
+
+            // Kirim sinyal ke PC
+            function sendCommand(cmd) {
+                if (connection && connection.open) {
+                    connection.send(cmd);
+                    // Haptic feedback (getaran kecil saat mencet tombol)
+                    if(navigator.vibrate) navigator.vibrate(40);
+                }
+            }
+
+            document.getElementById('btn-up').addEventListener('click', () => sendCommand('UP'));
+            document.getElementById('btn-down').addEventListener('click', () => sendCommand('DOWN'));
+            document.getElementById('btn-ok').addEventListener('click', () => sendCommand('OK'));
+        }
+    </script>
+</body>
+</html>
