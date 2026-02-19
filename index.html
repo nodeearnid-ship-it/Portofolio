@@ -2,117 +2,223 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <title>Asisten Gesture - Play & Pause</title>
+  <title>Asisten Gesture UI Futuristik</title>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 
   <style>
+    /* --- Latar Belakang Grid Futuristik --- */
     body {
       margin: 0; padding: 0; overflow: hidden;
-      font-family: sans-serif; background: #1a1a1a; color: white;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      /* Membuat pola grid menggunakan gradient */
+      background-image:
+          linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px; /* Ukuran kotak grid */
+      color: white;
+    }
+
+    /* --- Video (Disembunyikan tapi aktif) --- */
+    video {
+      position: absolute; bottom: 10px; right: 10px;
+      width: 200px; border-radius: 10px; transform: scaleX(-1);
+      border: 2px solid #00ffcc; opacity: 0.5; z-index: 10;
+      pointer-events: none;
     }
     
-    /* Kamera di pojok */
-    video#input_video {
-      position: absolute; bottom: 20px; right: 20px;
-      width: 240px; border-radius: 10px; transform: scaleX(-1);
-      border: 2px solid #00ffcc; opacity: 0.8; z-index: 10;
+    /* --- Kursor Virtual --- */
+    #virtual-cursor {
+      position: absolute; width: 20px; height: 20px;
+      background-color: rgba(255, 50, 50, 0.8); border-radius: 50%;
+      pointer-events: none; 
+      transform: translate(-50%, -50%);
+      z-index: 9999; /* Harus paling atas */
+      box-shadow: 0 0 10px rgba(255, 50, 50, 0.8);
+      transition: background-color 0.1s, transform 0.1s;
+    }
+    #virtual-cursor.pinching {
+       background-color: #00ffcc;
+       box-shadow: 0 0 15px #00ffcc;
+       transform: translate(-50%, -50%) scale(1.3);
     }
 
-    /* Video yang akan dikontrol */
-    #media-player {
-      width: 640px; border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border: 4px solid #333; transition: border-color 0.3s;
+    /* --- Kotak Draggable --- */
+    #target-box {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px; height: 150px;
+      background: linear-gradient(135deg, rgba(0, 255, 204, 0.8), rgba(0, 102, 255, 0.8));
+      border-radius: 15px; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: bold; font-size: 16px; color: white;
+      box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+      user-select: none;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
-    #status-overlay {
-      position: absolute; font-size: 80px; font-weight: bold;
-      color: rgba(255, 255, 255, 0.8); pointer-events: none;
-      text-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: opacity 0.3s;
-      opacity: 0;
+    /* --- Tombol Menu Bulat di Kiri --- */
+    #menu-btn {
+        position: absolute;
+        left: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px; height: 60px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid #00ffcc;
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        font-size: 24px; cursor: pointer;
+        box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+        transition: all 0.3s ease;
+        z-index: 100;
+    }
+    /* Efek hover visual jika kursor virtual di atasnya (opsional, butuh JS tambahan untuk deteksi hover) */
+    #menu-btn.hovered { background: rgba(0, 255, 204, 0.2); transform: translateY(-50%) scale(1.1); }
+
+    /* --- Daftar Menu (Awalnya Tersembunyi) --- */
+    #menu-list {
+        position: absolute;
+        left: 100px; /* Di sebelah kanan tombol bulat */
+        top: 50%;
+        transform: translateY(-50%) translateX(-20px); /* Posisi awal sedikit geser */
+        background: rgba(0, 20, 40, 0.9);
+        border: 1px solid #00ffcc;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex; flex-direction: column; gap: 5px;
+        opacity: 0; pointer-events: none; /* Sembunyikan */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi elastis */
+        z-index: 99;
+    }
+    #menu-list.open {
+        opacity: 1; pointer-events: auto;
+        transform: translateY(-50%) translateX(0px); /* Posisi akhir normal */
+    }
+    .menu-item {
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 5px; font-size: 14px;
     }
 
     #info {
-      position: absolute; top: 20px; left: 20px; font-size: 18px;
-      background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px;
+      position: absolute; top: 20px; left: 20px; font-size: 16px; color: #aaa;
     }
   </style>
 </head>
 
 <body>
-  <div id="info">
-    <b>Panduan Asisten:</b><br>
-    ✌️ Angkat <b>2 Jari (Telunjuk & Tengah)</b> untuk Play / Pause video.<br>
-    <span id="gesture-status" style="color: #00ffcc;">Menunggu gerakan...</span>
-  </div>
-  
-  <video id="media-player" src="https://www.w3schools.com/html/mov_bbb.mp4" loop></video>
-  <div id="status-overlay">▶️ PLAY</div>
+  <div id="info">Memuat AI...</div>
 
+  <div id="menu-btn">☰</div>
+  <div id="menu-list">
+      <div class="menu-item">📊 Dashboard Chart</div>
+      <div class="menu-item">💰 Portofolio</div>
+      <div class="menu-item">⚙️ Pengaturan</div>
+  </div>
+
+  <div id="target-box">Geser Saya!</div>
+
+  <div id="virtual-cursor"></div>
   <video id="input_video" autoplay playsinline></video>
 
   <script type="module">
+    // Referensi Elemen HTML
     const videoElement = document.getElementById('input_video');
-    const mediaPlayer = document.getElementById('media-player');
-    const statusOverlay = document.getElementById('status-overlay');
-    const gestureStatus = document.getElementById('gesture-status');
+    const virtualCursor = document.getElementById('virtual-cursor');
+    const targetBox = document.getElementById('target-box');
+    const menuBtn = document.getElementById('menu-btn');
+    const menuList = document.getElementById('menu-list');
+    const infoText = document.getElementById('info');
 
-    // Mencegah Play/Pause terpanggil berkali-kali dalam 1 detik
-    let lastToggleTime = 0;
-    const cooldownMs = 1500; // 1.5 detik jeda antar perintah
-
-    function showOverlay(text) {
-      statusOverlay.innerText = text;
-      statusOverlay.style.opacity = 1;
-      setTimeout(() => { statusOverlay.style.opacity = 0; }, 1000);
-    }
-
-    function togglePlayPause() {
-      const currentTime = new Date().getTime();
-      // Cek apakah waktu sekarang sudah melewati masa cooldown
-      if (currentTime - lastToggleTime > cooldownMs) {
-        if (mediaPlayer.paused) {
-          mediaPlayer.play();
-          showOverlay("▶️ PLAY");
-          mediaPlayer.style.borderColor = "#00ffcc"; // Warna border nyala
-        } else {
-          mediaPlayer.pause();
-          showOverlay("⏸️ PAUSE");
-          mediaPlayer.style.borderColor = "#ff3366"; // Warna border merah
-        }
-        lastToggleTime = currentTime; // Reset waktu cooldown
-      }
-    }
+    // Variabel State
+    let isDraggingBox = false;
+    let boxOffsetX = 0, boxOffsetY = 0;
+    let isMenuOpen = false;
+    // Flag agar "klik" tidak terpanggil berulang kali saat mencubit lama
+    let hasTriggeredClick = false; 
 
     function onResults(results) {
       if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0];
+        const landmarks = results.multiHandLandmarks[0]; 
+        const indexFinger = landmarks[8];
+        const thumb = landmarks[4];
 
-        // Mendapatkan posisi Y (Tinggi) dari ujung jari dan buku jari
-        // Semakin kecil nilai Y, posisinya semakin di atas layar
-        const isIndexUp = landmarks[8].y < landmarks[6].y;   // Telunjuk naik
-        const isMiddleUp = landmarks[12].y < landmarks[10].y; // Jari Tengah naik
-        const isRingDown = landmarks[16].y > landmarks[14].y; // Jari Manis turun
-        const isPinkyDown = landmarks[20].y > landmarks[18].y; // Kelingking turun
+        // 1. Update Posisi Kursor Virtual
+        const cursorX = (1 - indexFinger.x) * window.innerWidth;
+        const cursorY = indexFinger.y * window.innerHeight;
+        virtualCursor.style.left = `${cursorX}px`;
+        virtualCursor.style.top = `${cursorY}px`;
 
-        // Logika V-Sign (Hanya telunjuk dan tengah yang naik)
-        if (isIndexUp && isMiddleUp && isRingDown && isPinkyDown) {
-          gestureStatus.innerText = "Gestur Terdeteksi: ✌️ V-SIGN";
-          togglePlayPause();
+        // 2. Deteksi Cubitan (Pinch)
+        const distance = Math.hypot(indexFinger.x - thumb.x, indexFinger.y - thumb.y);
+        const pinchThreshold = 0.05;
+        const isPinching = distance < pinchThreshold;
+
+        // Update visual kursor saat mencubit
+        if (isPinching) {
+            virtualCursor.classList.add('pinching');
         } else {
-          gestureStatus.innerText = "Menganalisa jari...";
+            virtualCursor.classList.remove('pinching');
         }
-      } else {
-        gestureStatus.innerText = "Tangan tidak terlihat.";
+
+        // --- LOGIKA INTERAKSI ---
+
+        if (isPinching) {
+          // --- A. Logika "KLIK" Tombol Menu ---
+          const menuRect = menuBtn.getBoundingClientRect();
+          const isOverMenu = cursorX >= menuRect.left && cursorX <= menuRect.right &&
+                             cursorY >= menuRect.top && cursorY <= menuRect.bottom;
+
+          // Jika kursor di atas tombol menu DAN belum pernah trigger klik sebelumnya
+          if (isOverMenu && !hasTriggeredClick && !isDraggingBox) {
+              isMenuOpen = !isMenuOpen; // Toggle status menu
+              menuList.classList.toggle('open', isMenuOpen); // Tambah/hapus class CSS 'open'
+              hasTriggeredClick = true; // Kunci agar tidak klik berulang
+              menuBtn.style.transform = "translateY(-50%) scale(0.9)"; // Efek tekan
+          }
+
+          // --- B. Logika "DRAG" Kotak Biru ---
+          const boxRect = targetBox.getBoundingClientRect();
+          const isOverBox = cursorX >= boxRect.left && cursorX <= boxRect.right &&
+                            cursorY >= boxRect.top && cursorY <= boxRect.bottom;
+
+          // Mulai drag jika di atas kotak dan belum drag
+          if (!isDraggingBox && isOverBox && !hasTriggeredClick) {
+            isDraggingBox = true;
+            boxOffsetX = cursorX - boxRect.left;
+            boxOffsetY = cursorY - boxRect.top;
+            targetBox.style.boxShadow = "0 20px 50px rgba(0, 255, 204, 0.8)";
+            targetBox.innerText = "Dipegang!";
+          }
+
+          // Proses perpindahan posisi jika sedang drag
+          if (isDraggingBox) {
+            targetBox.style.left = `${cursorX - boxOffsetX}px`;
+            targetBox.style.top = `${cursorY - boxOffsetY}px`;
+          }
+
+        } else {
+          // --- C. Logika Saat Cubitan Dilepas (Reset) ---
+          
+          // Reset flag klik agar bisa klik lagi nanti
+          hasTriggeredClick = false; 
+          menuBtn.style.transform = "translateY(-50%) scale(1)"; // Reset efek tekan tombol
+
+          // Stop drag kotak biru
+          if (isDraggingBox) {
+            isDraggingBox = false;
+            targetBox.style.boxShadow = "0 5px 15px rgba(0, 255, 204, 0.3)";
+            targetBox.innerText = "Geser Saya!";
+          }
+        }
       }
     }
 
-    const hands = new Hands({locateFile: (file) => {
-      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-    }});
-
+    // --- Inisialisasi MediaPipe ---
+    const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
     hands.setOptions({
       maxNumHands: 1,
       modelComplexity: 1,
@@ -124,6 +230,9 @@
     const camera = new Camera(videoElement, {
       onFrame: async () => {
         await hands.send({image: videoElement});
+        if(infoText.innerHTML === "Memuat AI...") {
+             infoText.innerHTML = "Sistem Siap. Arahkan kursor, cubit untuk klik/geser.";
+        }
       },
       width: 640,
       height: 480
