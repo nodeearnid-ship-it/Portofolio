@@ -3,99 +3,172 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Remote Control</title>
+    <title>Scanner & Mouse Remote</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <style>
         body {
             margin: 0; padding: 0; background-color: #0d0d0d; color: white;
             font-family: sans-serif; display: flex; flex-direction: column;
-            height: 100vh; justify-content: center; align-items: center;
-            /* Mencegah highlight biru saat tombol ditekan di HP */
-            -webkit-tap-highlight-color: transparent; 
-        }
-        #status {
-            position: absolute; top: 30px; font-size: 16px; color: #ffcc00; text-align: center;
-            width: 100%; padding: 0 20px; box-sizing: border-box;
+            height: 100vh; justify-content: flex-start; align-items: center;
+            -webkit-tap-highlight-color: transparent; overflow: hidden;
         }
         
-        /* Desain D-Pad */
-        .remote-container {
-            display: grid; grid-template-columns: 90px 90px 90px;
-            grid-template-rows: 90px 90px 90px; gap: 15px;
+        #status {
+            margin-top: 15px; font-size: 14px; color: #ffcc00; text-align: center;
+            width: 100%; z-index: 100;
+        }
+
+        #scanner-ui { width: 100%; max-width: 400px; padding: 20px; box-sizing: border-box; }
+        #reader { width: 100%; border-radius: 15px; overflow: hidden; border: 2px solid #00ffcc; }
+
+        /* Container Remote (Hanya tampil setelah konek) */
+        #remote-ui {
+            display: none; flex-direction: column; align-items: center;
+            width: 100%; padding: 20px; box-sizing: border-box; flex: 1;
+        }
+
+        /* --- DESAIN TRACKPAD (MOUSE) --- */
+        #trackpad {
+            width: 100%; max-width: 350px; height: 250px;
+            background: #1a1a1a; border: 2px dashed #00ffcc; border-radius: 20px;
+            display: flex; justify-content: center; align-items: center;
+            color: #555; font-weight: bold; font-size: 20px; letter-spacing: 2px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 204, 0.1);
+            margin-bottom: 30px; user-select: none;
+            touch-action: none; /* Mencegah layar HP ter-scroll saat mengusap trackpad */
+        }
+        #trackpad:active { background: #222; }
+
+        /* Desain D-Pad Tradisional */
+        .dpad-container {
+            display: grid; grid-template-columns: 80px 80px 80px;
+            grid-template-rows: 80px 80px 80px; gap: 10px;
         }
         .btn {
-            background: #1a1a1a; border: 2px solid #00ffcc; border-radius: 15px;
-            color: #00ffcc; font-size: 30px; display: flex;
+            background: #1a1a1a; border: 2px solid #00ffcc; border-radius: 10px;
+            color: #00ffcc; font-size: 24px; display: flex;
             justify-content: center; align-items: center;
-            box-shadow: 0 5px 15px rgba(0,255,204,0.1);
             user-select: none; transition: background 0.1s;
         }
         .btn:active { background: #00ffcc; color: black; transform: scale(0.95); }
         
-        #btn-up { grid-column: 2; grid-row: 1; border-radius: 15px 15px 5px 5px; }
-        #btn-down { grid-column: 2; grid-row: 3; border-radius: 5px 5px 15px 15px;}
-        #btn-ok { grid-column: 2; grid-row: 2; font-weight: bold; font-size: 20px; border-radius: 5px;}
-        
-        .title { position: absolute; bottom: 30px; color: #555; font-size: 14px; letter-spacing: 2px;}
+        #btn-up { grid-column: 2; grid-row: 1; border-radius: 10px 10px 5px 5px; }
+        #btn-down { grid-column: 2; grid-row: 3; border-radius: 5px 5px 10px 10px;}
+        #btn-ok { grid-column: 2; grid-row: 2; font-weight: bold; font-size: 16px; border-radius: 5px;}
     </style>
 </head>
 <body>
 
-    <div id="status">Menyiapkan Remote...</div>
+    <div id="status">Arahkan kamera ke QR Code di layar PC</div>
 
-    <div class="remote-container">
-        <div class="btn" id="btn-up">▲</div>
-        <div class="btn" id="btn-ok">OK</div>
-        <div class="btn" id="btn-down">▼</div>
+    <div id="scanner-ui"><div id="reader"></div></div>
+
+    <div id="remote-ui">
+        <div id="trackpad">TRACKPAD AREA<br><small style="font-size:12px; font-weight:normal; text-align:center; display:block; margin-top:10px;">Geser untuk Mouse, Ketuk untuk Klik</small></div>
+        
+        <div class="dpad-container">
+            <div class="btn" id="btn-up">▲</div>
+            <div class="btn" id="btn-ok">OK</div>
+            <div class="btn" id="btn-down">▼</div>
+        </div>
     </div>
-    
-    <div class="title">SMART REMOTE</div>
 
     <script>
         const statusEl = document.getElementById('status');
+        const scannerUi = document.getElementById('scanner-ui');
+        const remoteUi = document.getElementById('remote-ui');
+        const trackpad = document.getElementById('trackpad');
         
-        // Ambil ID Layar Utama dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const hostId = urlParams.get('host');
+        let connection;
+        let html5QrcodeScanner;
 
-        if (!hostId) {
-            statusEl.innerText = "Error: ID Host tidak ditemukan.\nSilakan scan QR Code dari layar PC.";
-            statusEl.style.color = "red";
-        } else {
+        // Inisialisasi Scanner
+        function startScanner() {
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+
+        function onScanSuccess(decodedText) {
+            html5QrcodeScanner.clear();
+            scannerUi.style.display = 'none';
+            connectToScreen(decodedText);
+        }
+
+        function onScanFailure(error) {}
+
+        function connectToScreen(hostId) {
+            statusEl.innerText = "Menghubungkan ke Layar...";
             const peer = new Peer();
-            let connection;
 
             peer.on('open', function() {
-                statusEl.innerText = "Menghubungkan ke Layar...";
                 connection = peer.connect(hostId);
 
                 connection.on('open', function() {
-                    statusEl.innerText = "🟢 Terhubung!\nSilakan tekan tombol di bawah.";
+                    statusEl.innerText = "🟢 Terhubung! Mode Remote & Mouse Aktif.";
                     statusEl.style.color = "#00ff00";
-                    // Getaran pendek tanda sukses konek
+                    remoteUi.style.display = 'flex'; // Munculkan UI Remote
                     if(navigator.vibrate) navigator.vibrate(100); 
                 });
-
-                connection.on('close', function() {
-                    statusEl.innerText = "Koneksi terputus. Silakan scan ulang QR.";
-                    statusEl.style.color = "red";
-                });
             });
-
-            // Kirim sinyal ke PC
-            function sendCommand(cmd) {
-                if (connection && connection.open) {
-                    connection.send(cmd);
-                    // Haptic feedback (getaran kecil saat mencet tombol)
-                    if(navigator.vibrate) navigator.vibrate(40);
-                }
-            }
-
-            document.getElementById('btn-up').addEventListener('click', () => sendCommand('UP'));
-            document.getElementById('btn-down').addEventListener('click', () => sendCommand('DOWN'));
-            document.getElementById('btn-ok').addEventListener('click', () => sendCommand('OK'));
         }
+
+        // --- FUNGSI MENGIRIM DATA ---
+        function sendData(data) {
+            if (connection && connection.open) {
+                connection.send(data);
+            }
+        }
+
+        // --- LOGIKA TOMBOL D-PAD ---
+        document.getElementById('btn-up').addEventListener('click', () => { sendData('UP'); vibrate(); });
+        document.getElementById('btn-down').addEventListener('click', () => { sendData('DOWN'); vibrate(); });
+        document.getElementById('btn-ok').addEventListener('click', () => { sendData('OK'); vibrate(); });
+
+        function vibrate() { if(navigator.vibrate) navigator.vibrate(30); }
+
+        // --- LOGIKA TRACKPAD (MOUSE) ---
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        let isMoving = false;
+
+        // Saat jari menyentuh trackpad
+        trackpad.addEventListener('touchstart', (e) => {
+            lastTouchX = e.touches[0].clientX;
+            lastTouchY = e.touches[0].clientY;
+            isMoving = false; // Reset status gerak
+        });
+
+        // Saat jari digeser di trackpad
+        trackpad.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Mencegah layar HP ikut ketarik (scroll)
+            isMoving = true;
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            
+            // Hitung jarak pergeseran (Delta)
+            const dx = currentX - lastTouchX;
+            const dy = currentY - lastTouchY;
+            
+            // Kirim data pergeseran ke PC (dalam bentuk Object JSON)
+            sendData({ type: 'mousemove', dx: dx, dy: dy });
+            
+            lastTouchX = currentX;
+            lastTouchY = currentY;
+        });
+
+        // Saat jari diangkat dari trackpad (Deteksi Klik)
+        trackpad.addEventListener('touchend', (e) => {
+            // Jika jari hanya menyentuh lalu dilepas tanpa digeser panjang, anggap sebagai "Klik"
+            if (!isMoving) {
+                sendData({ type: 'click' });
+                vibrate(); // Getar kecil tanda berhasil klik
+            }
+        });
+
+        window.onload = startScanner;
     </script>
 </body>
 </html>
