@@ -1,253 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <title>Asisten Gesture UI - Menu Interaktif</title>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-
-  <style>
-    /* --- Latar Belakang Grid Futuristik --- */
-    body {
-      margin: 0; padding: 0; overflow: hidden;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #121212;
-      background-image:
-          linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px);
-      background-size: 40px 40px;
-      color: white;
-    }
-
-    /* --- Video Kamera --- */
-    video {
-      position: absolute; bottom: 10px; right: 10px;
-      width: 200px; border-radius: 10px; transform: scaleX(-1);
-      border: 2px solid #00ffcc; opacity: 0.5; z-index: 10;
-      pointer-events: none;
-    }
+    <meta charset="utf-8">
+    <title>Layar Utama - Menunggu Remote</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
-    /* --- Kursor Virtual --- */
-    #virtual-cursor {
-      position: absolute; width: 20px; height: 20px;
-      background-color: rgba(255, 50, 50, 0.8); border-radius: 50%;
-      pointer-events: none; 
-      transform: translate(-50%, -50%);
-      z-index: 9999;
-      box-shadow: 0 0 10px rgba(255, 50, 50, 0.8);
-      transition: background-color 0.1s, transform 0.1s;
-    }
-    #virtual-cursor.pinching {
-       background-color: #00ffcc;
-       box-shadow: 0 0 15px #00ffcc;
-       transform: translate(-50%, -50%) scale(1.3);
-    }
-
-    /* --- Area Konten Utama (Tengah Layar) --- */
-    #main-content {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60%; height: 300px;
-      background: rgba(0, 20, 40, 0.6);
-      border: 1px solid rgba(0, 255, 204, 0.3);
-      border-radius: 15px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      text-align: center; transition: all 0.3s ease;
-    }
-    #main-content h1 { margin: 0; font-size: 36px; color: #00ffcc; }
-    #main-content p { font-size: 18px; color: #aaa; margin-top: 10px; }
-
-    /* --- Tombol Menu Bulat di Kiri --- */
-    #menu-btn {
-        position: absolute; left: 30px; top: 50%;
-        transform: translateY(-50%);
-        width: 60px; height: 60px;
-        background: rgba(0, 0, 0, 0.5);
-        border: 2px solid #00ffcc; border-radius: 50%;
-        display: flex; justify-content: center; align-items: center;
-        font-size: 24px; cursor: pointer;
-        box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-        transition: all 0.2s ease; z-index: 100;
-    }
-    /* Efek visual ketika kursor jari berada di atas tombol menu */
-    #menu-btn.hover-effect { background: rgba(0, 255, 204, 0.3); box-shadow: 0 0 30px #00ffcc; }
-
-    /* --- Daftar Menu --- */
-    #menu-list {
-        position: absolute; left: 100px; top: 50%;
-        transform: translateY(-50%) translateX(-20px);
-        background: rgba(0, 10, 20, 0.95);
-        border: 1px solid #00ffcc; border-radius: 10px;
-        padding: 10px; display: flex; flex-direction: column; gap: 8px;
-        opacity: 0; pointer-events: none; 
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 99;
-    }
-    #menu-list.open {
-        opacity: 1; pointer-events: auto;
-        transform: translateY(-50%) translateX(0px);
-    }
-    
-    /* Item di dalam menu */
-    .menu-item {
-        padding: 15px 25px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 5px; font-size: 16px; font-weight: bold;
-        transition: all 0.2s ease; border-left: 3px solid transparent;
-    }
-    /* Efek visual ketika kursor jari berada di atas daftar menu */
-    .menu-item.hover-effect {
-        background: rgba(0, 255, 204, 0.2);
-        border-left: 3px solid #00ffcc;
-        transform: translateX(5px);
-    }
-
-    #info { position: absolute; top: 20px; left: 20px; font-size: 16px; color: #aaa; }
-  </style>
-</head>
-
-<body>
-  <div id="info">Memuat AI Kamera...</div>
-
-  <div id="menu-btn">☰</div>
-  <div id="menu-list">
-      <div class="menu-item" data-title="📊 Dashboard Chart" data-desc="Menampilkan grafik pergerakan harga terkini.">📊 Dashboard Chart</div>
-      <div class="menu-item" data-title="💰 Portofolio" data-desc="Melihat total aset dan riwayat transaksi Anda.">💰 Portofolio</div>
-      <div class="menu-item" data-title="⚙️ Pengaturan" data-desc="Mengatur preferensi asisten dan akun.">⚙️ Pengaturan</div>
-  </div>
-
-  <div id="main-content">
-      <h1 id="content-title">Sistem Siap</h1>
-      <p id="content-desc">Buka menu di kiri dan klik salah satu opsi.</p>
-  </div>
-
-  <div id="virtual-cursor"></div>
-  <video id="input_video" autoplay playsinline></video>
-
-  <script type="module">
-    const videoElement = document.getElementById('input_video');
-    const virtualCursor = document.getElementById('virtual-cursor');
-    const menuBtn = document.getElementById('menu-btn');
-    const menuList = document.getElementById('menu-list');
-    const menuItems = document.querySelectorAll('.menu-item');
-    
-    // Elemen Konten Layar Tengah
-    const contentTitle = document.getElementById('content-title');
-    const contentDesc = document.getElementById('content-desc');
-    const infoText = document.getElementById('info');
-
-    let isMenuOpen = false;
-    let hasTriggeredClick = false; 
-
-    // Fungsi utilitas untuk mengecek apakah kursor (x,y) berada di dalam sebuah elemen
-    function isInside(x, y, element) {
-        const rect = element.getBoundingClientRect();
-        return (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom);
-    }
-
-    function onResults(results) {
-      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0]; 
-        const indexFinger = landmarks[8];
-        const thumb = landmarks[4];
-
-        // 1. Update Posisi Kursor Virtual
-        const cursorX = (1 - indexFinger.x) * window.innerWidth;
-        const cursorY = indexFinger.y * window.innerHeight;
-        virtualCursor.style.left = `${cursorX}px`;
-        virtualCursor.style.top = `${cursorY}px`;
-
-        // 2. Cek Hover (Visual Feedback saat kursor di atas elemen)
-        // Hapus semua efek hover lama
-        menuBtn.classList.remove('hover-effect');
-        menuItems.forEach(item => item.classList.remove('hover-effect'));
-
-        // Tambah efek hover baru jika berada di atas elemen
-        if (isInside(cursorX, cursorY, menuBtn)) {
-            menuBtn.classList.add('hover-effect');
+    <style>
+        body {
+            margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif;
+            background-color: #121212; color: white;
+            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; display: flex; height: 100vh;
         }
-        if (isMenuOpen) {
-            menuItems.forEach(item => {
-                if (isInside(cursorX, cursorY, item)) item.classList.add('hover-effect');
+        
+        /* Panel Sidebar */
+        #sidebar {
+            width: 250px; background: rgba(0, 20, 40, 0.9);
+            border-right: 2px solid #00ffcc; padding: 20px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .menu-item {
+            padding: 15px; border-radius: 8px; font-size: 18px; color: #aaa;
+            transition: all 0.2s; border: 1px solid transparent;
+        }
+        /* Highlight menu yang sedang dipilih */
+        .menu-item.active {
+            background: rgba(0, 255, 204, 0.2); color: #fff;
+            border-color: #00ffcc; transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+
+        /* Area Konten Utama */
+        #main-content {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: relative;
+        }
+        #content-box {
+            text-align: center; background: rgba(0, 0, 0, 0.6);
+            padding: 40px; border-radius: 15px; border: 1px solid #00ffcc;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 60%;
+        }
+        #content-box h1 { color: #00ffcc; font-size: 40px; margin: 0 0 15px 0; }
+        
+        /* Area QR Code di pojok kanan atas */
+        #qr-container {
+            position: absolute; top: 20px; right: 20px;
+            background: white; padding: 15px; border-radius: 10px;
+            text-align: center; color: black; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        #qr-container p { margin: 0 0 10px 0; font-weight: bold; font-size: 14px; }
+        #status { position: absolute; bottom: 20px; right: 20px; color: #ffcc00; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <h2 style="color: #00ffcc; text-align: center;">MENU</h2>
+        <div class="menu-item active" data-title="📊 Dashboard Chart" data-desc="Menampilkan grafik pergerakan harga terkini.">📊 Dashboard Chart</div>
+        <div class="menu-item" data-title="💰 Portofolio" data-desc="Melihat total aset dan riwayat transaksi.">💰 Portofolio</div>
+        <div class="menu-item" data-title="⚙️ Pengaturan" data-desc="Mengatur preferensi asisten dan akun.">⚙️ Pengaturan</div>
+    </div>
+
+    <div id="main-content">
+        <div id="qr-container">
+            <p>Scan untuk Connect</p>
+            <div id="qrcode"></div>
+        </div>
+        
+        <div id="content-box">
+            <h1 id="title">Menunggu...</h1>
+            <p id="desc">Gunakan remote di HP untuk mengontrol layar ini.</p>
+        </div>
+        <div id="status">Menginisialisasi Server...</div>
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const titleEl = document.getElementById('title');
+        const descEl = document.getElementById('desc');
+        const statusEl = document.getElementById('status');
+        const qrContainer = document.getElementById('qr-container');
+        let currentIndex = 0;
+
+        // Fungsi Update UI Menu
+        function updateMenuSelection() {
+            menuItems.forEach((item, index) => {
+                if(index === currentIndex) item.classList.add('active');
+                else item.classList.remove('active');
             });
         }
 
-        // 3. Deteksi Cubitan (Pinch / Klik)
-        const distance = Math.hypot(indexFinger.x - thumb.x, indexFinger.y - thumb.y);
-        const isPinching = distance < 0.05;
+        // Fungsi Update Konten Layar Tengah
+        function executeMenu() {
+            const activeMenu = menuItems[currentIndex];
+            titleEl.innerText = activeMenu.getAttribute('data-title');
+            descEl.innerText = activeMenu.getAttribute('data-desc');
+        }
 
-        if (isPinching) {
-            virtualCursor.classList.add('pinching');
+        // --- Setup PeerJS (Server Realtime) ---
+        const peer = new Peer(); // Membuat ID otomatis
 
-            // Jalankan "KLIK" hanya sekali setiap kali mencubit
-            if (!hasTriggeredClick) {
-                hasTriggeredClick = true;
+        peer.on('open', function(id) {
+            statusEl.innerText = "Sistem Siap. Menunggu koneksi dari HP...";
+            statusEl.style.color = "#00ffcc";
+            
+            // Buat URL untuk remote. Pastikan remote.html berada di folder yang sama.
+            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            const remoteUrl = `${baseUrl}/remote.html?host=${id}`;
+            
+            // Buat QR Code
+            new QRCode(document.getElementById("qrcode"), {
+                text: remoteUrl, width: 150, height: 150
+            });
+        });
 
-                // A. Apakah meng-klik tombol menu utama?
-                if (isInside(cursorX, cursorY, menuBtn)) {
-                    isMenuOpen = !isMenuOpen;
-                    menuList.classList.toggle('open', isMenuOpen);
+        // Ketika HP berhasil konek ke layar ini
+        peer.on('connection', function(conn) {
+            statusEl.innerText = "HP Terhubung! 🟢";
+            statusEl.style.color = "#00ff00";
+            qrContainer.style.display = 'none'; // Sembunyikan QR jika sudah konek
+
+            // Mendengarkan perintah dari HP
+            conn.on('data', function(command) {
+                if (command === 'UP') {
+                    if (currentIndex > 0) currentIndex--;
+                    updateMenuSelection();
+                } 
+                else if (command === 'DOWN') {
+                    if (currentIndex < menuItems.length - 1) currentIndex++;
+                    updateMenuSelection();
+                } 
+                else if (command === 'OK') {
+                    executeMenu();
                     
-                    // Beri efek tombol ditekan
-                    menuBtn.style.transform = "translateY(-50%) scale(0.8)";
-                    setTimeout(() => menuBtn.style.transform = "translateY(-50%) scale(1)", 150);
-                    return; // Selesai proses klik
+                    // Beri efek visual berkedip saat dieksekusi
+                    menuItems[currentIndex].style.background = "#fff";
+                    setTimeout(() => menuItems[currentIndex].style.background = "", 150);
                 }
+            });
 
-                // B. Apakah meng-klik salah satu anak menu? (Hanya berlaku jika menu terbuka)
-                if (isMenuOpen) {
-                    menuItems.forEach(item => {
-                        if (isInside(cursorX, cursorY, item)) {
-                            // Ambil data dari menu yang di-klik
-                            const title = item.getAttribute('data-title');
-                            const desc = item.getAttribute('data-desc');
-
-                            // Ubah teks di layar tengah
-                            contentTitle.innerText = title;
-                            contentDesc.innerText = desc;
-
-                            // Beri efek tombol ditekan
-                            item.style.transform = "translateX(10px) scale(0.95)";
-                            setTimeout(() => item.style.transform = "", 150);
-
-                            // Tutup menu otomatis setelah memilih (opsional)
-                            isMenuOpen = false;
-                            menuList.classList.remove('open');
-                        }
-                    });
-                }
-            }
-        } else {
-            // Jika tidak mencubit, reset status
-            virtualCursor.classList.remove('pinching');
-            hasTriggeredClick = false; 
-        }
-      }
-    }
-
-    // --- Inisialisasi MediaPipe ---
-    const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-    hands.setOptions({
-      maxNumHands: 1,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.7,
-      minTrackingConfidence: 0.7
-    });
-    hands.onResults(onResults);
-
-    const camera = new Camera(videoElement, {
-      onFrame: async () => {
-        await hands.send({image: videoElement});
-        if(infoText.innerHTML === "Memuat AI Kamera...") {
-             infoText.innerHTML = "Sistem Aktif. Arahkan titik merah dan cubit untuk memilih menu.";
-        }
-      },
-      width: 640,
-      height: 480
-    });
-    camera.start();
-  </script>
+            conn.on('close', () => {
+                statusEl.innerText = "Koneksi terputus. Muat ulang halaman.";
+                statusEl.style.color = "red";
+            });
+        });
+    </script>
 </body>
 </html>
