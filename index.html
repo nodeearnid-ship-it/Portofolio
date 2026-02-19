@@ -1,55 +1,46 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanner Remote Cam</title>
+    <title>HP Kamera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #121212; color: white; padding: 20px; }
-        #qrcode { background: white; padding: 15px; display: inline-block; border-radius: 10px; margin-top: 20px; }
-        .input-group { margin-bottom: 20px; }
-        input { padding: 10px; border-radius: 5px; border: none; width: 250px; }
-        button { padding: 10px 20px; border-radius: 5px; background: #2ecc71; color: white; border: none; cursor: pointer; }
-        #video-container { margin-top: 30px; display: none; }
-        img { width: 100%; max-width: 600px; border: 3px solid #333; }
+        body { font-family: sans-serif; text-align: center; background: #000; color: white; margin: 0; }
+        video { width: 100%; height: auto; background: #222; }
+        #qr-container { background: white; padding: 20px; display: inline-block; border-radius: 10px; margin-top: 10px; }
+        h2 { margin: 10px 0; font-size: 1.2rem; }
     </style>
 </head>
 <body>
-
-    <h2>Hubungkan Kamera via QR</h2>
-    
-    <div class="input-group">
-        <input type="text" id="ipAddress" placeholder="Masukkan IP (Contoh: 192.168.1.5:8080)">
-        <button onclick="generateQR()">Buat QR Scan</button>
-    </div>
-
-    <div id="qrcode"></div>
-    <p id="hint" style="display:none;">Scan QR ini dengan HP kedua atau buka linknya langsung.</p>
-
-    <div id="video-container">
-        <h3>Live Feed:</h3>
-        <img id="live-video" src="" alt="Video Stream">
+    <video id="localVideo" autoplay playsinline muted></video>
+    <div id="setup">
+        <h2>Scan untuk Monitoring:</h2>
+        <div id="qr-container"><div id="qrcode"></div></div>
+        <p id="peer-id">Menghubungkan...</p>
     </div>
 
     <script>
-        function generateQR() {
-            let ip = document.getElementById('ipAddress').value;
-            if (!ip) return alert("Masukkan IP dulu!");
+        const peer = new Peer(); // Membuat ID otomatis
+        const videoElement = document.getElementById('localVideo');
 
-            let fullUrl = "http://" + ip + "/video";
-            
-            // Hapus QR lama jika ada
-            document.getElementById('qrcode').innerHTML = "";
-            
-            // Buat QR Code baru
-            new QRCode(document.getElementById("qrcode"), fullUrl);
-            
-            // Tampilkan video di halaman ini juga sebagai preview
-            document.getElementById('video-container').style.display = "block";
-            document.getElementById('live-video').src = fullUrl;
-            document.getElementById('hint').style.display = "block";
-        }
+        peer.on('open', (id) => {
+            document.getElementById('peer-id').innerText = "ID: " + id;
+            // Buat QR Code berisi link ke remote.html dengan parameter ID
+            // Ganti URL di bawah dengan alamat tempat kamu hosting remote.html
+            const remoteUrl = window.location.href.replace('index.html', 'remote.html') + "?id=" + id;
+            new QRCode(document.getElementById("qrcode"), remoteUrl);
+        });
+
+        // Minta akses kamera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: true })
+            .then(stream => {
+                videoElement.srcObject = stream;
+                // Jawab panggilan jika ada remote yang masuk
+                peer.on('call', call => {
+                    call.answer(stream);
+                });
+            });
     </script>
 </body>
 </html>
