@@ -1,61 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="utf-8">
-  <title>Asisten Gesture Web</title>
+  <title>Asisten Gesture - Drag & Drop</title>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 
   <style>
-    body { font-family: sans-serif; text-align: center; background: #1a1a1a; color: white; }
-    .container { position: relative; display: inline-block; }
-    #output_canvas { position: absolute; left: 0; top: 0; z-index: 1; }
-    video { transform: rotateY(180deg); border-radius: 10px; }
-    #status { margin-top: 10px; font-weight: bold; color: #00ffcc; }
+    body {
+      margin: 0; padding: 0; overflow: hidden;
+      font-family: sans-serif; background: #121212; color: white;
+    }
+    /* Video disembunyikan di pojok agar tidak mengganggu, tapi tetap aktif */
+    video {
+      position: absolute; bottom: 10px; right: 10px;
+      width: 240px; border-radius: 10px; transform: scaleX(-1);
+      border: 2px solid #00ffcc; opacity: 0.7; z-index: 10;
+    }
+    
+    /* Kursor Virtual (Titik Merah) */
+    #virtual-cursor {
+      position: absolute; width: 20px; height: 20px;
+      background-color: red; border-radius: 50%;
+      pointer-events: none; /* Supaya kursor tidak menghalangi klik */
+      transform: translate(-50%, -50%);
+      z-index: 1000; transition: background-color 0.2s;
+    }
+
+    /* Kotak yang akan kita gerakkan */
+    #target-box {
+      position: absolute; top: 300px; left: 300px;
+      width: 150px; height: 150px;
+      background: linear-gradient(135deg, #00ffcc, #0066ff);
+      border-radius: 15px; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: bold; font-size: 18px; color: white;
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.5);
+      user-select: none;
+    }
+
+    #info {
+      position: absolute; top: 20px; left: 20px; font-size: 20px;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Asisten Kontrol Tangan</h1>
-  <div class="container">
-    <video id="input_video" width="640px" height="480px" autoplay></video>
-    <canvas id="output_canvas" width="640px" height="480px"></canvas>
-  </div>
-  <div id="status">Gerakkan tangan Anda di depan kamera...</div>
+  <div id="info">Mulai kamera...<br><small>Gunakan jari telunjuk untuk mengarahkan, dan cubit (telunjuk + jempol) untuk menggeser kotak.</small></div>
+  
+  <div id="target-box">Cubit & Geser!</div>
+  <div id="virtual-cursor"></div>
+  <video id="input_video" autoplay playsinline></video>
 
   <script type="module">
     const videoElement = document.getElementById('input_video');
-    const canvasElement = document.getElementById('output_canvas');
-    const canvasCtx = canvasElement.getContext('2d');
-    const statusDiv = document.getElementById('status');
+    const virtualCursor = document.getElementById('virtual-cursor');
+    const targetBox = document.getElementById('target-box');
+    const infoText = document.getElementById('info');
+
+    // Variabel untuk state drag and drop
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
 
     function onResults(results) {
-      canvasCtx.save();
-      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      
-      // Mirroring canvas agar gerakan tangan sesuai (kanan-kanan, kiri-kiri)
-      canvasCtx.translate(canvasElement.width, 0);
-      canvasCtx.scale(-1, 1);
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0]; // Ambil tangan pertama
 
-      if (results.multiHandLandmarks) {
-        for (const landmarks of results.multiHandLandmarks) {
-          // Gambar titik dan garis tangan
-          drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00FFCC', lineWidth: 5});
-          drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
+        // Titik 8 = Ujung Telunjuk, Titik 4 = Ujung Jempol
+        const indexFinger = landmarks[8];
+        const thumb = landmarks[4];
 
-          // CONTOH LOGIKA: Jika telunjuk (titik 8) di atas jempol (titik 4)
-          const indexFingerTip = landmarks[8];
-          const thumbTip = landmarks[4];
+        // Konversi koordinat MediaPipe (0.0 - 1.0) ke piksel layar
+        // Ingat: X dibalik (1 - x) karena kamera seperti cermin
+        const cursorX = (1 - indexFinger.x) * window.innerWidth;
+        const cursorY = indexFinger.y * window.innerHeight;
 
-          if (indexFingerTip.y < thumbTip.y - 0.1) {
-             statusDiv.innerText = "Status: Jari Telunjuk Terangkat! (Siap Menerima Perintah)";
-          } else {
-             statusDiv.innerText = "Status: Menunggu Gerakan...";
+        // Gerakkan kursor virtual merah
+        virtualCursor.style.left = `${cursorX}px`;
+        virtualCursor.style.top = `${cursorY}px`;
+
+        // Hitung jarak antara ujung jempol dan telunjuk (Mendeteksi Cubitan/Pinch)
+        const distance = Math.hypot(indexFinger.x - thumb.x, indexFinger.y - thumb.y);
+        
+        // Batas jarak untuk dianggap "Mencubit" (Bisa disesuaikan)
+        const pinchThreshold = 0.05; 
+
+        if (distance < pinchThreshold) {
+          // Sedang Mencubit
+          virtualCursor.style.backgroundColor = "#00ffcc"; // Ubah warna kursor jadi cyan
+          virtualCursor.style.transform = "translate(-50%, -50%) scale(1.5)"; // Kursor membesar
+          
+          const boxRect = targetBox.getBoundingClientRect();
+
+          // Cek apakah kursor berada di atas kotak saat mulai mencubit
+          if (!isDragging && 
+              cursorX >= boxRect.left && cursorX <= boxRect.right &&
+              cursorY >= boxRect.top && cursorY <= boxRect.bottom) {
+            
+            isDragging = true;
+            // Hitung jarak antara kursor dan pojok kiri atas kotak agar gerakannya mulus
+            offsetX = cursorX - boxRect.left;
+            offsetY = cursorY - boxRect.top;
+            targetBox.style.boxShadow = "0 20px 50px rgba(0, 255, 204, 0.8)";
+            targetBox.innerText = "Dipegang!";
+          }
+
+          // Jika sedang drag, pindahkan kotak mengikuti kursor
+          if (isDragging) {
+            targetBox.style.left = `${cursorX - offsetX}px`;
+            targetBox.style.top = `${cursorY - offsetY}px`;
+          }
+
+        } else {
+          // Tidak mencubit (Dilepaskan)
+          virtualCursor.style.backgroundColor = "red";
+          virtualCursor.style.transform = "translate(-50%, -50%) scale(1)";
+          
+          if (isDragging) {
+            isDragging = false;
+            targetBox.style.boxShadow = "0 10px 30px rgba(0, 255, 204, 0.5)";
+            targetBox.innerText = "Cubit & Geser!";
           }
         }
       }
-      canvasCtx.restore();
     }
 
     const hands = new Hands({locateFile: (file) => {
@@ -63,16 +131,17 @@
     }});
 
     hands.setOptions({
-      maxNumHands: 2,
+      maxNumHands: 1, // Fokus ke 1 tangan saja untuk kursor
       modelComplexity: 1,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5
+      minDetectionConfidence: 0.7, // Ditingkatkan agar kursor tidak bergetar
+      minTrackingConfidence: 0.7
     });
     hands.onResults(onResults);
 
     const camera = new Camera(videoElement, {
       onFrame: async () => {
         await hands.send({image: videoElement});
+        infoText.innerHTML = "Sistem Aktif!<br><small>Gunakan jari telunjuk untuk mengarahkan, dan cubit untuk menggeser kotak.</small>";
       },
       width: 640,
       height: 480
