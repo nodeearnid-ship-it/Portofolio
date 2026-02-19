@@ -1,272 +1,83 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Arisan Pro - Admin Dashboard</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        :root {
-            --primary: #007AFF; 
-            --bg: #F8F9FB;      
-            --card: #FFFFFF;
-            --text: #1C1C1E;
-            --subtext: #8E8E93;
-            --danger: #FF3B30;
-            --sidebar-width: 280px;
-        }
+  <meta charset="utf-8">
+  <title>Asisten Gesture Web</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg); margin: 0; color: var(--text); display: flex; min-height: 100vh; }
-
-        /* --- SIDEBAR & HEADER --- */
-        .sidebar { width: var(--sidebar-width); background: var(--card); border-right: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; padding: 30px 20px; position: fixed; height: 100vh; left: 0; top: 0; z-index: 1000; }
-        .brand, .brand-mobile { font-weight: 800; font-size: 1.5rem; color: var(--text); }
-        .brand span, .brand-mobile span { color: var(--primary); }
-
-        .side-menu { display: flex; flex-direction: column; gap: 10px; flex: 1; margin-top: 40px; }
-        .side-item { display: flex; align-items: center; gap: 15px; padding: 12px 15px; border: none; background: none; border-radius: 12px; cursor: pointer; color: var(--subtext); font-weight: 600; transition: 0.2s; }
-        .side-item.active { background: #F0F7FF; color: var(--primary); }
-
-        .main-wrapper { flex: 1; margin-left: var(--sidebar-width); width: 100%; }
-        header.mobile-header { display: none; }
-        main { padding: 40px; max-width: 1000px; margin: 0 auto; }
-
-        /* --- UI COMPONENTS --- */
-        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .ios-card { background: var(--card); border-radius: 24px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); }
-        .winner-banner { background: linear-gradient(135deg, #007AFF, #5856D6); color: white; padding: 50px 30px; border-radius: 30px; text-align: center; margin-bottom: 30px; }
-        .winner-banner h2 { font-size: 2.5rem; margin: 15px 0; }
-
-        .input-ios { width: 100%; background: #F4F4F9; border: 1.5px solid transparent; padding: 15px; border-radius: 16px; margin-bottom: 12px; font-size: 1rem; outline: none; transition: 0.2s; }
-        .input-ios:focus { border-color: var(--primary); background: white; }
-        .btn { border: none; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; padding: 16px; width: 100%; }
-        .btn-primary { background: var(--primary); color: white; }
-        .list-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #F2F2F7; }
-
-        /* --- MOBILE NAVIGATION --- */
-        .nav-container { display: none; }
-
-        @media (max-width: 850px) {
-            .sidebar { display: none; }
-            .main-wrapper { margin-left: 0; padding-bottom: 100px; }
-            header.mobile-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; position: sticky; top: 0; background: rgba(248, 249, 251, 0.8); backdrop-filter: blur(10px); z-index: 100; border-bottom: 0.5px solid #ddd; }
-            main { padding: 20px; }
-            .nav-container { display: block; position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; z-index: 2000; }
-            .bottom-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-            .nav-item { display: flex; flex-direction: column; align-items: center; border: none; background: none; color: var(--subtext); flex: 1; font-size: 10px; font-weight: 600; }
-            .nav-item.active { color: var(--primary); }
-        }
-
-        /* --- MODAL LOGIN --- */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; backdrop-filter: blur(8px); }
-        .modal.active { display: flex; }
-        .modal-box { background: white; padding: 32px; border-radius: 30px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-    </style>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #1a1a1a; color: white; }
+    .container { position: relative; display: inline-block; }
+    #output_canvas { position: absolute; left: 0; top: 0; z-index: 1; }
+    video { transform: rotateY(180deg); border-radius: 10px; }
+    #status { margin-top: 10px; font-weight: bold; color: #00ffcc; }
+  </style>
 </head>
+
 <body>
+  <h1>Asisten Kontrol Tangan</h1>
+  <div class="container">
+    <video id="input_video" width="640px" height="480px" autoplay></video>
+    <canvas id="output_canvas" width="640px" height="480px"></canvas>
+  </div>
+  <div id="status">Gerakkan tangan Anda di depan kamera...</div>
 
-    <aside class="sidebar">
-        <div class="brand web-title-display">Arisan<span>Pro</span></div>
-        <div class="side-menu">
-            <button class="side-item active" onclick="showTab('home', this)"><i data-lucide="layout-dashboard"></i> Home</button>
-            <button class="side-item" onclick="showTab('peserta', this)"><i data-lucide="users"></i> Peserta</button>
-            <button class="side-item" onclick="showTab('menang', this)"><i data-lucide="trophy"></i> Menang</button>
-            <button class="side-item" onclick="showTab('jadwal', this)"><i data-lucide="calendar"></i> Jadwal</button>
-        </div>
-        <button class="side-item" onclick="openModal()"><i data-lucide="settings"></i> Admin Panel</button>
-    </aside>
+  <script type="module">
+    const videoElement = document.getElementById('input_video');
+    const canvasElement = document.getElementById('output_canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+    const statusDiv = document.getElementById('status');
 
-    <div class="main-wrapper">
-        <header class="mobile-header">
-            <div class="brand-mobile web-title-display">Arisan<span>Pro</span></div>
-            <button onclick="openModal()" style="background:none; border:none; color:var(--subtext);"><i data-lucide="settings"></i></button>
-        </header>
+    function onResults(results) {
+      canvasCtx.save();
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      
+      // Mirroring canvas agar gerakan tangan sesuai (kanan-kanan, kiri-kiri)
+      canvasCtx.translate(canvasElement.width, 0);
+      canvasCtx.scale(-1, 1);
 
-        <main>
-            <div id="home" class="tab-content active">
-                <div id="winnerHero" class="winner-banner" style="display:none;">
-                    <i data-lucide="party-popper" style="width:50px; height:50px;"></i>
-                    <h2 id="lastWinnerName">...</h2>
-                    <p>Pemenang Arisan Periode Ini!</p>
-                </div>
+      if (results.multiHandLandmarks) {
+        for (const landmarks of results.multiHandLandmarks) {
+          // Gambar titik dan garis tangan
+          drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00FFCC', lineWidth: 5});
+          drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
 
-                <div id="adminArea" class="ios-card" style="display:none; border: 2px solid var(--primary);">
-                    <h3 style="margin-top:0; color:var(--primary);">🛠️ Admin Dashboard</h3>
-                    
-                    <div style="margin-bottom:20px; padding:15px; background:#f0f7ff; border-radius:15px;">
-                        <label style="font-size:0.8rem; font-weight:700;">GANTI NAMA WEB ARISAN:</label>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <input type="text" id="webTitleInput" class="input-ios" placeholder="Nama arisan baru..." style="margin:0;">
-                            <button class="btn btn-primary" id="btnUpdateTitle" style="width:auto; padding:0 20px;">Update</button>
-                        </div>
-                    </div>
+          // CONTOH LOGIKA: Jika telunjuk (titik 8) di atas jempol (titik 4)
+          const indexFingerTip = landmarks[8];
+          const thumbTip = landmarks[4];
 
-                    <label style="font-size:0.8rem; font-weight:700;">KELOLA PESERTA:</label>
-                    <input type="text" id="newName" class="input-ios" placeholder="Nama Peserta..." style="margin-top:10px;">
-                    <button class="btn btn-primary" id="btnAdd">Tambah Anggota</button>
-                    <button class="btn" id="btnKocok" style="background:var(--text); color:white; margin-top:10px;">🎲 KOCOK SEKARANG</button>
-                    <button onclick="resetArisan()" style="background:none; border:none; color:var(--danger); width:100%; margin-top:15px; font-weight:700; cursor:pointer;">⚠️ RESET DATA</button>
-                </div>
-
-                <div class="ios-card" style="text-align:center;">
-                    <h3 class="web-title-display" style="margin-top:0;">Arisan Pro</h3>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                        <div><small style="color:var(--subtext)">TOTAL</small><div id="statTotal" style="font-size:1.8rem; font-weight:800;">0</div></div>
-                        <div><small style="color:var(--subtext)">MENANG</small><div id="statWin" style="font-size:1.8rem; font-weight:800; color:var(--primary);">0</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="peserta" class="tab-content"><div class="ios-card"><h3>Daftar Peserta</h3><div id="listSemua"></div></div></div>
-            <div id="menang" class="tab-content"><div class="ios-card"><h3>Riwayat Menang</h3><div id="listMenang"></div></div></div>
-            <div id="jadwal" class="tab-content"><div class="ios-card"><h3>Antrian</h3><div id="listJadwal"></div></div></div>
-        </main>
-    </div>
-
-    <div class="nav-container">
-        <div class="bottom-nav">
-            <button class="nav-item active" onclick="showTab('home', this)"><i data-lucide="layout-dashboard"></i><span>Home</span></button>
-            <button class="nav-item" onclick="showTab('peserta', this)"><i data-lucide="users"></i><span>Peserta</span></button>
-            <button class="nav-item" onclick="showTab('menang', this)"><i data-lucide="trophy"></i><span>Menang</span></button>
-            <button class="nav-item" onclick="showTab('jadwal', this)"><i data-lucide="calendar"></i><span>Jadwal</span></button>
-        </div>
-    </div>
-
-    <div id="loginModal" class="modal">
-        <div class="modal-box">
-            <h3 style="margin-top:0;">Admin Login</h3>
-            <p style="font-size:0.8rem; color:var(--subtext); margin-bottom:20px;">Masukkan Nama & Password Admin</p>
-            <input type="text" id="adminUser" class="input-ios" placeholder="Username">
-            <input type="password" id="adminPass" class="input-ios" placeholder="Password">
-            <button class="btn btn-primary" onclick="handleLogin()">Sign In</button>
-            <button onclick="closeModal()" style="background:none; border:none; margin-top:15px; color:var(--subtext); cursor:pointer; font-weight:600;">Batal</button>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, query, orderBy, where, getDocs, writeBatch, setDoc, getDoc } 
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // CONFIG FIREBASE MILIK PRATAMA
-        const firebaseConfig = {
-            apiKey: "AIzaSyCfgWS873_83hYYIpA5oB-rLx2Hf_Oro8Q",
-            authDomain: "arisandb-cec0c.firebaseapp.com",
-            projectId: "arisandb-cec0c",
-            storageBucket: "arisandb-cec0c.firebasestorage.app",
-            messagingSenderId: "873829943329",
-            appId: "1:873829943329:web:eebbfd0d0e6e3082c7fb60"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const colRef = collection(db, "peserta_arisan");
-        const configRef = doc(db, "settings", "web_config");
-
-        // 1. REALTIME NAMA WEB & DATA
-        onSnapshot(configRef, (docSnap) => {
-            if(docSnap.exists()){
-                const title = docSnap.data().title || "Arisan Pro";
-                document.querySelectorAll('.web-title-display').forEach(el => el.innerText = title);
-            }
-        });
-
-        onSnapshot(query(colRef, orderBy("tanggal_daftar", "asc")), (snap) => {
-            let sAll = '', sWin = '', sJadwal = '', tTotal = 0, tWin = 0;
-            snap.docs.forEach(d => {
-                const data = d.data(); tTotal++;
-                const isWin = data.status === 'Menang';
-                sAll += `<div class="list-row"><b>${data.nama}</b><span>${isWin ? '✅' : '⏳'}</span></div>`;
-                if(isWin) { tWin++; sWin += `<div class="list-row"><b>${data.nama}</b></div>`; }
-                else { sJadwal += `<div class="list-row"><b>${data.nama}</b></div>`; }
-            });
-            document.getElementById('statTotal').innerText = tTotal;
-            document.getElementById('statWin').innerText = tWin;
-            document.getElementById('listSemua').innerHTML = sAll;
-            document.getElementById('listMenang').innerHTML = sWin;
-            document.getElementById('listJadwal').innerHTML = sJadwal;
-            lucide.createIcons();
-        });
-
-        // 2. ADMIN ACTIONS
-        document.getElementById('btnUpdateTitle').addEventListener('click', async () => {
-            const newTitle = document.getElementById('webTitleInput').value;
-            if(!newTitle) return;
-            await setDoc(configRef, { title: newTitle }, { merge: true });
-            alert("Nama Web Berhasil Diubah!");
-            document.getElementById('webTitleInput').value = '';
-        });
-
-        document.getElementById('btnAdd').addEventListener('click', async () => {
-            const val = document.getElementById('newName').value;
-            if(!val) return;
-            await addDoc(colRef, { nama: val, status: "Belum", tanggal_daftar: Date.now() });
-            document.getElementById('newName').value = '';
-        });
-
-        document.getElementById('btnKocok').addEventListener('click', async () => {
-            const qB = query(colRef, where("status", "==", "Belum"));
-            const s = await getDocs(qB);
-            if(s.empty) return alert("Semua sudah menang!");
-            const cand = s.docs.map(d => ({id: d.id, ...d.data()}));
-            const winner = cand[Math.floor(Math.random() * cand.length)];
-            document.getElementById('btnKocok').innerText = "Mengacak Nama...";
-            setTimeout(async () => {
-                await updateDoc(doc(db, "peserta_arisan", winner.id), { status: "Menang", tanggal_menang: Date.now() });
-                document.getElementById('lastWinnerName').innerText = winner.nama;
-                document.getElementById('winnerHero').style.display = 'block';
-                document.getElementById('btnKocok').innerText = "🎲 KOCOK SEKARANG";
-                window.scrollTo({top:0, behavior:'smooth'});
-            }, 1500);
-        });
-
-        window.resetArisan = async () => {
-            if(!confirm("Mulai ulang semua?")) return;
-            const s = await getDocs(colRef);
-            const batch = writeBatch(db);
-            s.docs.forEach(d => batch.update(d.ref, {status: "Belum"}));
-            await batch.commit();
-            location.reload();
-        };
-    </script>
-
-    <script>
-        // LOGIN LOGIC
-        const ADMIN_NAME = "pratama"; // Silakan ganti nama admin
-        const ADMIN_PASS = "12345";   // Silakan ganti password admin
-
-        function handleLogin() {
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
-            
-            if(user === ADMIN_NAME && pass === ADMIN_PASS) {
-                document.getElementById('adminArea').style.display = 'block';
-                closeModal();
-                alert("Selamat Datang, " + ADMIN_NAME + "!");
-                lucide.createIcons();
-            } else {
-                alert("Nama atau Password salah!");
-            }
+          if (indexFingerTip.y < thumbTip.y - 0.1) {
+             statusDiv.innerText = "Status: Jari Telunjuk Terangkat! (Siap Menerima Perintah)";
+          } else {
+             statusDiv.innerText = "Status: Menunggu Gerakan...";
+          }
         }
+      }
+      canvasCtx.restore();
+    }
 
-        function showTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.side-item, .nav-item').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll(`[onclick*="'${id}'"]`).forEach(el => el.classList.add('active'));
-            window.scrollTo(0,0);
-        }
+    const hands = new Hands({locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+    }});
 
-        function openModal() { document.getElementById('loginModal').classList.add('active'); }
-        function closeModal() { document.getElementById('loginModal').classList.remove('active'); }
-        lucide.createIcons();
-    </script>
+    hands.setOptions({
+      maxNumHands: 2,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+    hands.onResults(onResults);
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({image: videoElement});
+      },
+      width: 640,
+      height: 480
+    });
+    camera.start();
+  </script>
 </body>
 </html>
