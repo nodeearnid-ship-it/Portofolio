@@ -3,247 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arisan Keluarga Modern</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
+    <title>Premium Arisan Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #00b894;
-            --danger: #ff7675;
-            --dark: #2d3436;
-            --light: #dfe6e9;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --success: #4895ef;
+            --danger: #f72585;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.95);
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f2f5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e0e7ff 100%);
             margin: 0;
-            padding: 20px;
-            color: var(--dark);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--white);
-            border-radius: 25px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            position: relative;
+            color: var(--dark);
             display: flex;
             flex-direction: column;
         }
-        
-        /* HEADER */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
 
-        header h1 { margin: 0; font-weight: 800; letter-spacing: 1px; font-size: 1.8rem; }
-        header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.9rem; font-weight: 300; }
-
-        /* Login Button (Icon) */
-        .login-trigger {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-        }
-        .login-trigger:hover { background: rgba(255,255,255,0.4); }
-
-        /* CONTENT AREA */
-        .content { padding: 20px; flex: 1; overflow-y: auto; }
-
-        /* WINNER CARD */
-        .winner-card {
-            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 25px;
-            display: none; /* Hidden by default */
-            animation: bounceIn 0.8s;
-            box-shadow: 0 10px 20px rgba(253, 203, 110, 0.4);
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .winner-title { font-size: 0.9rem; color: #d35400; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;}
-        .winner-name { font-size: 2.2rem; font-weight: 800; color: #2d3436; margin: 0; }
-        .confetti-icon { font-size: 3rem; display: block; margin-bottom: 10px; }
-
-        /* LIST PESERTA */
-        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .list-header h3 { margin: 0; font-size: 1.1rem; }
-        
-        .participant-card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 10px;
+        /* NAVIGATION */
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.2s;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
-        .participant-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: var(--secondary); }
+
+        .brand { font-weight: 800; font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
         
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar {
-            width: 35px; height: 35px;
-            background: var(--light);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: var(--primary);
+        .menu-tabs { display: flex; gap: 10px; background: #f1f5f9; padding: 5px; border-radius: 12px; }
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
             font-size: 0.9rem;
         }
+        .tab-btn.active { background: var(--white); color: var(--primary); shadow: 0 4px 10px rgba(0,0,0,0.05); background: white; }
 
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
-        .badge.wait { background: #f1f2f6; color: #b2bec3; }
-        .badge.win { background: var(--accent); color: white; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.4); }
+        /* MAIN CONTENT */
+        main { padding: 30px 5%; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-        /* --- ADMIN MODAL (POPUP) --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: none; /* Hidden */
-            justify-content: center;
-            align-items: center;
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .modal-box {
-            background: white;
-            width: 90%; max-width: 350px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* CARDS & GRID */
+        .grid-main { display: grid; grid-template-columns: 1fr 350px; gap: 25px; }
+        .card { background: var(--glass); border-radius: 24px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8); }
+
+        /* WINNER SECTION */
+        .winner-hero {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
             text-align: center;
+            padding: 50px 20px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
-        .modal-overlay.active .modal-box { transform: scale(1); }
+        .winner-hero h2 { font-size: 3rem; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
 
-        .modal-box h2 { margin-top: 0; color: var(--primary); }
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #636e72; font-weight: 600; }
-        .styled-input {
-            width: 100%; padding: 12px; border: 2px solid #dfe6e9; border-radius: 10px;
-            font-family: inherit; transition: 0.3s;
-        }
-        .styled-input:focus { border-color: var(--primary); outline: none; }
+        /* TABLES & LISTS */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; padding: 15px; color: #64748b; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; }
 
-        .btn-primary {
-            width: 100%; padding: 12px; background: var(--primary); color: white;
-            border: none; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px;
-            transition: 0.3s;
-        }
-        .btn-primary:hover { background: #5649c0; transform: translateY(-2px); }
-        
-        .btn-close {
-            background: transparent; color: #b2bec3; margin-top: 10px; cursor: pointer; border: none; text-decoration: underline;
-        }
+        .avatar { width: 40px; height: 40px; border-radius: 12px; background: #e0e7ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-        /* ADMIN DASHBOARD (Inside Content) */
-        .admin-dashboard {
-            background: #fff; border: 2px dashed var(--secondary);
-            border-radius: 15px; padding: 20px; margin-top: 20px;
-            display: none; /* Hidden until login */
+        /* ADMIN POPUP */
+        .modal {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000;
         }
-        .btn-kocok {
-            background: linear-gradient(to right, #fdcb6e, #e17055);
-            color: white; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(225, 112, 85, 0.4);
-            border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin: 15px 0;
-            transition: 0.3s;
-        }
-        .btn-kocok:active { transform: scale(0.98); }
-        .btn-reset { color: var(--danger); background: rgba(255, 118, 117, 0.1); border: none; width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .modal.active { display: flex; }
+        .modal-box { background: white; padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; }
 
+        .input-field {
+            width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px;
+            margin-bottom: 15px; font-family: inherit;
+        }
+        .input-field:focus { border-color: var(--primary); outline: none; }
+
+        .btn {
+            padding: 12px 25px; border: none; border-radius: 12px; font-weight: 700;
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-kocok { width: 100%; background: var(--dark); color: white; padding: 20px; font-size: 1.2rem; }
+        .btn-kocok:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .grid-main { grid-template-columns: 1fr; }
+            .menu-tabs { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; justify-content: space-around; shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 100; }
+            main { padding-bottom: 100px; }
+            .login-btn-text { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="login-trigger" onclick="openLoginModal()">🔒 Admin</div>
-            <h1>Arisan Kita</h1>
-            <p>Total Peserta: <span id="count">0</span> Orang</p>
-        </header>
+    <nav>
+        <div class="brand">✨ ARISAN<span>PRO</span></div>
+        <div class="menu-tabs">
+            <button class="tab-btn active" onclick="showTab('home')">Home</button>
+            <button class="tab-btn" onclick="showTab('peserta')">Peserta</button>
+            <button class="tab-btn" onclick="showTab('menang')">Pemenang</button>
+            <button class="tab-btn" onclick="showTab('jadwal')">Jadwal</button>
+        </div>
+        <button class="btn btn-primary" onclick="openModal()">
+            🔒 <span class="login-btn-text">Admin Login</span>
+        </button>
+    </nav>
 
-        <div class="content">
-            <div id="winnerDisplay" class="winner-card">
-                <span class="confetti-icon">🎉</span>
-                <div class="winner-title">Pemenang Periode Ini</div>
-                <div id="winnerName" class="winner-name">...</div>
+    <main>
+        <div id="home" class="tab-content active">
+            <div id="winnerHero" class="winner-hero" style="display:none;">
+                <p>SELAMAT KEPADA</p>
+                <h2 id="lastWinnerName">NAMA PEMENANG</h2>
+                <p>Anda mendapatkan arisan periode ini!</p>
             </div>
 
-            <div id="adminDashboard" class="admin-dashboard">
-                <h4 style="margin-top:0; color:var(--primary);">⚡ Admin Control</h4>
-                
-                <div class="input-group">
-                    <input type="text" id="newName" class="styled-input" placeholder="Nama Peserta Baru...">
+            <div class="grid-main">
+                <div class="card">
+                    <h3>🎲 Undian Real-Time</h3>
+                    <p style="color: #64748b;">Klik tombol di samping (Login Admin) untuk memulai pengundian.</p>
+                    <div id="adminControls" style="display:none;">
+                        <div style="background: #f8f9ff; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                            <label>Tambah Peserta Baru:</label>
+                            <div style="display:flex; gap:10px; margin-top:10px;">
+                                <input type="text" id="newName" class="input-field" placeholder="Ketik nama..." style="margin:0;">
+                                <button class="btn btn-primary" id="btnAdd">Tambah</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-kocok" id="btnKocok">MULAI UNDI SEKARANG</button>
+                        <button class="btn" style="color:red; margin-top:10px;" onclick="resetArisan()">Reset Arisan</button>
+                    </div>
                 </div>
-                <button class="btn-primary" id="btnAdd" style="margin-top:0;">+ Tambah Peserta</button>
-
-                <button class="btn-kocok" id="btnKocok">🎲 KOCOK ARISAN</button>
-                <button class="btn-reset" onclick="resetArisan()">⚠️ Reset Ulang (Mulai Baru)</button>
-            </div>
-
-            <div class="list-header">
-                <h3>Daftar Peserta</h3>
-            </div>
-            <div id="participantList">
-                <div style="text-align:center; padding:20px; color:#aaa;">Memuat data...</div>
+                <div class="card">
+                    <h3>📊 Ringkasan</h3>
+                    <div style="display:grid; gap:15px; margin-top:20px;">
+                        <div style="padding:15px; background:#f1f5f9; border-radius:12px;">
+                            <small>Total Terdaftar</small>
+                            <div style="font-size:1.5rem; font-weight:800;" id="statTotal">0</div>
+                        </div>
+                        <div style="padding:15px; background:#e0f2fe; border-radius:12px;">
+                            <small>Sudah Dapat</small>
+                            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);" id="statWin">0</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="loginModal" class="modal-overlay">
+        <div id="peserta" class="tab-content">
+            <div class="card">
+                <h3>👥 Semua Peserta Terdaftar</h3>
+                <table>
+                    <thead>
+                        <tr><th>Nama</th><th>Status</th><th>Tanggal Gabung</th></tr>
+                    </thead>
+                    <tbody id="listSemua"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="menang" class="tab-content">
+            <div class="card">
+                <h3>🏆 Riwayat Pemenang</h3>
+                <table>
+                    <thead>
+                        <tr><th>Nama</th><th>Waktu Menang</th></tr>
+                    </thead>
+                    <tbody id="listMenang"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="jadwal" class="tab-content">
+            <div class="card">
+                <h3>📅 Jadwal Kocokan Mendatang</h3>
+                <p>Estimasi jadwal pengundian berikutnya:</p>
+                <div id="listJadwal">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="loginModal" class="modal">
         <div class="modal-box">
             <h2>Admin Login</h2>
-            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Silakan masuk untuk mengelola arisan.</p>
-            
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" id="adminUser" class="styled-input" placeholder="Masukkan username">
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="adminPass" class="styled-input" placeholder="Masukkan password">
-            </div>
-            
-            <button class="btn-primary" onclick="checkLogin()">Masuk Dashboard</button>
-            <button class="btn-close" onclick="closeLoginModal()">Batal</button>
+            <p>Masukkan kredensial untuk akses kontrol</p>
+            <input type="text" id="adminUser" class="input-field" placeholder="Username">
+            <input type="password" id="adminPass" class="input-field" placeholder="Password">
+            <button class="btn btn-primary" style="width:100%" onclick="handleLogin()">Masuk</button>
+            <button class="btn" style="margin-top:10px;" onclick="closeModal()">Batal</button>
         </div>
     </div>
 
@@ -252,7 +224,6 @@
         import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, query, orderBy, where, getDocs, writeBatch } 
             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIG FIREBASE MILIKMU
         const firebaseConfig = {
             apiKey: "AIzaSyCfgWS873_83hYYIpA5oB-rLx2Hf_Oro8Q",
             authDomain: "arisandb-cec0c.firebaseapp.com",
@@ -267,153 +238,106 @@
         const db = getFirestore(app);
         const colRef = collection(db, "peserta_arisan");
 
-        // 1. LOAD DATA
-        const q = query(colRef, orderBy("tanggal_daftar", "desc"));
-        onSnapshot(q, (snapshot) => {
-            let html = '';
-            let count = 0;
-            
-            snapshot.docs.forEach(doc => {
-                const data = doc.data();
-                count++;
-                
-                // Styling Logic
-                const isWin = data.status === 'Menang';
-                const initial = data.nama.charAt(0).toUpperCase();
-                const badgeClass = isWin ? 'win' : 'wait';
-                const badgeText = isWin ? '🏆 Menang' : '⏳ Belum';
-                const cardStyle = isWin ? 'border-color: #00b894; background: #f0fff4;' : '';
+        // 1. REALTIME LISTENER
+        onSnapshot(query(colRef, orderBy("tanggal_daftar", "asc")), (snapshot) => {
+            let listAll = '';
+            let listWinners = '';
+            let listJadwal = '';
+            let total = 0;
+            let winCount = 0;
 
-                html += `
-                <div class="participant-card" style="${cardStyle}">
-                    <div class="user-info">
-                        <div class="avatar" style="${isWin ? 'background:#00b894; color:white;' : ''}">${initial}</div>
-                        <strong>${data.nama}</strong>
-                    </div>
-                    <span class="badge ${badgeClass}">${badgeText}</span>
-                </div>`;
+            snapshot.docs.forEach(d => {
+                const data = d.data();
+                total++;
+                const initial = data.nama.charAt(0);
+                const date = new Date(data.tanggal_daftar).toLocaleDateString('id-ID');
+
+                // Tab Peserta
+                listAll += `<tr>
+                    <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar">${initial}</div><b>${data.nama}</b></div></td>
+                    <td><span style="color:${data.status === 'Menang' ? 'green' : 'orange'}">${data.status}</span></td>
+                    <td>${date}</td>
+                </tr>`;
+
+                if(data.status === 'Menang') {
+                    winCount++;
+                    const winDate = data.tanggal_menang ? new Date(data.tanggal_menang).toLocaleString('id-ID') : '-';
+                    listWinners += `<tr>
+                        <td><b>${data.nama}</b></td>
+                        <td>${winDate}</td>
+                    </tr>`;
+                } else {
+                    // Tab Jadwal (Daftar antrian yang belum)
+                    listJadwal += `<div style="padding:15px; border-left:4px solid var(--primary); background:#f8f9ff; margin-bottom:10px; border-radius:0 10px 10px 0;">
+                        <b>${data.nama}</b> - Menunggu antrian undian.
+                    </div>`;
+                }
             });
 
-            document.getElementById('participantList').innerHTML = count > 0 ? html : '<div style="text-align:center; padding:20px; color:#aaa;">Belum ada peserta</div>';
-            document.getElementById('count').innerText = count;
+            document.getElementById('listSemua').innerHTML = listAll;
+            document.getElementById('listMenang').innerHTML = listWinners;
+            document.getElementById('listJadwal').innerHTML = listJadwal || "Semua sudah menang!";
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statWin').innerText = winCount;
         });
 
-        // 2. TAMBAH PESERTA
+        // 2. ADMIN ACTIONS
         document.getElementById('btnAdd').addEventListener('click', async () => {
-            const input = document.getElementById('newName');
-            if(!input.value.trim()) return alert("Nama tidak boleh kosong!");
-            
-            try {
-                await addDoc(colRef, {
-                    nama: input.value.trim(),
-                    status: "Belum",
-                    tanggal_daftar: Date.now()
-                });
-                input.value = '';
-                alert("✅ Peserta berhasil ditambahkan!");
-            } catch(e) {
-                alert("Gagal: " + e.message);
-            }
+            const val = document.getElementById('newName').value;
+            if(!val) return;
+            await addDoc(colRef, { nama: val, status: "Belum", tanggal_daftar: Date.now() });
+            document.getElementById('newName').value = '';
         });
 
-        // 3. KOCOK ARISAN
         document.getElementById('btnKocok').addEventListener('click', async () => {
-            const btn = document.getElementById('btnKocok');
             const qBelum = query(colRef, where("status", "==", "Belum"));
-            const snapshot = await getDocs(qBelum);
-            
-            if(snapshot.empty) return alert("Semua sudah menang! Silakan Reset.");
+            const snap = await getDocs(qBelum);
+            if(snap.empty) return alert("Habis!");
 
-            const candidates = [];
-            snapshot.docs.forEach(doc => candidates.push({ id: doc.id, ...doc.data() }));
+            const candidates = snap.docs.map(d => ({id: d.id, ...d.data()}));
+            const winner = candidates[Math.floor(Math.random() * candidates.length)];
 
-            // Animasi Kocok
-            let loop = 0;
-            const originalText = btn.innerText;
-            const interval = setInterval(() => {
-                const randomName = candidates[Math.floor(Math.random() * candidates.length)].nama;
-                btn.innerText = "🎲 " + randomName + "...";
-                loop++;
-                if(loop > 15) clearInterval(interval);
-            }, 100);
-
+            // Effect
+            document.getElementById('btnKocok').innerText = "MENGACAK...";
             setTimeout(async () => {
-                const winner = candidates[Math.floor(Math.random() * candidates.length)];
-                await updateDoc(doc(db, "peserta_arisan", winner.id), {
-                    status: "Menang",
-                    tanggal_menang: Date.now()
-                });
-
-                // Show Winner UI
-                document.getElementById('winnerName').innerText = winner.nama;
-                document.getElementById('winnerDisplay').style.display = 'block';
-                btn.innerText = originalText;
-                
-                // Auto scroll to top
-                document.querySelector('.content').scrollTop = 0;
+                await updateDoc(doc(db, "peserta_arisan", winner.id), { status: "Menang", tanggal_menang: Date.now() });
+                document.getElementById('lastWinnerName').innerText = winner.nama;
+                document.getElementById('winnerHero').style.display = 'block';
+                document.getElementById('btnKocok').innerText = "MULAI UNDI SEKARANG";
             }, 2000);
         });
 
-        // 4. RESET
         window.resetArisan = async () => {
-            if(!confirm("⚠️ YAKIN RESET SEMUA? Semua akan kembali jadi 'Belum Menang'.")) return;
-            const snapshot = await getDocs(colRef);
+            if(!confirm("Hapus status?")) return;
+            const snap = await getDocs(colRef);
             const batch = writeBatch(db);
-            snapshot.docs.forEach(doc => batch.update(doc.ref, { status: "Belum" }));
+            snap.docs.forEach(d => batch.update(d.ref, {status: "Belum"}));
             await batch.commit();
-            document.getElementById('winnerDisplay').style.display = 'none';
-            alert("Data berhasil di-reset!");
-        };
+            location.reload();
+        }
     </script>
 
     <script>
-        const modal = document.getElementById('loginModal');
-        const dashboard = document.getElementById('adminDashboard');
-
-        // GANTI PASSWORD ADMIN DISINI
-        const ADMIN_USER = "admin";
-        const ADMIN_PASS = "12345"; 
-
-        function openLoginModal() {
-            // Kalau sudah login, langsung tutup menu admin (logout simple)
-            if(dashboard.style.display === 'block') {
-                if(confirm("Logout dari admin?")) {
-                    dashboard.style.display = 'none';
-                    alert("Anda telah logout.");
-                }
-                return;
-            }
-            modal.classList.add('active');
+        // UI LOGIC
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        function closeLoginModal() {
-            modal.classList.remove('active');
-            document.getElementById('adminPass').value = ''; // Clear password
-        }
+        function openModal() { document.getElementById('loginModal').classList.add('active'); }
+        function closeModal() { document.getElementById('loginModal').classList.remove('active'); }
 
-        function checkLogin() {
+        function handleLogin() {
             const u = document.getElementById('adminUser').value;
             const p = document.getElementById('adminPass').value;
-
-            if (u === ADMIN_USER && p === ADMIN_PASS) {
-                // Login Sukses
-                modal.classList.remove('active');
-                dashboard.style.display = 'block'; // Munculkan menu admin
-                
-                // Clear input
-                document.getElementById('adminUser').value = '';
-                document.getElementById('adminPass').value = '';
-                
-                // Scroll ke dashboard
-                setTimeout(() => {
-                   dashboard.scrollIntoView({behavior: "smooth"});
-                }, 300);
-                
+            if(u === "admin" && p === "12345") {
+                document.getElementById('adminControls').style.display = 'block';
+                closeModal();
+                alert("Login Admin Berhasil!");
             } else {
-                // Login Gagal
-                alert("❌ Username atau Password Salah!");
-                document.getElementById('adminPass').value = '';
-                document.getElementById('adminPass').focus();
+                alert("Salah!");
             }
         }
     </script>
