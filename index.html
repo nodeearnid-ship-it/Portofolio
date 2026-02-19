@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Arisan Pro iOS Edition</title>
+    <title>Arisan Pro - Premium Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         :root {
-            --primary: #007AFF; /* iOS Blue */
-            --bg: #F2F2F7;      /* iOS Light Gray */
+            --primary: #007AFF; 
+            --bg: #F8F9FB;      
             --card: #FFFFFF;
             --text: #1C1C1E;
             --subtext: #8E8E93;
-            --accent: #34C759;  /* iOS Green */
-            --danger: #FF3B30;  /* iOS Red */
+            --accent: #34C759;  
+            --danger: #FF3B30;
+            --nav-bg: rgba(255, 255, 255, 0.85);
         }
 
         * { 
@@ -28,14 +30,14 @@
             background-color: var(--bg);
             margin: 0;
             color: var(--text);
-            padding-bottom: env(safe-area-inset-bottom);
+            padding-bottom: 100px;
         }
 
-        /* --- HEADER & TOP NAV --- */
-        nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        /* --- HEADER --- */
+        nav.top-nav {
+            background: rgba(248, 249, 251, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: calc(15px + env(safe-area-inset-top)) 20px 15px;
             display: flex;
             justify-content: space-between;
@@ -43,226 +45,210 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 0.5px solid rgba(0,0,0,0.1);
         }
 
-        .brand { font-weight: 800; font-size: 1.3rem; color: var(--text); letter-spacing: -0.5px; }
+        .brand { font-weight: 800; font-size: 1.4rem; color: var(--text); letter-spacing: -0.8px; }
         .brand span { color: var(--primary); }
 
-        /* --- MOBILE BOTTOM NAVBAR (IPHONE STYLE) --- */
-        .bottom-nav {
+        /* --- FLOATING CAPSULE NAVBAR --- */
+        .nav-container {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 2000;
+        }
+
+        .bottom-nav {
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
-            padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-            border-top: 0.5px solid rgba(0,0,0,0.1);
-            z-index: 2000;
+            padding: 12px 10px;
+            border-radius: 24px; /* Sudut bulat persegi panjang */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-decoration: none;
             color: var(--subtext);
-            flex: 1;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             background: none;
             cursor: pointer;
-            padding: 5px 0;
-        }
-
-        .nav-item i {
-            font-size: 22px;
-            margin-bottom: 4px;
             transition: 0.2s;
+            flex: 1;
         }
 
-        .nav-item span { font-size: 10px; font-weight: 500; }
+        .nav-item i { width: 22px; height: 22px; margin-bottom: 5px; }
+        .nav-item span { font-size: 10px; font-weight: 600; }
 
         .nav-item.active { color: var(--primary); }
-        .nav-item.active i { transform: translateY(-2px); }
 
-        /* --- MAIN CONTENT --- */
+        /* --- CONTENT --- */
         main {
             padding: 20px;
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
-            padding-bottom: 100px;
         }
 
-        .tab-content { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
         .tab-content.active { display: block; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- UI COMPONENTS --- */
         .ios-card {
             background: var(--card);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 24px;
+            padding: 24px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.03);
         }
-
-        h3 { font-size: 1.1rem; font-weight: 700; margin-top: 0; margin-bottom: 15px; }
 
         .winner-banner {
-            background: linear-gradient(135deg, var(--primary), #5856D6);
+            background: linear-gradient(135deg, #007AFF, #5856D6);
             color: white;
-            padding: 30px 20px;
-            border-radius: 24px;
+            padding: 35px 20px;
+            border-radius: 28px;
             text-align: center;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+            position: relative;
+            overflow: hidden;
         }
+
         .winner-banner h2 { font-size: 2.2rem; margin: 10px 0; font-weight: 800; }
 
-        /* --- TABLE & LIST --- */
-        .ios-list { width: 100%; border-collapse: collapse; }
-        .ios-list tr { border-bottom: 0.5px solid #E5E5EA; }
-        .ios-list tr:last-child { border: none; }
-        .ios-list td { padding: 15px 5px; font-size: 0.95rem; }
-        .label { font-weight: 600; color: var(--subtext); font-size: 0.8rem; margin-bottom: 4px; display: block; }
+        /* List Styling */
+        .list-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #F2F2F7;
+        }
+        .list-row:last-child { border: none; }
 
-        /* --- BUTTONS & FORMS --- */
+        /* Buttons */
         .btn {
-            border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
-            transition: 0.2s; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+            border: none; border-radius: 16px; font-weight: 700; cursor: pointer;
+            transition: 0.2s; font-size: 1rem; padding: 16px;
         }
-        .btn-main { background: var(--primary); color: white; padding: 14px; width: 100%; }
-        .btn-main:active { opacity: 0.7; transform: scale(0.98); }
-        
-        .btn-kocok { 
-            background: var(--text); color: white; padding: 18px; width: 100%; 
-            margin-top: 15px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn-kocok { background: var(--text); color: white; width: 100%; margin-top: 10px; font-size: 1.1rem; }
+        .btn:active { transform: scale(0.97); opacity: 0.8; }
 
         .input-ios {
-            width: 100%; background: #F2F2F7; border: none; padding: 14px;
-            border-radius: 12px; margin-bottom: 15px; font-size: 1rem; outline: none;
+            width: 100%; background: #F4F4F9; border: 1.5px solid transparent; padding: 15px;
+            border-radius: 16px; margin-bottom: 15px; font-size: 1rem; outline: none; transition: 0.2s;
         }
+        .input-ios:focus { border-color: var(--primary); background: white; }
 
         /* --- MODAL --- */
         .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.3);
             display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         .modal.active { display: flex; }
-        .modal-box { 
-            background: white; padding: 30px; border-radius: 24px; width: 100%; max-width: 340px; 
-            text-align: center; animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .stat-item { background: white; padding: 15px; border-radius: 18px; text-align: center; border: 0.5px solid #E5E5EA; }
-
-        /* Desktop Mode */
-        @media (min-width: 768px) {
-            .bottom-nav { 
-                top: 80px; left: auto; right: 20px; bottom: auto; width: 80px; 
-                flex-direction: column; border-radius: 20px; border: 0.5px solid rgba(0,0,0,0.1);
-                height: auto; padding: 20px 0;
-            }
-            main { padding-top: 40px; }
-        }
+        .modal-box { background: white; padding: 32px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav class="top-nav">
         <div class="brand">Arisan<span>Pro</span></div>
-        <button class="btn" onclick="openModal()" style="background:none; font-size: 1.2rem;">⚙️</button>
+        <button onclick="openModal()" style="background:none; border:none; cursor:pointer; color:var(--subtext);">
+            <i data-lucide="settings"></i>
+        </button>
     </nav>
 
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="showTab('home', this)"><i>🏠</i><span>Home</span></button>
-        <button class="nav-item" onclick="showTab('peserta', this)"><i>👥</i><span>Peserta</span></button>
-        <button class="nav-item" onclick="showTab('menang', this)"><i>🏆</i><span>Menang</span></button>
-        <button class="nav-item" onclick="showTab('jadwal', this)"><i>📅</i><span>Jadwal</span></button>
+    <div class="nav-container">
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="showTab('home', this)">
+                <i data-lucide="layout-dashboard"></i><span>Home</span>
+            </button>
+            <button class="nav-item" onclick="showTab('peserta', this)">
+                <i data-lucide="users"></i><span>Peserta</span>
+            </button>
+            <button class="nav-item" onclick="showTab('menang', this)">
+                <i data-lucide="trophy"></i><span>Menang</span>
+            </button>
+            <button class="nav-item" onclick="showTab('jadwal', this)">
+                <i data-lucide="calendar"></i><span>Jadwal</span>
+            </button>
+        </div>
     </div>
 
     <main>
         <div id="home" class="tab-content active">
             <div id="winnerHero" class="winner-banner" style="display:none;">
-                <span>🎊 SELAMAT 🎊</span>
+                <i data-lucide="party-popper" style="width:40px; height:40px; margin-bottom:10px;"></i>
                 <h2 id="lastWinnerName">...</h2>
-                <p>Pemenang hari ini!</p>
+                <p style="opacity:0.9; font-weight:500;">Selamat! Kamu pemenang periode ini.</p>
             </div>
 
             <div class="ios-card">
-                <h3>Dashboard</h3>
+                <h3 id="adminTitle">Arisan Dashboard</h3>
                 <div id="adminArea" style="display:none;">
-                    <div style="background:#F2F2F7; padding:15px; border-radius:15px; margin-bottom:15px;">
-                        <span class="label">INPUT NAMA</span>
-                        <input type="text" id="newName" class="input-ios" placeholder="Nama Peserta..." style="margin-bottom:10px;">
-                        <button class="btn btn-main" id="btnAdd">Simpan Anggota</button>
-                    </div>
-                    <button class="btn btn-kocok" id="btnKocok">🎲 KOCOK SEKARANG</button>
-                    <button class="btn" style="color:var(--danger); width:100%; margin-top:15px; background:none; font-size:0.8rem;" onclick="resetArisan()">Reset Semua Data</button>
+                    <input type="text" id="newName" class="input-ios" placeholder="Nama Peserta Baru">
+                    <button class="btn btn-primary" id="btnAdd">Simpan Anggota</button>
+                    <button class="btn btn-kocok" id="btnKocok">Mulai Undi Sekarang</button>
+                    <button onclick="resetArisan()" style="background:none; border:none; color:var(--danger); width:100%; margin-top:15px; font-weight:600; font-size:0.8rem;">Reset Semua Data</button>
                 </div>
                 <div id="userMsg" style="text-align:center; color:var(--subtext); padding:10px;">
-                    Mode viewer aktif. Silakan login admin untuk mengundi.
+                    <i data-lucide="info" style="width:18px; vertical-align:middle; margin-right:5px;"></i>
+                    Login admin untuk akses pengundian.
                 </div>
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="label">TOTAL</span>
-                    <div id="statTotal" style="font-size:1.4rem; font-weight:800;">0</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="ios-card" style="margin-bottom:0; text-align:center; padding:15px;">
+                    <span style="font-size:0.7rem; font-weight:700; color:var(--subtext); text-transform:uppercase;">Peserta</span>
+                    <div id="statTotal" style="font-size:1.5rem; font-weight:800;">0</div>
                 </div>
-                <div class="stat-item">
-                    <span class="label">MENANG</span>
-                    <div id="statWin" style="font-size:1.4rem; font-weight:800; color:var(--primary);">0</div>
+                <div class="ios-card" style="margin-bottom:0; text-align:center; padding:15px;">
+                    <span style="font-size:0.7rem; font-weight:700; color:var(--subtext); text-transform:uppercase;">Selesai</span>
+                    <div id="statWin" style="font-size:1.5rem; font-weight:800; color:var(--primary);">0</div>
                 </div>
             </div>
         </div>
 
         <div id="peserta" class="tab-content">
             <div class="ios-card">
-                <h3>Peserta Terdaftar</h3>
-                <table class="ios-list" id="listSemua">
-                    </table>
+                <h3>Daftar Anggota</h3>
+                <div id="listSemua"></div>
             </div>
         </div>
 
         <div id="menang" class="tab-content">
             <div class="ios-card">
-                <h3>Riwayat Menang</h3>
-                <table class="ios-list" id="listMenang">
-                    </table>
+                <h3>Riwayat Pemenang</h3>
+                <div id="listMenang"></div>
             </div>
         </div>
 
         <div id="jadwal" class="tab-content">
             <div class="ios-card">
-                <h3>Antrian Undian</h3>
-                <div id="listJadwal" style="display:grid; gap:10px;">
-                    </div>
+                <h3>Antrian Berikutnya</h3>
+                <div id="listJadwal"></div>
             </div>
         </div>
     </main>
 
     <div id="loginModal" class="modal">
         <div class="modal-box">
-            <h3 style="margin-bottom:5px;">Admin Login</h3>
-            <p style="font-size:0.8rem; color:var(--subtext); margin-bottom:20px;">Masukkan password pengelola.</p>
+            <h3 style="margin-bottom:8px;">Admin Login</h3>
+            <p style="font-size:0.85rem; color:var(--subtext); margin-bottom:24px;">Gunakan password "12345"</p>
             <input type="password" id="adminPass" class="input-ios" placeholder="Password">
-            <button class="btn btn-main" onclick="handleLogin()">Sign In</button>
-            <button class="btn" onclick="closeModal()" style="background:none; color:var(--subtext); margin-top:10px; width:100%;">Batal</button>
+            <button class="btn btn-primary" onclick="handleLogin()">Login Sekarang</button>
+            <button onclick="closeModal()" style="background:none; border:none; margin-top:15px; color:var(--subtext); cursor:pointer;">Tutup</button>
         </div>
     </div>
 
@@ -284,7 +270,6 @@
         const db = getFirestore(app);
         const colRef = collection(db, "peserta_arisan");
 
-        // Sync Data
         onSnapshot(query(colRef, orderBy("tanggal_daftar", "asc")), (snap) => {
             let sAll = '', sWin = '', sJadwal = '';
             let tTotal = 0, tWin = 0;
@@ -294,25 +279,24 @@
                 tTotal++;
                 const isWinner = data.status === 'Menang';
 
-                sAll += `<tr><td><b>${data.nama}</b><br><span style="font-size:0.7rem;color:var(--subtext)">${data.status}</span></td><td style="text-align:right">${isWinner ? '✅' : '⏳'}</td></tr>`;
+                sAll += `<div class="list-row"><div><b>${data.nama}</b></div><div style="font-size:0.8rem; color:${isWinner ? 'var(--accent)' : 'var(--subtext)'}">${isWinner ? 'Lunas' : 'Menunggu'}</div></div>`;
 
                 if(isWinner) {
                     tWin++;
-                    const winDate = data.tanggal_menang ? new Date(data.tanggal_menang).toLocaleDateString() : '-';
-                    sWin += `<tr><td><b>${data.nama}</b></td><td style="text-align:right;color:var(--subtext);font-size:0.8rem">${winDate}</td></tr>`;
+                    sWin += `<div class="list-row"><b>${data.nama}</b><span style="color:var(--subtext); font-size:0.8rem">Selesai</span></div>`;
                 } else {
-                    sJadwal += `<div style="background:#F2F2F7; padding:12px; border-radius:12px; font-weight:600;">👤 ${data.nama}</div>`;
+                    sJadwal += `<div class="list-row"><div style="display:flex; align-items:center;"><i data-lucide="user" style="width:16px; margin-right:10px; color:var(--primary)"></i><b>${data.nama}</b></div></div>`;
                 }
             });
 
             document.getElementById('listSemua').innerHTML = sAll;
             document.getElementById('listMenang').innerHTML = sWin;
-            document.getElementById('listJadwal').innerHTML = sJadwal || "<p style='text-align:center;color:#ccc'>Antrian Kosong</p>";
+            document.getElementById('listJadwal').innerHTML = sJadwal || "<p style='text-align:center; color:#ccc'>Semua sudah menang</p>";
             document.getElementById('statTotal').innerText = tTotal;
             document.getElementById('statWin').innerText = tWin;
+            lucide.createIcons(); // Re-render icons
         });
 
-        // Actions
         document.getElementById('btnAdd').addEventListener('click', async () => {
             const val = document.getElementById('newName').value;
             if(!val) return;
@@ -323,23 +307,24 @@
         document.getElementById('btnKocok').addEventListener('click', async () => {
             const qB = query(colRef, where("status", "==", "Belum"));
             const s = await getDocs(qB);
-            if(s.empty) return alert("Habis!");
+            if(s.empty) return alert("Semua sudah menang!");
 
             const cand = s.docs.map(d => ({id: d.id, ...d.data()}));
             const winner = cand[Math.floor(Math.random() * cand.length)];
 
-            document.getElementById('btnKocok').innerText = "Mengacak Antrian...";
+            document.getElementById('btnKocok').innerText = "Mengacak Nama...";
             setTimeout(async () => {
                 await updateDoc(doc(db, "peserta_arisan", winner.id), { status: "Menang", tanggal_menang: Date.now() });
                 document.getElementById('lastWinnerName').innerText = winner.nama;
                 document.getElementById('winnerHero').style.display = 'block';
-                document.getElementById('btnKocok').innerText = "🎲 KOCOK SEKARANG";
+                document.getElementById('btnKocok').innerText = "Mulai Undi Sekarang";
                 window.scrollTo({top:0, behavior:'smooth'});
-            }, 1500);
+                lucide.createIcons();
+            }, 2000);
         });
 
         window.resetArisan = async () => {
-            if(!confirm("Hapus riwayat menang?")) return;
+            if(!confirm("Mulai arisan baru dari awal?")) return;
             const s = await getDocs(colRef);
             const batch = writeBatch(db);
             s.docs.forEach(d => batch.update(d.ref, {status: "Belum"}));
@@ -365,9 +350,14 @@
             if(p === "12345") {
                 document.getElementById('adminArea').style.display = 'block';
                 document.getElementById('userMsg').style.display = 'none';
+                document.getElementById('adminTitle').innerText = "Admin Console";
                 closeModal();
-            } else { alert("Akses Ditolak!"); }
+                lucide.createIcons();
+            } else { alert("Password Salah!"); }
         }
+        
+        // Init Icons
+        lucide.createIcons();
     </script>
 </body>
 </html>
