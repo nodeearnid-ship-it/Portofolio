@@ -1,46 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>HP Kamera</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kamera Jarak Jauh</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #000; color: white; margin: 0; }
-        video { width: 100%; height: auto; background: #222; }
-        #qr-container { background: white; padding: 20px; display: inline-block; border-radius: 10px; margin-top: 10px; }
-        h2 { margin: 10px 0; font-size: 1.2rem; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; text-align: center; margin: 0; padding: 20px; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-width: 500px; margin: auto; }
+        button { width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-cam { background: #e74c3c; color: white; }
+        .btn-monitor { background: #2ecc71; color: white; }
+        video { width: 100%; border-radius: 10px; background: #000; margin-top: 15px; }
+        #qr-container { background: white; padding: 15px; display: inline-block; border-radius: 10px; margin: 20px 0; }
+        .hidden { display: none; }
+        #status { color: #f1c40f; margin-bottom: 10px; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <video id="localVideo" autoplay playsinline muted></video>
-    <div id="setup">
-        <h2>Scan untuk Monitoring:</h2>
+
+    <div class="card" id="setup-menu">
+        <h2>Remote Cam System</h2>
+        <p>Pilih peran perangkat ini:</p>
+        <button class="btn-cam" onclick="startCamera()">JADIKAN KAMERA</button>
+        <button class="btn-monitor" onclick="startMonitor()">JADIKAN MONITOR</button>
+    </div>
+
+    <div id="camera-view" class="hidden">
+        <h3>Mode: Kamera Pengawas</h3>
+        <div id="status-cam">Menyiapkan koneksi...</div>
         <div id="qr-container"><div id="qrcode"></div></div>
-        <p id="peer-id">Menghubungkan...</p>
+        <p>Scan QR di atas dengan HP Monitor</p>
+        <video id="localVideo" autoplay playsinline muted></video>
+    </div>
+
+    <div id="monitor-view" class="hidden">
+        <h3>Mode: Monitoring</h3>
+        <div id="status-mon">Menunggu koneksi dari kamera...</div>
+        <video id="remoteVideo" autoplay playsinline></video>
     </div>
 
     <script>
-        const peer = new Peer(); // Membuat ID otomatis
-        const videoElement = document.getElementById('localVideo');
+        const peer = new Peer();
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetId = urlParams.get('peer');
 
-        peer.on('open', (id) => {
-            document.getElementById('peer-id').innerText = "ID: " + id;
-            // Buat QR Code berisi link ke remote.html dengan parameter ID
-            // Ganti URL di bawah dengan alamat tempat kamu hosting remote.html
-            const remoteUrl = window.location.href.replace('index.html', 'remote.html') + "?id=" + id;
-            new QRCode(document.getElementById("qrcode"), remoteUrl);
-        });
+        // Jika link dibuka dengan parameter ?peer=ID, otomatis jadi Monitor
+        window.onload = () => {
+            if (targetId) startMonitor(targetId);
+        };
 
-        // Minta akses kamera
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: true })
-            .then(stream => {
-                videoElement.srcObject = stream;
-                // Jawab panggilan jika ada remote yang masuk
-                peer.on('call', call => {
-                    call.answer(stream);
-                });
+        // --- FUNGSI KAMERA ---
+        function startCamera() {
+            document.getElementById('setup-menu').classList.add('hidden');
+            document.getElementById('camera-view').classList.remove('hidden');
+
+            peer.on('open', (id) => {
+                document.getElementById('status-cam').innerText = "Kamera Siap! ID: " + id;
+                // Buat link otomatis ke file ini sendiri dengan parameter peer
+                const monitorLink = window.location.origin + window.location.pathname + "?peer=" + id;
+                new QRCode(document.getElementById("qrcode"), monitorLink);
             });
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: true })
+                .then(stream => {
+                    document.getElementById('localVideo').srcObject = stream;
+                    peer.on('call', call => {
+                        call.answer(stream);
+                    });
+                });
+        }
+
+        // --- FUNGSI MONITOR ---
+        function startMonitor(id) {
+            document.getElementById('setup-menu').classList.add('hidden');
+            document.getElementById('monitor-view').classList.remove('hidden');
+
+            const connectToPeer = (peerId) => {
+                document.getElementById('status-mon').innerText = "Menghubungkan ke: " + peerId;
+                // PeerJS butuh stream (meski kosong) untuk initiate call
+                navigator.mediaDevices.getUserMedia({ video: false, audio: false })
+                    .then(stream => {
+                        const call = peer.call(peerId, stream);
+                        call.on('stream', remoteStream => {
+                            document.getElementById('remoteVideo').srcObject = remoteStream;
+                            document.getElementById('status-mon').innerText = "Status: LIVE";
+                        });
+                    }).catch(err => {
+                        // Untuk beberapa browser yang blokir getUserMedia kosong
+                        const call = peer.call(peerId, new MediaStream());
+                        call.on('stream', remoteStream => {
+                            document.getElementById('remoteVideo').srcObject = remoteStream;
+                            document.getElementById('status-mon').innerText = "Status: LIVE";
+                        });
+                    });
+            };
+
+            if (id) {
+                peer.on('open', () => connectToPeer(id));
+            } else {
+                const manualId = prompt("Masukkan ID Kamera atau Scan QR:");
+                if (manualId) connectToPeer(manualId);
+            }
+        }
     </script>
 </body>
 </html>
