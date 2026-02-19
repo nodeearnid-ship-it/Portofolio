@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Layar Utama - Menunggu Remote</title>
+    <title>Layar Utama - Fitur Mouse</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
@@ -15,24 +15,22 @@
             background-size: 40px 40px; display: flex; height: 100vh;
         }
         
-        /* Panel Sidebar */
         #sidebar {
             width: 250px; background: rgba(0, 20, 40, 0.9);
             border-right: 2px solid #00ffcc; padding: 20px;
-            display: flex; flex-direction: column; gap: 10px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 10;
         }
         .menu-item {
             padding: 15px; border-radius: 8px; font-size: 18px; color: #aaa;
             transition: all 0.2s; border: 1px solid transparent; cursor: pointer;
         }
-        /* Highlight menu yang sedang dipilih dari remote */
-        .menu-item.active {
+        /* Highlight menu saat dipilih atau saat kursor mouse di atasnya */
+        .menu-item.active, .menu-item.hovered {
             background: rgba(0, 255, 204, 0.2); color: #fff;
             border-color: #00ffcc; transform: scale(1.05);
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
         }
 
-        /* Area Konten Utama */
         #main-content {
             flex: 1; display: flex; flex-direction: column;
             align-items: center; justify-content: center; position: relative;
@@ -44,7 +42,6 @@
         }
         #content-box h1 { color: #00ffcc; font-size: 40px; margin: 0 0 15px 0; }
         
-        /* Area QR Code di pojok kanan atas */
         #qr-container {
             position: absolute; top: 20px; right: 20px;
             background: white; padding: 15px; border-radius: 10px;
@@ -52,12 +49,28 @@
         }
         #qr-container p { margin: 0 0 10px 0; font-weight: bold; font-size: 14px; }
         #status { position: absolute; bottom: 20px; right: 20px; color: #ffcc00; font-weight: bold;}
+
+        /* --- DESAIN KURSOR VIRTUAL --- */
+        #virtual-cursor {
+            position: absolute; width: 20px; height: 20px;
+            background-color: #ff3366; border-radius: 50%;
+            pointer-events: none; /* Penting agar tidak menghalangi klik */
+            transform: translate(-50%, -50%);
+            z-index: 9999; box-shadow: 0 0 15px #ff3366;
+            transition: background-color 0.1s, transform 0.1s;
+            display: none; /* Sembunyikan sampai remote connect */
+        }
+        /* Efek klik pada kursor */
+        #virtual-cursor.clicking {
+            transform: translate(-50%, -50%) scale(0.5);
+            background-color: #ffffff; box-shadow: 0 0 20px #ffffff;
+        }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h2 style="color: #00ffcc; text-align: center;">MENU UTAMA</h2>
+        <h2 style="color: #00ffcc; text-align: center;">MENU</h2>
         <div class="menu-item active" data-title="📊 Dashboard Chart" data-desc="Menampilkan grafik pergerakan harga terkini.">📊 Dashboard Chart</div>
         <div class="menu-item" data-title="💰 Portofolio" data-desc="Melihat total aset dan riwayat transaksi.">💰 Portofolio</div>
         <div class="menu-item" data-title="⚙️ Pengaturan" data-desc="Mengatur preferensi asisten dan akun.">⚙️ Pengaturan</div>
@@ -65,16 +78,18 @@
 
     <div id="main-content">
         <div id="qr-container">
-            <p>Scan untuk Connect</p>
+            <p>Scan via Remote</p>
             <div id="qrcode"></div>
         </div>
         
         <div id="content-box">
             <h1 id="title">Menunggu Remote...</h1>
-            <p id="desc">Gunakan remote di HP Anda untuk mengontrol layar ini.</p>
+            <p id="desc">Buka remote.html di HP Anda dan arahkan kamera ke QR Code.</p>
         </div>
         <div id="status">Menginisialisasi Server...</div>
     </div>
+
+    <div id="virtual-cursor"></div>
 
     <script>
         const menuItems = document.querySelectorAll('.menu-item');
@@ -82,7 +97,13 @@
         const descEl = document.getElementById('desc');
         const statusEl = document.getElementById('status');
         const qrContainer = document.getElementById('qr-container');
+        const virtualCursor = document.getElementById('virtual-cursor');
+        
         let currentIndex = 0;
+
+        // Posisi awal kursor di tengah layar
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
 
         function updateMenuSelection() {
             menuItems.forEach((item, index) => {
@@ -91,63 +112,86 @@
             });
         }
 
-        function executeMenu() {
-            const activeMenu = menuItems[currentIndex];
+        // Fungsi Eksekusi Menu (Bisa dipanggil oleh D-Pad atau Klik Mouse)
+        function executeMenu(element = null) {
+            const activeMenu = element || menuItems[currentIndex];
             titleEl.innerText = activeMenu.getAttribute('data-title');
             descEl.innerText = activeMenu.getAttribute('data-desc');
+            
+            activeMenu.style.background = "#fff";
+            setTimeout(() => activeMenu.style.background = "", 150);
         }
 
-        // Setup PeerJS
         const peer = new Peer(); 
 
         peer.on('open', function(id) {
-            statusEl.innerText = "Sistem Siap. Menunggu koneksi dari HP...";
-            statusEl.style.color = "#00ffcc";
-            
-            // Generate URL ke remote.html yang ada di folder yang sama
-            let baseUrl = window.location.href;
-            if (baseUrl.endsWith('index.html')) {
-                baseUrl = baseUrl.replace('/index.html', '');
-            } else if (baseUrl.endsWith('/')) {
-                baseUrl = baseUrl.slice(0, -1);
-            }
-            
-            // URL yang akan dimasukkan ke dalam QR Code
-            const remoteUrl = `${baseUrl}/remote.html?host=${id}`;
-            
-            // Buat QR Code
-            new QRCode(document.getElementById("qrcode"), {
-                text: remoteUrl, width: 150, height: 150
-            });
+            statusEl.innerText = "Sistem Siap. Menunggu scan dari HP...";
+            new QRCode(document.getElementById("qrcode"), { text: id, width: 150, height: 150 });
         });
 
-        // Ketika HP berhasil konek
         peer.on('connection', function(conn) {
             statusEl.innerText = "HP Terhubung! 🟢";
             statusEl.style.color = "#00ff00";
-            qrContainer.style.display = 'none'; // Sembunyikan QR Code
+            qrContainer.style.display = 'none'; 
+            
+            // Tampilkan kursor saat HP connect
+            virtualCursor.style.display = 'block';
+            virtualCursor.style.left = `${cursorX}px`;
+            virtualCursor.style.top = `${cursorY}px`;
 
-            // Terima perintah dari HP
-            conn.on('data', function(command) {
-                if (command === 'UP') {
-                    if (currentIndex > 0) currentIndex--;
-                    updateMenuSelection();
+            conn.on('data', function(data) {
+                // Jika data berupa object (Dari perintah Mouse)
+                if (typeof data === 'object') {
+                    if (data.type === 'mousemove') {
+                        // Sensitivitas Mouse (Kalikan agar gerakan lebih cepat)
+                        const sensitivity = 2.0; 
+                        cursorX += data.dx * sensitivity;
+                        cursorY += data.dy * sensitivity;
+
+                        // Batasi kursor agar tidak keluar layar
+                        cursorX = Math.max(0, Math.min(window.innerWidth, cursorX));
+                        cursorY = Math.max(0, Math.min(window.innerHeight, cursorY));
+
+                        virtualCursor.style.left = `${cursorX}px`;
+                        virtualCursor.style.top = `${cursorY}px`;
+
+                        // Cek apakah kursor berada di atas menu (Efek Hover)
+                        const elementUnderCursor = document.elementFromPoint(cursorX, cursorY);
+                        menuItems.forEach(el => el.classList.remove('hovered'));
+                        if (elementUnderCursor && elementUnderCursor.classList.contains('menu-item')) {
+                            elementUnderCursor.classList.add('hovered');
+                        }
+                    } 
+                    else if (data.type === 'click') {
+                        // Efek visual klik kursor
+                        virtualCursor.classList.add('clicking');
+                        setTimeout(() => virtualCursor.classList.remove('clicking'), 150);
+
+                        // Cari elemen apa yang ada di bawah kursor saat ini
+                        const elementUnderCursor = document.elementFromPoint(cursorX, cursorY);
+                        if (elementUnderCursor && elementUnderCursor.classList.contains('menu-item')) {
+                            executeMenu(elementUnderCursor);
+                        }
+                    }
                 } 
-                else if (command === 'DOWN') {
-                    if (currentIndex < menuItems.length - 1) currentIndex++;
-                    updateMenuSelection();
-                } 
-                else if (command === 'OK') {
-                    executeMenu();
-                    menuItems[currentIndex].style.background = "#fff";
-                    setTimeout(() => menuItems[currentIndex].style.background = "", 150);
+                // Jika data berupa string (Dari perintah D-PAD Atas/Bawah/OK)
+                else {
+                    if (data === 'UP') {
+                        if (currentIndex > 0) currentIndex--;
+                        updateMenuSelection();
+                    } else if (data === 'DOWN') {
+                        if (currentIndex < menuItems.length - 1) currentIndex++;
+                        updateMenuSelection();
+                    } else if (data === 'OK') {
+                        executeMenu();
+                    }
                 }
             });
 
             conn.on('close', () => {
-                statusEl.innerText = "Koneksi terputus. Muat ulang halaman (Refresh).";
+                statusEl.innerText = "Koneksi terputus.";
                 statusEl.style.color = "red";
-                qrContainer.style.display = 'block'; // Munculkan QR lagi jika putus
+                virtualCursor.style.display = 'none';
             });
         });
     </script>
