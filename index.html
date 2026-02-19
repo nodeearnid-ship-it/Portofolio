@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Arisan Pro - Premium Edition</title>
+    <title>Arisan Pro - Adaptive Dashboard</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -17,237 +17,191 @@
             --subtext: #8E8E93;
             --accent: #34C759;  
             --danger: #FF3B30;
-            --nav-bg: rgba(255, 255, 255, 0.85);
+            --sidebar-width: 280px;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        body {
-            background-color: var(--bg);
-            margin: 0;
-            color: var(--text);
-            padding-bottom: 100px;
-        }
+        body { background-color: var(--bg); margin: 0; color: var(--text); display: flex; min-height: 100vh; }
 
-        /* --- HEADER --- */
-        nav.top-nav {
-            background: rgba(248, 249, 251, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: calc(15px + env(safe-area-inset-top)) 20px 15px;
+        /* --- SIDEBAR (DESKTOP) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card);
+            border-right: 1px solid rgba(0,0,0,0.05);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
+            flex-direction: column;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            left: 0;
             top: 0;
             z-index: 1000;
         }
 
-        .brand { font-weight: 800; font-size: 1.4rem; color: var(--text); letter-spacing: -0.8px; }
-        .brand span { color: var(--primary); }
+        .sidebar .brand { font-weight: 800; font-size: 1.5rem; margin-bottom: 40px; padding-left: 10px; }
+        .sidebar .brand span { color: var(--primary); }
 
-        /* --- FLOATING CAPSULE NAVBAR --- */
-        .nav-container {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            z-index: 2000;
+        .side-menu { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .side-item {
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px;
+            border: none; background: none; border-radius: 12px; cursor: pointer;
+            color: var(--subtext); font-weight: 600; font-size: 1rem; transition: 0.2s;
         }
+        .side-item i { width: 20px; height: 20px; }
+        .side-item.active { background: #F0F7FF; color: var(--primary); }
+        .side-item:hover:not(.active) { background: #F2F2F7; color: var(--text); }
 
-        .bottom-nav {
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 10px;
-            border-radius: 24px; /* Sudut bulat persegi panjang */
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
+        /* --- MAIN AREA --- */
+        .main-wrapper { flex: 1; margin-left: var(--sidebar-width); width: 100%; transition: 0.3s; }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--subtext);
-            border: none;
-            background: none;
-            cursor: pointer;
-            transition: 0.2s;
-            flex: 1;
-        }
+        header.mobile-header { display: none; } /* Hanya muncul di mobile */
 
-        .nav-item i { width: 22px; height: 22px; margin-bottom: 5px; }
-        .nav-item span { font-size: 10px; font-weight: 600; }
+        main { padding: 40px; max-width: 1000px; margin: 0 auto; }
 
-        .nav-item.active { color: var(--primary); }
-
-        /* --- CONTENT --- */
-        main {
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
         .tab-content.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- UI COMPONENTS --- */
+        /* --- CARDS --- */
         .ios-card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03);
+            background: var(--card); border-radius: 24px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);
         }
 
         .winner-banner {
-            background: linear-gradient(135deg, #007AFF, #5856D6);
-            color: white;
-            padding: 35px 20px;
-            border-radius: 28px;
-            text-align: center;
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #007AFF, #5856D6); color: white;
+            padding: 50px 30px; border-radius: 30px; text-align: center; margin-bottom: 30px;
+        }
+        .winner-banner h2 { font-size: 3rem; margin: 15px 0; font-weight: 800; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+
+        /* --- MOBILE NAVIGATION (IPHONE CAPSULE) --- */
+        .nav-container { display: none; }
+
+        /* --- RESPONSIVE LOGIC (MOBILE) --- */
+        @media (max-width: 850px) {
+            .sidebar { display: none; }
+            .main-wrapper { margin-left: 0; padding-bottom: 100px; }
+            
+            header.mobile-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 20px; position: sticky; top: 0; background: rgba(248, 249, 251, 0.8);
+                backdrop-filter: blur(10px); z-index: 100;
+            }
+            .brand-mobile { font-weight: 800; font-size: 1.3rem; }
+            .brand-mobile span { color: var(--primary); }
+
+            main { padding: 20px; }
+
+            .nav-container {
+                display: block; position: fixed; bottom: 25px; left: 50%;
+                transform: translateX(-50%); width: 90%; max-width: 400px; z-index: 2000;
+            }
+            .bottom-nav {
+                background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+                display: flex; justify-content: space-around; padding: 12px;
+                border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+            .nav-item { display: flex; flex-direction: column; align-items: center; border: none; background: none; color: var(--subtext); flex: 1; }
+            .nav-item i { width: 22px; height: 22px; margin-bottom: 4px; }
+            .nav-item span { font-size: 10px; font-weight: 600; }
+            .nav-item.active { color: var(--primary); }
+            
+            .winner-banner h2 { font-size: 2rem; }
+            .ios-card { padding: 20px; }
         }
 
-        .winner-banner h2 { font-size: 2.2rem; margin: 10px 0; font-weight: 800; }
-
-        /* List Styling */
-        .list-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid #F2F2F7;
-        }
-        .list-row:last-child { border: none; }
-
-        /* Buttons */
-        .btn {
-            border: none; border-radius: 16px; font-weight: 700; cursor: pointer;
-            transition: 0.2s; font-size: 1rem; padding: 16px;
-        }
-        .btn-primary { background: var(--primary); color: white; width: 100%; }
-        .btn-kocok { background: var(--text); color: white; width: 100%; margin-top: 10px; font-size: 1.1rem; }
-        .btn:active { transform: scale(0.97); opacity: 0.8; }
-
-        .input-ios {
-            width: 100%; background: #F4F4F9; border: 1.5px solid transparent; padding: 15px;
-            border-radius: 16px; margin-bottom: 15px; font-size: 1rem; outline: none; transition: 0.2s;
-        }
-        .input-ios:focus { border-color: var(--primary); background: white; }
-
-        /* --- MODAL --- */
-        .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.3);
-            display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px;
-            backdrop-filter: blur(8px);
-        }
+        /* --- SHARED STYLES --- */
+        .list-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #F2F2F7; }
+        .btn { border: none; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; padding: 16px; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-kocok { background: var(--text); color: white; margin-top: 10px; font-size: 1.1rem; }
+        .input-ios { width: 100%; background: #F4F4F9; border: 1.5px solid transparent; padding: 15px; border-radius: 16px; margin-bottom: 15px; font-size: 1rem; outline: none; }
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.3); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; backdrop-filter: blur(8px); }
         .modal.active { display: flex; }
         .modal-box { background: white; padding: 32px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <nav class="top-nav">
+    <aside class="sidebar">
         <div class="brand">Arisan<span>Pro</span></div>
-        <button onclick="openModal()" style="background:none; border:none; cursor:pointer; color:var(--subtext);">
-            <i data-lucide="settings"></i>
-        </button>
-    </nav>
+        <div class="side-menu">
+            <button class="side-item active" onclick="showTab('home', this)"><i data-lucide="layout-dashboard"></i> Home</button>
+            <button class="side-item" onclick="showTab('peserta', this)"><i data-lucide="users"></i> Peserta</button>
+            <button class="side-item" onclick="showTab('menang', this)"><i data-lucide="trophy"></i> Menang</button>
+            <button class="side-item" onclick="showTab('jadwal', this)"><i data-lucide="calendar"></i> Jadwal</button>
+        </div>
+        <button class="side-item" onclick="openModal()"><i data-lucide="settings"></i> Settings</button>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="mobile-header">
+            <div class="brand-mobile">Arisan<span>Pro</span></div>
+            <button onclick="openModal()" style="background:none; border:none; color:var(--subtext);"><i data-lucide="settings"></i></button>
+        </header>
+
+        <main>
+            <div id="home" class="tab-content active">
+                <div id="winnerHero" class="winner-banner" style="display:none;">
+                    <i data-lucide="party-popper" style="width:50px; height:50px; margin-bottom:10px;"></i>
+                    <h2 id="lastWinnerName">...</h2>
+                    <p>Selamat! Kamu pemenang periode ini.</p>
+                </div>
+
+                <div class="stats-row">
+                    <div class="ios-card" style="text-align:center;">
+                        <span style="font-size:0.8rem; font-weight:700; color:var(--subtext);">TOTAL PESERTA</span>
+                        <div id="statTotal" style="font-size:2rem; font-weight:800;">0</div>
+                    </div>
+                    <div class="ios-card" style="text-align:center;">
+                        <span style="font-size:0.8rem; font-weight:700; color:var(--subtext);">SUDAH MENANG</span>
+                        <div id="statWin" style="font-size:2rem; font-weight:800; color:var(--primary);">0</div>
+                    </div>
+                </div>
+
+                <div class="ios-card">
+                    <h3 id="adminTitle">Arisan Dashboard</h3>
+                    <div id="adminArea" style="display:none;">
+                        <input type="text" id="newName" class="input-ios" placeholder="Nama Peserta Baru">
+                        <button class="btn btn-primary" id="btnAdd">Simpan Anggota</button>
+                        <button class="btn btn-kocok" id="btnKocok">Mulai Undi Sekarang</button>
+                        <button onclick="resetArisan()" style="background:none; border:none; color:var(--danger); width:100%; margin-top:15px; font-weight:600; cursor:pointer;">Reset Semua Data</button>
+                    </div>
+                    <div id="userMsg" style="text-align:center; color:var(--subtext);">Login admin untuk akses pengundian.</div>
+                </div>
+            </div>
+
+            <div id="peserta" class="tab-content">
+                <div class="ios-card"><h3>Daftar Anggota</h3><div id="listSemua"></div></div>
+            </div>
+            <div id="menang" class="tab-content">
+                <div class="ios-card"><h3>Riwayat Pemenang</h3><div id="listMenang"></div></div>
+            </div>
+            <div id="jadwal" class="tab-content">
+                <div class="ios-card"><h3>Antrian Berikutnya</h3><div id="listJadwal"></div></div>
+            </div>
+        </main>
+    </div>
 
     <div class="nav-container">
         <div class="bottom-nav">
-            <button class="nav-item active" onclick="showTab('home', this)">
-                <i data-lucide="layout-dashboard"></i><span>Home</span>
-            </button>
-            <button class="nav-item" onclick="showTab('peserta', this)">
-                <i data-lucide="users"></i><span>Peserta</span>
-            </button>
-            <button class="nav-item" onclick="showTab('menang', this)">
-                <i data-lucide="trophy"></i><span>Menang</span>
-            </button>
-            <button class="nav-item" onclick="showTab('jadwal', this)">
-                <i data-lucide="calendar"></i><span>Jadwal</span>
-            </button>
+            <button class="nav-item active" onclick="showTab('home', this)"><i data-lucide="layout-dashboard"></i><span>Home</span></button>
+            <button class="nav-item" onclick="showTab('peserta', this)"><i data-lucide="users"></i><span>Peserta</span></button>
+            <button class="nav-item" onclick="showTab('menang', this)"><i data-lucide="trophy"></i><span>Menang</span></button>
+            <button class="nav-item" onclick="showTab('jadwal', this)"><i data-lucide="calendar"></i><span>Jadwal</span></button>
         </div>
     </div>
 
-    <main>
-        <div id="home" class="tab-content active">
-            <div id="winnerHero" class="winner-banner" style="display:none;">
-                <i data-lucide="party-popper" style="width:40px; height:40px; margin-bottom:10px;"></i>
-                <h2 id="lastWinnerName">...</h2>
-                <p style="opacity:0.9; font-weight:500;">Selamat! Kamu pemenang periode ini.</p>
-            </div>
-
-            <div class="ios-card">
-                <h3 id="adminTitle">Arisan Dashboard</h3>
-                <div id="adminArea" style="display:none;">
-                    <input type="text" id="newName" class="input-ios" placeholder="Nama Peserta Baru">
-                    <button class="btn btn-primary" id="btnAdd">Simpan Anggota</button>
-                    <button class="btn btn-kocok" id="btnKocok">Mulai Undi Sekarang</button>
-                    <button onclick="resetArisan()" style="background:none; border:none; color:var(--danger); width:100%; margin-top:15px; font-weight:600; font-size:0.8rem;">Reset Semua Data</button>
-                </div>
-                <div id="userMsg" style="text-align:center; color:var(--subtext); padding:10px;">
-                    <i data-lucide="info" style="width:18px; vertical-align:middle; margin-right:5px;"></i>
-                    Login admin untuk akses pengundian.
-                </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                <div class="ios-card" style="margin-bottom:0; text-align:center; padding:15px;">
-                    <span style="font-size:0.7rem; font-weight:700; color:var(--subtext); text-transform:uppercase;">Peserta</span>
-                    <div id="statTotal" style="font-size:1.5rem; font-weight:800;">0</div>
-                </div>
-                <div class="ios-card" style="margin-bottom:0; text-align:center; padding:15px;">
-                    <span style="font-size:0.7rem; font-weight:700; color:var(--subtext); text-transform:uppercase;">Selesai</span>
-                    <div id="statWin" style="font-size:1.5rem; font-weight:800; color:var(--primary);">0</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="peserta" class="tab-content">
-            <div class="ios-card">
-                <h3>Daftar Anggota</h3>
-                <div id="listSemua"></div>
-            </div>
-        </div>
-
-        <div id="menang" class="tab-content">
-            <div class="ios-card">
-                <h3>Riwayat Pemenang</h3>
-                <div id="listMenang"></div>
-            </div>
-        </div>
-
-        <div id="jadwal" class="tab-content">
-            <div class="ios-card">
-                <h3>Antrian Berikutnya</h3>
-                <div id="listJadwal"></div>
-            </div>
-        </div>
-    </main>
-
     <div id="loginModal" class="modal">
         <div class="modal-box">
-            <h3 style="margin-bottom:8px;">Admin Login</h3>
-            <p style="font-size:0.85rem; color:var(--subtext); margin-bottom:24px;">Gunakan password "12345"</p>
+            <h3>Admin Login</h3>
             <input type="password" id="adminPass" class="input-ios" placeholder="Password">
-            <button class="btn btn-primary" onclick="handleLogin()">Login Sekarang</button>
+            <button class="btn btn-primary" onclick="handleLogin()">Login</button>
             <button onclick="closeModal()" style="background:none; border:none; margin-top:15px; color:var(--subtext); cursor:pointer;">Tutup</button>
         </div>
     </div>
@@ -273,28 +227,20 @@
         onSnapshot(query(colRef, orderBy("tanggal_daftar", "asc")), (snap) => {
             let sAll = '', sWin = '', sJadwal = '';
             let tTotal = 0, tWin = 0;
-
             snap.docs.forEach(d => {
                 const data = d.data();
                 tTotal++;
                 const isWinner = data.status === 'Menang';
-
-                sAll += `<div class="list-row"><div><b>${data.nama}</b></div><div style="font-size:0.8rem; color:${isWinner ? 'var(--accent)' : 'var(--subtext)'}">${isWinner ? 'Lunas' : 'Menunggu'}</div></div>`;
-
-                if(isWinner) {
-                    tWin++;
-                    sWin += `<div class="list-row"><b>${data.nama}</b><span style="color:var(--subtext); font-size:0.8rem">Selesai</span></div>`;
-                } else {
-                    sJadwal += `<div class="list-row"><div style="display:flex; align-items:center;"><i data-lucide="user" style="width:16px; margin-right:10px; color:var(--primary)"></i><b>${data.nama}</b></div></div>`;
-                }
+                sAll += `<div class="list-row"><b>${data.nama}</b><span>${isWinner ? '✅' : '⏳'}</span></div>`;
+                if(isWinner) { tWin++; sWin += `<div class="list-row"><b>${data.nama}</b></div>`; }
+                else { sJadwal += `<div class="list-row"><b>${data.nama}</b></div>`; }
             });
-
             document.getElementById('listSemua').innerHTML = sAll;
             document.getElementById('listMenang').innerHTML = sWin;
-            document.getElementById('listJadwal').innerHTML = sJadwal || "<p style='text-align:center; color:#ccc'>Semua sudah menang</p>";
+            document.getElementById('listJadwal').innerHTML = sJadwal || "Kosong";
             document.getElementById('statTotal').innerText = tTotal;
             document.getElementById('statWin').innerText = tWin;
-            lucide.createIcons(); // Re-render icons
+            lucide.createIcons();
         });
 
         document.getElementById('btnAdd').addEventListener('click', async () => {
@@ -307,24 +253,21 @@
         document.getElementById('btnKocok').addEventListener('click', async () => {
             const qB = query(colRef, where("status", "==", "Belum"));
             const s = await getDocs(qB);
-            if(s.empty) return alert("Semua sudah menang!");
-
+            if(s.empty) return alert("Habis!");
             const cand = s.docs.map(d => ({id: d.id, ...d.data()}));
             const winner = cand[Math.floor(Math.random() * cand.length)];
-
-            document.getElementById('btnKocok').innerText = "Mengacak Nama...";
+            document.getElementById('btnKocok').innerText = "Mengacak...";
             setTimeout(async () => {
                 await updateDoc(doc(db, "peserta_arisan", winner.id), { status: "Menang", tanggal_menang: Date.now() });
                 document.getElementById('lastWinnerName').innerText = winner.nama;
                 document.getElementById('winnerHero').style.display = 'block';
                 document.getElementById('btnKocok').innerText = "Mulai Undi Sekarang";
                 window.scrollTo({top:0, behavior:'smooth'});
-                lucide.createIcons();
-            }, 2000);
+            }, 1500);
         });
 
         window.resetArisan = async () => {
-            if(!confirm("Mulai arisan baru dari awal?")) return;
+            if(!confirm("Reset?")) return;
             const s = await getDocs(colRef);
             const batch = writeBatch(db);
             s.docs.forEach(d => batch.update(d.ref, {status: "Belum"}));
@@ -336,27 +279,24 @@
     <script>
         function showTab(id, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.side-item, .nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
+            
+            // Sync active state for both mobile & desktop buttons
+            const tabName = id;
+            document.querySelectorAll(`[onclick*="'${tabName}'"]`).forEach(el => el.classList.add('active'));
             window.scrollTo(0,0);
         }
 
         function openModal() { document.getElementById('loginModal').classList.add('active'); }
         function closeModal() { document.getElementById('loginModal').classList.remove('active'); }
-        
         function handleLogin() {
-            const p = document.getElementById('adminPass').value;
-            if(p === "12345") {
+            if(document.getElementById('adminPass').value === "12345") {
                 document.getElementById('adminArea').style.display = 'block';
                 document.getElementById('userMsg').style.display = 'none';
-                document.getElementById('adminTitle').innerText = "Admin Console";
                 closeModal();
-                lucide.createIcons();
-            } else { alert("Password Salah!"); }
+            } else { alert("Salah!"); }
         }
-        
-        // Init Icons
         lucide.createIcons();
     </script>
 </body>
