@@ -2,184 +2,232 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Arisan Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Arisan Pro - Responsive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4361ee;
-            --secondary: #3f37c9;
             --accent: #4cc9f0;
-            --success: #4895ef;
-            --danger: #f72585;
             --dark: #0f172a;
-            --glass: rgba(255, 255, 255, 0.95);
+            --bg: #f8f9ff;
+            --white: #ffffff;
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e0e7ff 100%);
+            background: var(--bg);
             margin: 0;
-            min-height: 100vh;
+            padding: 0;
             color: var(--dark);
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        /* NAVIGATION */
+        /* --- NAVIGATION --- */
         nav {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 15px 5%;
+            background: var(--white);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
         }
 
-        .brand { font-weight: 800; font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        
-        .menu-tabs { display: flex; gap: 10px; background: #f1f5f9; padding: 5px; border-radius: 12px; }
+        .brand { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+
+        /* Mobile Bottom Nav */
+        .menu-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 5px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
         .tab-btn {
-            padding: 10px 20px;
+            padding: 8px 12px;
             border: none;
-            background: transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
+            background: none;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
-        .tab-btn.active { background: var(--white); color: var(--primary); shadow: 0 4px 10px rgba(0,0,0,0.05); background: white; }
 
-        /* MAIN CONTENT */
-        main { padding: 30px 5%; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .tab-btn.active { color: var(--primary); }
+        .tab-btn i { font-size: 1.2rem; display: block; }
 
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        /* --- MAIN CONTENT --- */
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS & GRID */
-        .grid-main { display: grid; grid-template-columns: 1fr 350px; gap: 25px; }
-        .card { background: var(--glass); border-radius: 24px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8); }
+        /* --- CARDS --- */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f1f5f9;
+        }
 
-        /* WINNER SECTION */
+        /* Hero Winner */
         .winner-hero {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             text-align: center;
-            padding: 50px 20px;
-            border-radius: 30px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
         }
-        .winner-hero h2 { font-size: 3rem; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+        .winner-hero h2 { font-size: 1.8rem; margin: 10px 0; }
 
-        /* TABLES & LISTS */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; padding: 15px; color: #64748b; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; }
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; }
-
-        .avatar { width: 40px; height: 40px; border-radius: 12px; background: #e0e7ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        /* ADMIN POPUP */
-        .modal {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000;
+        /* --- RESPONSIVE TABLE TO CARDS --- */
+        .responsive-table { width: 100%; border-collapse: collapse; }
+        .responsive-table thead { display: none; } /* Sembunyikan header di mobile */
+        .responsive-table tr { 
+            display: block; 
+            background: #fff; 
+            border: 1px solid #f1f5f9; 
+            border-radius: 15px; 
+            margin-bottom: 10px; 
+            padding: 10px;
         }
-        .modal.active { display: flex; }
-        .modal-box { background: white; padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; }
+        .responsive-table td { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 8px 5px; 
+            border: none;
+            font-size: 0.9rem;
+        }
+        .responsive-table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: #64748b;
+        }
 
+        /* --- ADMIN CONTROLS --- */
+        .admin-box { background: #f8faff; border: 2px dashed #cbd5e1; border-radius: 15px; padding: 15px; margin-top: 15px; }
         .input-field {
-            width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px;
-            margin-bottom: 15px; font-family: inherit;
+            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;
+            margin-bottom: 10px; font-family: inherit;
         }
-        .input-field:focus { border-color: var(--primary); outline: none; }
-
         .btn {
-            padding: 12px 25px; border: none; border-radius: 12px; font-weight: 700;
-            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px;
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            font-weight: 700; cursor: pointer; transition: 0.2s;
         }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-kocok { width: 100%; background: var(--dark); color: white; padding: 20px; font-size: 1.2rem; }
-        .btn-kocok:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-kocok { background: var(--dark); color: white; font-size: 1.1rem; padding: 18px; margin-top: 10px; }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .grid-main { grid-template-columns: 1fr; }
-            .menu-tabs { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; justify-content: space-around; shadow: 0 -5px 20px rgba(0,0,0,0.1); z-index: 100; }
-            main { padding-bottom: 100px; }
-            .login-btn-text { display: none; }
+        /* --- MODAL LOGIN --- */
+        .modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-box { background: white; padding: 25px; border-radius: 20px; width: 100%; max-width: 350px; text-align: center; }
+
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            nav { padding: 15px 10%; }
+            .menu-tabs { 
+                position: static; 
+                width: auto; 
+                box-shadow: none; 
+                padding: 0;
+                background: #f1f5f9;
+                border-radius: 12px;
+                padding: 5px;
+            }
+            .tab-btn { flex-direction: row; font-size: 0.9rem; padding: 8px 20px; border-radius: 8px; }
+            .tab-btn.active { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+            .responsive-table thead { display: table-header-group; }
+            .responsive-table tr { display: table-row; background: none; border: none; }
+            .responsive-table td { display: table-cell; border-bottom: 1px solid #f1f5f9; padding: 15px; }
+            .responsive-table td::before { display: none; }
+            .winner-hero h2 { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="brand">✨ ARISAN<span>PRO</span></div>
-        <div class="menu-tabs">
-            <button class="tab-btn active" onclick="showTab('home')">Home</button>
-            <button class="tab-btn" onclick="showTab('peserta')">Peserta</button>
-            <button class="tab-btn" onclick="showTab('menang')">Pemenang</button>
-            <button class="tab-btn" onclick="showTab('jadwal')">Jadwal</button>
-        </div>
-        <button class="btn btn-primary" onclick="openModal()">
-            🔒 <span class="login-btn-text">Admin Login</span>
-        </button>
+        <div class="brand">✨ ARISAN PRO</div>
+        <button class="btn btn-primary" onclick="openModal()" style="width:auto; padding:8px 15px; font-size:0.8rem;">🔒 Admin</button>
     </nav>
+
+    <div class="menu-tabs">
+        <button class="tab-btn active" onclick="showTab('home')">🏠<span>Home</span></button>
+        <button class="tab-btn" onclick="showTab('peserta')">👥<span>Peserta</span></button>
+        <button class="tab-btn" onclick="showTab('menang')">🏆<span>Pemenang</span></button>
+        <button class="tab-btn" onclick="showTab('jadwal')">📅<span>Jadwal</span></button>
+    </div>
 
     <main>
         <div id="home" class="tab-content active">
             <div id="winnerHero" class="winner-hero" style="display:none;">
-                <p>SELAMAT KEPADA</p>
-                <h2 id="lastWinnerName">NAMA PEMENANG</h2>
-                <p>Anda mendapatkan arisan periode ini!</p>
+                <p>SELAMAT!</p>
+                <h2 id="lastWinnerName">NAMA</h2>
+                <p>Pemenang Arisan 🎉</p>
             </div>
 
-            <div class="grid-main">
-                <div class="card">
-                    <h3>🎲 Undian Real-Time</h3>
-                    <p style="color: #64748b;">Klik tombol di samping (Login Admin) untuk memulai pengundian.</p>
-                    <div id="adminControls" style="display:none;">
-                        <div style="background: #f8f9ff; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
-                            <label>Tambah Peserta Baru:</label>
-                            <div style="display:flex; gap:10px; margin-top:10px;">
-                                <input type="text" id="newName" class="input-field" placeholder="Ketik nama..." style="margin:0;">
-                                <button class="btn btn-primary" id="btnAdd">Tambah</button>
-                            </div>
-                        </div>
-                        <button class="btn btn-kocok" id="btnKocok">MULAI UNDI SEKARANG</button>
-                        <button class="btn" style="color:red; margin-top:10px;" onclick="resetArisan()">Reset Arisan</button>
+            <div class="card">
+                <h3>Dashboard Utama</h3>
+                <div id="adminControls" style="display:none;">
+                    <div class="admin-box">
+                        <label style="font-size:0.8rem; font-weight:600;">Tambah Anggota:</label>
+                        <input type="text" id="newName" class="input-field" placeholder="Nama lengkap...">
+                        <button class="btn btn-primary" id="btnAdd">Simpan Nama</button>
                     </div>
+                    <button class="btn btn-kocok" id="btnKocok">🎲 MULAI UNDI</button>
+                    <button class="btn" style="color:red; font-size:0.8rem;" onclick="resetArisan()">Reset Data</button>
                 </div>
-                <div class="card">
-                    <h3>📊 Ringkasan</h3>
-                    <div style="display:grid; gap:15px; margin-top:20px;">
-                        <div style="padding:15px; background:#f1f5f9; border-radius:12px;">
-                            <small>Total Terdaftar</small>
-                            <div style="font-size:1.5rem; font-weight:800;" id="statTotal">0</div>
-                        </div>
-                        <div style="padding:15px; background:#e0f2fe; border-radius:12px;">
-                            <small>Sudah Dapat</small>
-                            <div style="font-size:1.5rem; font-weight:800; color:var(--primary);" id="statWin">0</div>
-                        </div>
-                    </div>
+                <div id="userHint" style="color:#64748b; font-size:0.9rem; text-align:center; padding:20px;">
+                    Silakan hubungi Admin untuk melakukan pengundian.
+                </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div class="card" style="text-align:center;">
+                    <small>Total Peserta</small>
+                    <div id="statTotal" style="font-size:1.5rem; font-weight:800;">0</div>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <small>Sudah Dapat</small>
+                    <div id="statWin" style="font-size:1.5rem; font-weight:800; color:var(--primary);">0</div>
                 </div>
             </div>
         </div>
 
         <div id="peserta" class="tab-content">
             <div class="card">
-                <h3>👥 Semua Peserta Terdaftar</h3>
-                <table>
+                <h3>Peserta Terdaftar</h3>
+                <table class="responsive-table">
                     <thead>
-                        <tr><th>Nama</th><th>Status</th><th>Tanggal Gabung</th></tr>
+                        <tr><th>Nama</th><th>Status</th></tr>
                     </thead>
                     <tbody id="listSemua"></tbody>
                 </table>
@@ -188,10 +236,10 @@
 
         <div id="menang" class="tab-content">
             <div class="card">
-                <h3>🏆 Riwayat Pemenang</h3>
-                <table>
+                <h3>Riwayat Menang</h3>
+                <table class="responsive-table">
                     <thead>
-                        <tr><th>Nama</th><th>Waktu Menang</th></tr>
+                        <tr><th>Nama</th><th>Tanggal</th></tr>
                     </thead>
                     <tbody id="listMenang"></tbody>
                 </table>
@@ -200,22 +248,19 @@
 
         <div id="jadwal" class="tab-content">
             <div class="card">
-                <h3>📅 Jadwal Kocokan Mendatang</h3>
-                <p>Estimasi jadwal pengundian berikutnya:</p>
-                <div id="listJadwal">
-                    </div>
+                <h3>Antrian Undian</h3>
+                <div id="listJadwal"></div>
             </div>
         </div>
     </main>
 
     <div id="loginModal" class="modal">
         <div class="modal-box">
-            <h2>Admin Login</h2>
-            <p>Masukkan kredensial untuk akses kontrol</p>
+            <h3>Admin Login</h3>
             <input type="text" id="adminUser" class="input-field" placeholder="Username">
             <input type="password" id="adminPass" class="input-field" placeholder="Password">
-            <button class="btn btn-primary" style="width:100%" onclick="handleLogin()">Masuk</button>
-            <button class="btn" style="margin-top:10px;" onclick="closeModal()">Batal</button>
+            <button class="btn btn-primary" onclick="handleLogin()">Masuk</button>
+            <button class="btn" onclick="closeModal()">Batal</button>
         </div>
     </div>
 
@@ -238,39 +283,23 @@
         const db = getFirestore(app);
         const colRef = collection(db, "peserta_arisan");
 
-        // 1. REALTIME LISTENER
         onSnapshot(query(colRef, orderBy("tanggal_daftar", "asc")), (snapshot) => {
-            let listAll = '';
-            let listWinners = '';
-            let listJadwal = '';
-            let total = 0;
-            let winCount = 0;
+            let listAll = '', listWinners = '', listJadwal = '';
+            let total = 0, winCount = 0;
 
             snapshot.docs.forEach(d => {
                 const data = d.data();
                 total++;
-                const initial = data.nama.charAt(0);
                 const date = new Date(data.tanggal_daftar).toLocaleDateString('id-ID');
 
-                // Tab Peserta
-                listAll += `<tr>
-                    <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar">${initial}</div><b>${data.nama}</b></div></td>
-                    <td><span style="color:${data.status === 'Menang' ? 'green' : 'orange'}">${data.status}</span></td>
-                    <td>${date}</td>
-                </tr>`;
+                listAll += `<tr><td data-label="Nama"><b>${data.nama}</b></td><td data-label="Status">${data.status}</td></tr>`;
 
                 if(data.status === 'Menang') {
                     winCount++;
-                    const winDate = data.tanggal_menang ? new Date(data.tanggal_menang).toLocaleString('id-ID') : '-';
-                    listWinners += `<tr>
-                        <td><b>${data.nama}</b></td>
-                        <td>${winDate}</td>
-                    </tr>`;
+                    const winDate = data.tanggal_menang ? new Date(data.tanggal_menang).toLocaleDateString('id-ID') : '-';
+                    listWinners += `<tr><td data-label="Pemenang"><b>${data.nama}</b></td><td data-label="Tanggal">${winDate}</td></tr>`;
                 } else {
-                    // Tab Jadwal (Daftar antrian yang belum)
-                    listJadwal += `<div style="padding:15px; border-left:4px solid var(--primary); background:#f8f9ff; margin-bottom:10px; border-radius:0 10px 10px 0;">
-                        <b>${data.nama}</b> - Menunggu antrian undian.
-                    </div>`;
+                    listJadwal += `<div style="padding:15px; border-left:4px solid var(--primary); background:#f8f9ff; margin-bottom:10px; border-radius:10px;"><b>${data.nama}</b></div>`;
                 }
             });
 
@@ -281,34 +310,34 @@
             document.getElementById('statWin').innerText = winCount;
         });
 
-        // 2. ADMIN ACTIONS
         document.getElementById('btnAdd').addEventListener('click', async () => {
             const val = document.getElementById('newName').value;
             if(!val) return;
             await addDoc(colRef, { nama: val, status: "Belum", tanggal_daftar: Date.now() });
             document.getElementById('newName').value = '';
+            alert("Berhasil ditambah!");
         });
 
         document.getElementById('btnKocok').addEventListener('click', async () => {
             const qBelum = query(colRef, where("status", "==", "Belum"));
             const snap = await getDocs(qBelum);
-            if(snap.empty) return alert("Habis!");
+            if(snap.empty) return alert("Semua sudah dapet!");
 
             const candidates = snap.docs.map(d => ({id: d.id, ...d.data()}));
             const winner = candidates[Math.floor(Math.random() * candidates.length)];
 
-            // Effect
             document.getElementById('btnKocok').innerText = "MENGACAK...";
             setTimeout(async () => {
                 await updateDoc(doc(db, "peserta_arisan", winner.id), { status: "Menang", tanggal_menang: Date.now() });
                 document.getElementById('lastWinnerName').innerText = winner.nama;
                 document.getElementById('winnerHero').style.display = 'block';
-                document.getElementById('btnKocok').innerText = "MULAI UNDI SEKARANG";
+                document.getElementById('btnKocok').innerText = "🎲 MULAI UNDI";
+                window.scrollTo({top:0, behavior:'smooth'});
             }, 2000);
         });
 
         window.resetArisan = async () => {
-            if(!confirm("Hapus status?")) return;
+            if(!confirm("Reset semua data?")) return;
             const snap = await getDocs(colRef);
             const batch = writeBatch(db);
             snap.docs.forEach(d => batch.update(d.ref, {status: "Belum"}));
@@ -318,27 +347,20 @@
     </script>
 
     <script>
-        // UI LOGIC
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+        function showTab(id) {
+            document.querySelectorAll('.tab-content, .tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
         }
-
         function openModal() { document.getElementById('loginModal').classList.add('active'); }
         function closeModal() { document.getElementById('loginModal').classList.remove('active'); }
-
         function handleLogin() {
-            const u = document.getElementById('adminUser').value;
-            const p = document.getElementById('adminPass').value;
+            const u = document.getElementById('adminUser').value, p = document.getElementById('adminPass').value;
             if(u === "admin" && p === "12345") {
                 document.getElementById('adminControls').style.display = 'block';
+                document.getElementById('userHint').style.display = 'none';
                 closeModal();
-                alert("Login Admin Berhasil!");
-            } else {
-                alert("Salah!");
-            }
+            } else { alert("Login Gagal!"); }
         }
     </script>
 </body>
