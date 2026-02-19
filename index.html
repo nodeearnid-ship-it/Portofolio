@@ -1,199 +1,55 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
-    <title>Layar Utama - Fitur Mouse</title>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner Remote Cam</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <style>
-        body {
-            margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif;
-            background-color: #121212; color: white;
-            background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px; display: flex; height: 100vh;
-        }
-        
-        #sidebar {
-            width: 250px; background: rgba(0, 20, 40, 0.9);
-            border-right: 2px solid #00ffcc; padding: 20px;
-            display: flex; flex-direction: column; gap: 10px; z-index: 10;
-        }
-        .menu-item {
-            padding: 15px; border-radius: 8px; font-size: 18px; color: #aaa;
-            transition: all 0.2s; border: 1px solid transparent; cursor: pointer;
-        }
-        /* Highlight menu saat dipilih atau saat kursor mouse di atasnya */
-        .menu-item.active, .menu-item.hovered {
-            background: rgba(0, 255, 204, 0.2); color: #fff;
-            border-color: #00ffcc; transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-        }
-
-        #main-content {
-            flex: 1; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; position: relative;
-        }
-        #content-box {
-            text-align: center; background: rgba(0, 0, 0, 0.6);
-            padding: 40px; border-radius: 15px; border: 1px solid #00ffcc;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 60%;
-        }
-        #content-box h1 { color: #00ffcc; font-size: 40px; margin: 0 0 15px 0; }
-        
-        #qr-container {
-            position: absolute; top: 20px; right: 20px;
-            background: white; padding: 15px; border-radius: 10px;
-            text-align: center; color: black; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-        #qr-container p { margin: 0 0 10px 0; font-weight: bold; font-size: 14px; }
-        #status { position: absolute; bottom: 20px; right: 20px; color: #ffcc00; font-weight: bold;}
-
-        /* --- DESAIN KURSOR VIRTUAL --- */
-        #virtual-cursor {
-            position: absolute; width: 20px; height: 20px;
-            background-color: #ff3366; border-radius: 50%;
-            pointer-events: none; /* Penting agar tidak menghalangi klik */
-            transform: translate(-50%, -50%);
-            z-index: 9999; box-shadow: 0 0 15px #ff3366;
-            transition: background-color 0.1s, transform 0.1s;
-            display: none; /* Sembunyikan sampai remote connect */
-        }
-        /* Efek klik pada kursor */
-        #virtual-cursor.clicking {
-            transform: translate(-50%, -50%) scale(0.5);
-            background-color: #ffffff; box-shadow: 0 0 20px #ffffff;
-        }
+        body { font-family: sans-serif; text-align: center; background: #121212; color: white; padding: 20px; }
+        #qrcode { background: white; padding: 15px; display: inline-block; border-radius: 10px; margin-top: 20px; }
+        .input-group { margin-bottom: 20px; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 250px; }
+        button { padding: 10px 20px; border-radius: 5px; background: #2ecc71; color: white; border: none; cursor: pointer; }
+        #video-container { margin-top: 30px; display: none; }
+        img { width: 100%; max-width: 600px; border: 3px solid #333; }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <h2 style="color: #00ffcc; text-align: center;">MENU</h2>
-        <div class="menu-item active" data-title="📊 Dashboard Chart" data-desc="Menampilkan grafik pergerakan harga terkini.">📊 Dashboard Chart</div>
-        <div class="menu-item" data-title="💰 Portofolio" data-desc="Melihat total aset dan riwayat transaksi.">💰 Portofolio</div>
-        <div class="menu-item" data-title="⚙️ Pengaturan" data-desc="Mengatur preferensi asisten dan akun.">⚙️ Pengaturan</div>
+    <h2>Hubungkan Kamera via QR</h2>
+    
+    <div class="input-group">
+        <input type="text" id="ipAddress" placeholder="Masukkan IP (Contoh: 192.168.1.5:8080)">
+        <button onclick="generateQR()">Buat QR Scan</button>
     </div>
 
-    <div id="main-content">
-        <div id="qr-container">
-            <p>Scan via Remote</p>
-            <div id="qrcode"></div>
-        </div>
-        
-        <div id="content-box">
-            <h1 id="title">Menunggu Remote...</h1>
-            <p id="desc">Buka remote.html di HP Anda dan arahkan kamera ke QR Code.</p>
-        </div>
-        <div id="status">Menginisialisasi Server...</div>
-    </div>
+    <div id="qrcode"></div>
+    <p id="hint" style="display:none;">Scan QR ini dengan HP kedua atau buka linknya langsung.</p>
 
-    <div id="virtual-cursor"></div>
+    <div id="video-container">
+        <h3>Live Feed:</h3>
+        <img id="live-video" src="" alt="Video Stream">
+    </div>
 
     <script>
-        const menuItems = document.querySelectorAll('.menu-item');
-        const titleEl = document.getElementById('title');
-        const descEl = document.getElementById('desc');
-        const statusEl = document.getElementById('status');
-        const qrContainer = document.getElementById('qr-container');
-        const virtualCursor = document.getElementById('virtual-cursor');
-        
-        let currentIndex = 0;
+        function generateQR() {
+            let ip = document.getElementById('ipAddress').value;
+            if (!ip) return alert("Masukkan IP dulu!");
 
-        // Posisi awal kursor di tengah layar
-        let cursorX = window.innerWidth / 2;
-        let cursorY = window.innerHeight / 2;
-
-        function updateMenuSelection() {
-            menuItems.forEach((item, index) => {
-                if(index === currentIndex) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-        }
-
-        // Fungsi Eksekusi Menu (Bisa dipanggil oleh D-Pad atau Klik Mouse)
-        function executeMenu(element = null) {
-            const activeMenu = element || menuItems[currentIndex];
-            titleEl.innerText = activeMenu.getAttribute('data-title');
-            descEl.innerText = activeMenu.getAttribute('data-desc');
+            let fullUrl = "http://" + ip + "/video";
             
-            activeMenu.style.background = "#fff";
-            setTimeout(() => activeMenu.style.background = "", 150);
-        }
-
-        const peer = new Peer(); 
-
-        peer.on('open', function(id) {
-            statusEl.innerText = "Sistem Siap. Menunggu scan dari HP...";
-            new QRCode(document.getElementById("qrcode"), { text: id, width: 150, height: 150 });
-        });
-
-        peer.on('connection', function(conn) {
-            statusEl.innerText = "HP Terhubung! 🟢";
-            statusEl.style.color = "#00ff00";
-            qrContainer.style.display = 'none'; 
+            // Hapus QR lama jika ada
+            document.getElementById('qrcode').innerHTML = "";
             
-            // Tampilkan kursor saat HP connect
-            virtualCursor.style.display = 'block';
-            virtualCursor.style.left = `${cursorX}px`;
-            virtualCursor.style.top = `${cursorY}px`;
-
-            conn.on('data', function(data) {
-                // Jika data berupa object (Dari perintah Mouse)
-                if (typeof data === 'object') {
-                    if (data.type === 'mousemove') {
-                        // Sensitivitas Mouse (Kalikan agar gerakan lebih cepat)
-                        const sensitivity = 2.0; 
-                        cursorX += data.dx * sensitivity;
-                        cursorY += data.dy * sensitivity;
-
-                        // Batasi kursor agar tidak keluar layar
-                        cursorX = Math.max(0, Math.min(window.innerWidth, cursorX));
-                        cursorY = Math.max(0, Math.min(window.innerHeight, cursorY));
-
-                        virtualCursor.style.left = `${cursorX}px`;
-                        virtualCursor.style.top = `${cursorY}px`;
-
-                        // Cek apakah kursor berada di atas menu (Efek Hover)
-                        const elementUnderCursor = document.elementFromPoint(cursorX, cursorY);
-                        menuItems.forEach(el => el.classList.remove('hovered'));
-                        if (elementUnderCursor && elementUnderCursor.classList.contains('menu-item')) {
-                            elementUnderCursor.classList.add('hovered');
-                        }
-                    } 
-                    else if (data.type === 'click') {
-                        // Efek visual klik kursor
-                        virtualCursor.classList.add('clicking');
-                        setTimeout(() => virtualCursor.classList.remove('clicking'), 150);
-
-                        // Cari elemen apa yang ada di bawah kursor saat ini
-                        const elementUnderCursor = document.elementFromPoint(cursorX, cursorY);
-                        if (elementUnderCursor && elementUnderCursor.classList.contains('menu-item')) {
-                            executeMenu(elementUnderCursor);
-                        }
-                    }
-                } 
-                // Jika data berupa string (Dari perintah D-PAD Atas/Bawah/OK)
-                else {
-                    if (data === 'UP') {
-                        if (currentIndex > 0) currentIndex--;
-                        updateMenuSelection();
-                    } else if (data === 'DOWN') {
-                        if (currentIndex < menuItems.length - 1) currentIndex++;
-                        updateMenuSelection();
-                    } else if (data === 'OK') {
-                        executeMenu();
-                    }
-                }
-            });
-
-            conn.on('close', () => {
-                statusEl.innerText = "Koneksi terputus.";
-                statusEl.style.color = "red";
-                virtualCursor.style.display = 'none';
-            });
-        });
+            // Buat QR Code baru
+            new QRCode(document.getElementById("qrcode"), fullUrl);
+            
+            // Tampilkan video di halaman ini juga sebagai preview
+            document.getElementById('video-container').style.display = "block";
+            document.getElementById('live-video').src = fullUrl;
+            document.getElementById('hint').style.display = "block";
+        }
     </script>
 </body>
 </html>
