@@ -3,106 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Kamera Jarak Jauh</title>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <title>Monitor Kamera Instan</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; text-align: center; margin: 0; padding: 20px; }
-        .card { background: #1e1e1e; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-width: 500px; margin: auto; }
-        button { width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-cam { background: #e74c3c; color: white; }
-        .btn-monitor { background: #2ecc71; color: white; }
-        video { width: 100%; border-radius: 10px; background: #000; margin-top: 15px; }
-        #qr-container { background: white; padding: 15px; display: inline-block; border-radius: 10px; margin: 20px 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 12px; max-width: 500px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        input { padding: 12px; width: 80%; border-radius: 6px; border: none; margin-bottom: 15px; font-size: 16px; text-align: center; }
+        button { background: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 16px; cursor: pointer; width: 85%; font-weight: bold; }
+        #qr-wrapper { background: white; padding: 15px; display: inline-block; border-radius: 8px; margin-top: 20px; }
+        #video-feed { width: 100%; border-radius: 8px; border: 3px solid #2ecc71; margin-top: 15px; display: none; }
         .hidden { display: none; }
-        #status { color: #f1c40f; margin-bottom: 10px; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-    <div class="card" id="setup-menu">
-        <h2>Remote Cam System</h2>
-        <p>Pilih peran perangkat ini:</p>
-        <button class="btn-cam" onclick="startCamera()">JADIKAN KAMERA</button>
-        <button class="btn-monitor" onclick="startMonitor()">JADIKAN MONITOR</button>
+    <div class="card" id="setup-view">
+        <h2>Setup Monitor Cepat</h2>
+        <p style="color: #bbb; font-size: 0.9em;">Pastikan kedua HP pakai Wi-Fi yang sama.</p>
+        <p>1. Buka aplikasi <b>IP Webcam</b> di HP Kamera & klik Start Server.</p>
+        <p>2. Ketik IP yang muncul di layar HP Kamera ke bawah ini:</p>
+        
+        <input type="text" id="ip-input" placeholder="Contoh: 192.168.1.5:8080">
+        <button onclick="buatQR()">BUAT QR MONITOR</button>
+
+        <div id="qr-wrapper" class="hidden"><div id="qrcode"></div></div>
+        <p id="hint" class="hidden" style="color: #2ecc71; margin-top:15px;">▲ Scan QR ini pakai HP Pertama (Monitor) ▲</p>
     </div>
 
-    <div id="camera-view" class="hidden">
-        <h3>Mode: Kamera Pengawas</h3>
-        <div id="status-cam">Menyiapkan koneksi...</div>
-        <div id="qr-container"><div id="qrcode"></div></div>
-        <p>Scan QR di atas dengan HP Monitor</p>
-        <video id="localVideo" autoplay playsinline muted></video>
-    </div>
-
-    <div id="monitor-view" class="hidden">
-        <h3>Mode: Monitoring</h3>
-        <div id="status-mon">Menunggu koneksi dari kamera...</div>
-        <video id="remoteVideo" autoplay playsinline></video>
+    <div class="card hidden" id="monitor-view">
+        <h2 style="color: #2ecc71;">● LIVE MONITORING</h2>
+        <img id="video-feed" src="" alt="Kehilangan Sinyal Kamera...">
+        <button style="margin-top: 20px; background: #e74c3c;" onclick="window.location.href=window.location.pathname">Tutup Kamera</button>
     </div>
 
     <script>
-        const peer = new Peer();
+        // Cek apakah link dibuka dari hasil scan QR (ada IP di link-nya)
         const urlParams = new URLSearchParams(window.location.search);
-        const targetId = urlParams.get('peer');
+        const targetIp = urlParams.get('ip');
 
-        // Jika link dibuka dengan parameter ?peer=ID, otomatis jadi Monitor
-        window.onload = () => {
-            if (targetId) startMonitor(targetId);
-        };
-
-        // --- FUNGSI KAMERA ---
-        function startCamera() {
-            document.getElementById('setup-menu').classList.add('hidden');
-            document.getElementById('camera-view').classList.remove('hidden');
-
-            peer.on('open', (id) => {
-                document.getElementById('status-cam').innerText = "Kamera Siap! ID: " + id;
-                // Buat link otomatis ke file ini sendiri dengan parameter peer
-                const monitorLink = window.location.origin + window.location.pathname + "?peer=" + id;
-                new QRCode(document.getElementById("qrcode"), monitorLink);
-            });
-
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: true })
-                .then(stream => {
-                    document.getElementById('localVideo').srcObject = stream;
-                    peer.on('call', call => {
-                        call.answer(stream);
-                    });
-                });
+        if (targetIp) {
+            // JIKA HASIL SCAN: Langsung buka mode monitor tanpa loading!
+            document.getElementById('setup-view').classList.add('hidden');
+            document.getElementById('monitor-view').classList.remove('hidden');
+            
+            const videoFeed = document.getElementById('video-feed');
+            videoFeed.style.display = 'block';
+            
+            // Mengambil aliran gambar MJPEG secara langsung (0 detik jeda)
+            videoFeed.src = "http://" + targetIp + "/video";
         }
 
-        // --- FUNGSI MONITOR ---
-        function startMonitor(id) {
-            document.getElementById('setup-menu').classList.add('hidden');
-            document.getElementById('monitor-view').classList.remove('hidden');
+        function buatQR() {
+            // Bersihkan teks (buang http:// kalau user ga sengaja ngetik)
+            let ip = document.getElementById('ip-input').value.replace('http://', '').trim();
+            if (!ip) return alert("Ketik IP-nya dulu, ya!");
 
-            const connectToPeer = (peerId) => {
-                document.getElementById('status-mon').innerText = "Menghubungkan ke: " + peerId;
-                // PeerJS butuh stream (meski kosong) untuk initiate call
-                navigator.mediaDevices.getUserMedia({ video: false, audio: false })
-                    .then(stream => {
-                        const call = peer.call(peerId, stream);
-                        call.on('stream', remoteStream => {
-                            document.getElementById('remoteVideo').srcObject = remoteStream;
-                            document.getElementById('status-mon').innerText = "Status: LIVE";
-                        });
-                    }).catch(err => {
-                        // Untuk beberapa browser yang blokir getUserMedia kosong
-                        const call = peer.call(peerId, new MediaStream());
-                        call.on('stream', remoteStream => {
-                            document.getElementById('remoteVideo').srcObject = remoteStream;
-                            document.getElementById('status-mon').innerText = "Status: LIVE";
-                        });
-                    });
-            };
-
-            if (id) {
-                peer.on('open', () => connectToPeer(id));
-            } else {
-                const manualId = prompt("Masukkan ID Kamera atau Scan QR:");
-                if (manualId) connectToPeer(manualId);
-            }
+            // Buat link ke file HTML ini sendiri, ditambah info IP
+            const linkMonitor = window.location.origin + window.location.pathname + "?ip=" + ip;
+            
+            // Tampilkan QR
+            document.getElementById('qr-wrapper').classList.remove('hidden');
+            document.getElementById('hint').classList.remove('hidden');
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), linkMonitor);
         }
     </script>
 </body>
