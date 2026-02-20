@@ -3,95 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrojaTools Project | Control with Command</title>
+    <title>TrojaTools | Download & Tutorial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0a0a0a; color: #e5e7eb; }
+        body { background-color: #0a0a0a; color: #e5e7eb; scroll-behavior: smooth; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .gradient-text { background: linear-gradient(90deg, #4ade80, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-gradient { background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: all 0.3s ease; }
+        .btn-gradient:hover { opacity: 0.9; transform: translateY(-2px); shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5); }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="font-sans">
 
     <nav class="fixed w-full z-50 p-6">
         <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl px-8 py-4">
             <div class="text-2xl font-bold tracking-tighter">Troja<span class="text-blue-500">Tools</span></div>
             <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#about" class="hover:text-blue-400 transition">About</a>
-                <a href="#features" class="hover:text-blue-400 transition">Features</a>
-                <a href="#docs" class="hover:text-blue-400 transition">Terminal</a>
+                <a href="#" class="hover:text-blue-400">Home</a>
+                <a href="#tutorial" class="hover:text-blue-400">Tutorial</a>
+                <a href="#download" class="hover:text-blue-400">Download</a>
             </div>
-            <a href="#" class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full text-sm font-bold transition">Download</a>
         </div>
     </nav>
 
-    <header class="pt-32 pb-20 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-                Kuasai Perangkat Anda <br> Lewat <span class="gradient-text">Baris Perintah</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
-                TrojaTools adalah aplikasi modifikasi revolusioner yang memungkinkan kontrol penuh perangkat Android langsung melalui terminal. Efisien, powerful, dan tanpa batas.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button class="bg-white text-black font-bold py-4 px-8 rounded-xl hover:bg-gray-200 transition">Mulai Sekarang</button>
-                <button class="glass font-bold py-4 px-8 rounded-xl hover:bg-white/10 transition border border-white/20">Dokumentasi</button>
-            </div>
-        </div>
+    <header class="pt-40 pb-20 px-6 text-center">
+        <h1 class="text-5xl font-extrabold mb-4">Siap Untuk <span class="text-blue-500">Modifikasi?</span></h1>
+        <p class="text-gray-400 max-w-xl mx-auto mb-8">Dapatkan paket lengkap tutorial edit aplikasi dan script instalasi Termux di sini.</p>
+        <a href="#download" class="btn-gradient px-8 py-4 rounded-xl font-bold inline-block">Cek Link Download</a>
     </header>
 
-    <section id="about" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="glass p-8 rounded-3xl">
-                <div class="bg-black rounded-xl p-4 font-mono text-sm text-green-400 shadow-2xl">
-                    <p>$ trojatools --connect device_01</p>
-                    <p class="text-white text-opacity-50">Connecting to smartphone...</p>
-                    <p class="text-blue-400">[SUCCESS] Device Connected.</p>
-                    <p>$ open-app camera --capture</p>
-                    <p class="text-white text-opacity-50">Image saved to /gallery/shot_01.jpg</p>
-                    <div class="animate-pulse">_</div>
+    <section id="tutorial" class="py-20 px-6 bg-[#0f0f0f]">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-10 border-l-4 border-blue-500 pl-4">Panduan Singkat</h2>
+            
+            <div class="space-y-6">
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-400">1. Tahap Editing Aplikasi</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Gunakan tools seperti APK Editor atau MT Manager untuk menyisipkan perintah terminal ke dalam `smali` atau `manifest` aplikasi target agar bisa di-hook oleh TrojaTools.
+                    </p>
                 </div>
-            </div>
-            <div>
-                <h2 class="text-3xl font-bold mb-6">Apa itu TrojaTools?</h2>
-                <p class="text-gray-400 leading-relaxed mb-6">
-                    Bukan sekadar aplikasi biasa. TrojaTools memodifikasi cara interaksi antara user dan sistem operasi. Dengan memanfaatkan jalur terminal, Anda bisa melakukan otomasi, manajemen file, hingga monitoring sistem tanpa perlu menyentuh layar HP.
-                </p>
-                <ul class="space-y-4">
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Integrasi Terminal Seamless</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Kontrol Jarak Jauh (Remote Control)</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Modifikasi Sistem Tingkat Lanjut</li>
-                </ul>
-            </div>
-        </div>
-    </section>
 
-    <section id="features" class="py-20 bg-[#0f0f0f]">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold mb-16">Fitur Utama</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass p-10 rounded-3xl hover:border-blue-500 transition duration-500">
-                    <i class="fas fa-terminal text-4xl text-blue-500 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">CLI Power</h3>
-                    <p class="text-gray-400">Gunakan perintah teks untuk eksekusi perintah yang biasanya butuh puluhan klik.</p>
-                </div>
-                <div class="glass p-10 rounded-3xl hover:border-green-500 transition duration-500">
-                    <i class="fas fa-bolt text-4xl text-green-500 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">Ultra Responsive</h3>
-                    <p class="text-gray-400">Latency rendah antar perintah terminal dan aksi di smartphone Anda.</p>
-                </div>
-                <div class="glass p-10 rounded-3xl hover:border-purple-500 transition duration-500">
-                    <i class="fas fa-shield-alt text-4xl text-purple-500 mb-6"></i>
-                    <h3 class="text-xl font-bold mb-4">Secure Mod</h3>
-                    <p class="text-gray-400">Protokol keamanan yang memastikan hanya Anda yang memiliki akses kontrol.</p>
+                <div class="glass p-6 rounded-2xl border-l-4 border-green-500">
+                    <h3 class="text-xl font-semibold mb-3 text-green-400">2. Setup di Termux</h3>
+                    <p class="text-gray-400 text-sm mb-4">Jalankan perintah dasar berikut untuk mempersiapkan environment:</p>
+                    <div class="bg-black p-4 rounded-lg font-mono text-xs text-pink-400 overflow-x-auto">
+                        pkg update && pkg upgrade <br>
+                        pkg install python git <br>
+                        git clone https://github.com/username/trojatools.git
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-10 border-t border-white/10 text-center">
-        <p class="text-gray-500 text-sm">© 2026 TrojaTools Project. For educational purposes only.</p>
+    <section id="download" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto text-center glass p-12 rounded-[2rem] border-2 border-blue-500/20">
+            <i class="fas fa-file-archive text-6xl text-blue-500 mb-6"></i>
+            <h2 class="text-4xl font-bold mb-4">Download Paket TrojaTools</h2>
+            <p class="text-gray-400 mb-8">File berisi: PDF Tutorial Lengkap, Script Python, dan Payload Editor.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="URL_FILE_KAMU_DISINI" class="btn-gradient px-10 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3">
+                    <i class="fas fa-download"></i> Download Project (.zip)
+                </a>
+                
+                <a href="#" class="glass px-10 py-5 rounded-2xl font-bold hover:bg-white/5 transition flex items-center justify-center gap-3">
+                    <i class="fab fa-github"></i> GitHub Repo
+                </a>
+            </div>
+            
+            <p class="mt-8 text-xs text-gray-500">
+                Ukuran file: 12.5 MB | Versi: v1.0.2-Stable <br>
+                <span class="text-yellow-500/50 italic">*Gunakan dengan bijak untuk keperluan edukasi.</span>
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center text-gray-600 text-sm">
+        Built with ❤️ for TrojaTools Community
     </footer>
 
 </body>
