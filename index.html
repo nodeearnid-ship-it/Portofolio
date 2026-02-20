@@ -3,70 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Kamera Instan</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>GAS Coder Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; background: #121212; color: #fff; margin: 0; padding: 20px; }
-        .card { background: #1e1e1e; padding: 20px; border-radius: 12px; max-width: 500px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        input { padding: 12px; width: 80%; border-radius: 6px; border: none; margin-bottom: 15px; font-size: 16px; text-align: center; }
-        button { background: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 16px; cursor: pointer; width: 85%; font-weight: bold; }
-        #qr-wrapper { background: white; padding: 15px; display: inline-block; border-radius: 8px; margin-top: 20px; }
-        #video-feed { width: 100%; border-radius: 8px; border: 3px solid #2ecc71; margin-top: 15px; display: none; }
-        .hidden { display: none; }
+        :root { --primary-color: #24292e; --accent-color: #0088cc; }
+        body { background-color: #f6f8fa; }
+        .navbar { background-color: var(--primary-color) !important; }
+        .hero { background: linear-gradient(135deg, #24292e 0%, #444d56 100%); color: white; padding: 40px 0; border-bottom: 5px solid var(--accent-color); }
+        .card-prompt { border-left: 5px solid var(--accent-color); transition: 0.3s; }
+        .card-prompt:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .code-box { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; position: relative; font-family: monospace; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; border: none; background: #444d56; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="card" id="setup-view">
-        <h2>Setup Monitor Cepat</h2>
-        <p style="color: #bbb; font-size: 0.9em;">Pastikan kedua HP pakai Wi-Fi yang sama.</p>
-        <p>1. Buka aplikasi <b>IP Webcam</b> di HP Kamera & klik Start Server.</p>
-        <p>2. Ketik IP yang muncul di layar HP Kamera ke bawah ini:</p>
-        
-        <input type="text" id="ip-input" placeholder="Contoh: 192.168.1.5:8080">
-        <button onclick="buatQR()">BUAT QR MONITOR</button>
-
-        <div id="qr-wrapper" class="hidden"><div id="qrcode"></div></div>
-        <p id="hint" class="hidden" style="color: #2ecc71; margin-top:15px;">▲ Scan QR ini pakai HP Pertama (Monitor) ▲</p>
+<nav class="navbar navbar-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fab fa-google me-2"></i> GAS Coder Hub</a>
     </div>
+</nav>
 
-    <div class="card hidden" id="monitor-view">
-        <h2 style="color: #2ecc71;">● LIVE MONITORING</h2>
-        <img id="video-feed" src="" alt="Kehilangan Sinyal Kamera...">
-        <button style="margin-top: 20px; background: #e74c3c;" onclick="window.location.href=window.location.pathname">Tutup Kamera</button>
+<div class="hero text-center">
+    <div class="container">
+        <h1>GAS Coder Library</h1>
+        <p class="lead">Kumpulan Prompt & Tutorial Apps Script untuk Developer</p>
+        <a href="https://t.me/UsernameAdminKamu" class="btn btn-info btn-lg mt-2 text-white shadow">
+            <i class="fab fa-telegram-plane"></i> Hubungi Admin
+        </a>
     </div>
+</div>
 
-    <script>
-        // Cek apakah link dibuka dari hasil scan QR (ada IP di link-nya)
-        const urlParams = new URLSearchParams(window.location.search);
-        const targetIp = urlParams.get('ip');
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h4 class="mb-4">Tutorial GAS</h4>
+            <div class="list-group shadow-sm">
+                <a href="#" class="list-group-item list-group-item-action">Cara Deploy Web App</a>
+                <a href="#" class="list-group-item list-group-item-action">Menghubungkan ke Sheets</a>
+                <a href="#" class="list-group-item list-group-item-action">Menggunakan Library External</a>
+            </div>
+        </div>
 
-        if (targetIp) {
-            // JIKA HASIL SCAN: Langsung buka mode monitor tanpa loading!
-            document.getElementById('setup-view').classList.add('hidden');
-            document.getElementById('monitor-view').classList.remove('hidden');
+        <div class="col-md-8">
+            <h4 class="mb-4">Salin Prompt</h4>
             
-            const videoFeed = document.getElementById('video-feed');
-            videoFeed.style.display = 'block';
-            
-            // Mengambil aliran gambar MJPEG secara langsung (0 detik jeda)
-            videoFeed.src = "http://" + targetIp + "/video";
-        }
+            <div class="card card-prompt mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Web App CRUD Generator</h5>
+                    <p class="card-text text-muted small">Prompt untuk membuat sistem input data ke Google Sheets dengan UI Bootstrap.</p>
+                    <div class="code-box">
+                        <button class="copy-btn" onclick="copyPrompt('p1')">Salin</button>
+                        <span id="p1">Buatlah kode Google Apps Script untuk sistem CRUD. Gunakan HTML Service, integrasikan dengan Bootstrap 5, dan buat fungsi doGet() serta doPost().</span>
+                    </div>
+                </div>
+            </div>
 
-        function buatQR() {
-            // Bersihkan teks (buang http:// kalau user ga sengaja ngetik)
-            let ip = document.getElementById('ip-input').value.replace('http://', '').trim();
-            if (!ip) return alert("Ketik IP-nya dulu, ya!");
+            <div class="card card-prompt mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Automated Email Report</h5>
+                    <p class="card-text text-muted small">Prompt untuk mengirim PDF otomatis dari data Spreadsheet.</p>
+                    <div class="code-box">
+                        <button class="copy-btn" onclick="copyPrompt('p2')">Salin</button>
+                        <span id="p2">Buat script untuk mengkonversi range A1:E10 di Google Sheets menjadi PDF dan kirimkan ke email admin setiap hari Senin pukul 08:00.</span>
+                    </div>
+                </div>
+            </div>
 
-            // Buat link ke file HTML ini sendiri, ditambah info IP
-            const linkMonitor = window.location.origin + window.location.pathname + "?ip=" + ip;
-            
-            // Tampilkan QR
-            document.getElementById('qr-wrapper').classList.remove('hidden');
-            document.getElementById('hint').classList.remove('hidden');
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), linkMonitor);
-        }
-    </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyPrompt(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+        alert("Prompt tersalin!");
+    }
+</script>
+
 </body>
 </html>
