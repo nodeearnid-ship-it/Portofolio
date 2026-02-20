@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAS Coder | @NodeEarn</title>
+    <title>GAS Coder Hub | @NodeEarn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg: #0a0a0a;
-            --card: #161616;
+            --bg: #050505;
+            --card: #121212;
             --accent: #3b82f6;
             --text-dim: #a1a1aa;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         body {
@@ -22,73 +23,91 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Hero & Branding */
+        /* Hero Section */
         .hero-box {
-            padding: 80px 0 40px;
-            background: radial-gradient(circle at center, #1e1e1e 0%, #0a0a0a 100%);
+            padding: 100px 0 60px;
+            background: radial-gradient(circle at 50% -20%, #1e1e1e 0%, #050505 100%);
         }
-        .brand-name { font-weight: 800; font-size: 3rem; background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-name { 
+            font-weight: 800; 
+            font-size: 3.5rem; 
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff 30%, #444 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
 
-        /* Card Tutorial Utama */
+        /* Tutorial Main Card */
         .tutorial-main-card {
-            background: linear-gradient(145deg, #1e1e1e, #111111);
-            border: 1px solid #333;
-            border-radius: 24px;
-            padding: 30px;
+            background: var(--card);
+            border: 1px solid #222;
+            border-radius: 30px;
+            padding: 40px;
             cursor: pointer;
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .tutorial-main-card:hover { border-color: var(--accent); transform: scale(1.02); }
-        .tutorial-main-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+        .tutorial-main-card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
+        }
+        .tutorial-main-card i { font-size: 3rem; color: var(--accent); margin-bottom: 20px; }
 
         /* Prompt List */
         .prompt-item {
             background: var(--card);
-            border: 1px solid #222;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 12px;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.3s;
         }
-
-        /* Modal / Popup Styling */
+        .prompt-item:hover { border-color: #333; background: #181818; }
+        
+        /* Modal Styling */
         .modal-content {
-            background-color: #121212;
+            background-color: #0f0f0f;
             border: 1px solid #333;
-            border-radius: 28px;
+            border-radius: 35px;
             color: white;
+            overflow: hidden;
         }
         .list-video-item {
-            background: #1d1d1d;
-            border: 1px solid #333;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            color: white;
-            transition: 0.2s;
+            background: #181818;
+            border: 1px solid #222;
+            margin-bottom: 12px;
+            border-radius: 15px;
+            color: #efefef;
+            transition: 0.3s;
             text-align: left;
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             display: flex;
             align-items: center;
+            font-weight: 600;
         }
-        .list-video-item:hover { background: var(--accent); border-color: var(--accent); }
+        .list-video-item:hover { background: var(--accent); border-color: var(--accent); transform: translateX(10px); }
         .list-video-item i { margin-right: 15px; font-size: 1.2rem; }
 
         .btn-copy {
-            background: #fff; color: #000; border: none; font-weight: 700;
-            border-radius: 10px; padding: 8px 18px; font-size: 14px;
+            background: #ffffff; color: #000; border: none; font-weight: 800;
+            border-radius: 12px; padding: 10px 22px; font-size: 14px;
+            transition: 0.2s;
         }
+        .btn-copy:active { transform: scale(0.9); }
 
         .video-wrapper {
             position: relative; padding-bottom: 56.25%; height: 0; 
-            border-radius: 15px; overflow: hidden; margin-bottom: 20px;
-            display: none; /* Sembunyi sampai tombol diklik */
+            border-radius: 20px; overflow: hidden; margin-bottom: 20px;
+            display: none; border: 1px solid #333;
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .badge-new { background: #3b82f6; font-size: 10px; padding: 4px 8px; border-radius: 6px; margin-left: 8px; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -96,43 +115,49 @@
 <div class="hero-box text-center">
     <div class="container">
         <h1 class="brand-name">GAS Coder.</h1>
-        <p class="text-dim">Professional Apps Script Resource By <b>@NodeEarn</b></p>
-        <div class="mt-4">
-            <a href="https://t.me/NodeEarn" target="_blank" class="btn btn-outline-light rounded-pill px-4">
-                <i class="fab fa-telegram me-2"></i> Admin Support
-            </a>
-        </div>
+        <p class="text-dim mb-4">Solusi Cepat Build Web App Script by <b>@NodeEarn</b></p>
+        <a href="https://t.me/NodeEarn" target="_blank" class="btn btn-outline-light rounded-pill px-4 py-2">
+            <i class="fab fa-telegram me-2"></i> Chat Admin
+        </a>
     </div>
 </div>
 
 <div class="container my-5">
-    <div class="row g-4">
+    <div class="row g-5">
         <div class="col-lg-5">
             <div class="tutorial-main-card text-center" data-bs-toggle="modal" data-bs-target="#tutorialModal">
                 <i class="fas fa-play-circle"></i>
-                <h3>Tutorial GAS Coder</h3>
-                <p class="text-dim">Panduan lengkap dari 0 sampai berhasil deploy Web App.</p>
-                <span class="badge bg-primary px-3 py-2">Klik untuk Belajar</span>
+                <h3 class="fw-bold">Academy</h3>
+                <p class="text-dim">Panduan eksklusif cara menggunakan GAS Coder & Deploy Web untuk Client.</p>
+                <button class="btn btn-primary rounded-pill px-4 mt-2">Buka Tutorial</button>
             </div>
         </div>
 
         <div class="col-lg-7">
-            <h5 class="mb-4 text-dim fw-bold">PROMPT LIBRARY</h5>
+            <h5 class="mb-4 text-dim fw-bold"><i class="fas fa-code me-2"></i> READY PROMPTS</h5>
             
             <div class="prompt-item">
                 <div>
-                    <h6 class="mb-1">Web App CRUD Base</h6>
-                    <p class="small text-dim mb-0">Membuat sistem input & edit data Sheets.</p>
+                    <h6>Daftar Siswa Online <span class="badge-new">HOT</span></h6>
+                    <p class="small text-dim mb-0">Web input data siswa ke Google Sheets.</p>
                 </div>
-                <button class="btn-copy" onclick="copyText('p1', this)">Copy</button>
+                <button class="btn-copy" onclick="copyText('pSiswa', this)">Copy</button>
             </div>
 
             <div class="prompt-item">
                 <div>
-                    <h6 class="mb-1">Telegram Webhook Init</h6>
-                    <p class="small text-dim mb-0">Koneksi Bot Telegram ke Script.</p>
+                    <h6>Web Arisan Online</h6>
+                    <p class="small text-dim mb-0">Sistem kocok arisan berbasis web script.</p>
                 </div>
-                <button class="btn-copy" onclick="copyText('p2', this)">Copy</button>
+                <button class="btn-copy" onclick="copyText('pArisan', this)">Copy</button>
+            </div>
+
+            <div class="prompt-item">
+                <div>
+                    <h6>Catatan Keuangan</h6>
+                    <p class="small text-dim mb-0">Monitor pemasukan & pengeluaran otomatis.</p>
+                </div>
+                <button class="btn-copy" onclick="copyText('pKeuangan', this)">Copy</button>
             </div>
         </div>
     </div>
@@ -140,9 +165,9 @@
 
 <div class="modal fade" id="tutorialModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content p-3">
-            <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold"><i class="fas fa-graduation-cap me-2 text-primary"></i> Learning Center</h5>
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">GAS Coder Academy</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -152,25 +177,25 @@
                 </div>
 
                 <div id="menuTutorial">
-                    <p class="text-dim small mb-3">Pilih materi yang ingin dipelajari:</p>
+                    <p class="text-dim small mb-4">Pilih materi video by @NodeEarn:</p>
                     <button class="list-video-item" onclick="playVideo('ID_VIDEO_1')">
-                        <i class="fas fa-chalkboard-teacher"></i> Cara Menggunakan GAS Coder by NodeEarn
+                        <i class="fas fa-desktop"></i> Cara Menggunakan GAS Coder
                     </button>
                     <button class="list-video-item" onclick="playVideo('ID_VIDEO_2')">
-                        <i class="fas fa-pen-fancy"></i> Cara Membuat Prompt yang Benar
+                        <i class="fas fa-keyboard"></i> Cara Membuat Prompt yang Benar
                     </button>
                     <button class="list-video-item" onclick="playVideo('ID_VIDEO_3')">
                         <i class="fas fa-image"></i> Cara Isi Gambar ke App Script
                     </button>
                     <button class="list-video-item" onclick="playVideo('ID_VIDEO_4')">
-                        <i class="fas fa-rocket"></i> Cara Deploy Web dari 0 - Berhasil
+                        <i class="fas fa-cloud-upload-alt"></i> Cara Deploy Web 0 - Berhasil
                     </button>
                     <button class="list-video-item" onclick="playVideo('ID_VIDEO_5')">
-                        <i class="fas fa-user-tie"></i> Cara Buat Web untuk Client
+                        <i class="fas fa-handshake"></i> Cara Buat Web untuk Client
                     </button>
                 </div>
 
-                <button id="btnBack" class="btn btn-sm btn-secondary mt-3" style="display:none;" onclick="backToMenu()">
+                <button id="btnBack" class="btn btn-dark w-100 rounded-pill mt-3" style="display:none;" onclick="backToMenu()">
                     <i class="fas fa-arrow-left me-2"></i> Kembali ke Menu
                 </button>
             </div>
@@ -178,24 +203,28 @@
     </div>
 </div>
 
-<footer class="text-center mt-5 text-dim pb-4">
-    <small>GAS Coder &copy; 2026 | Developed by @NodeEarn</small>
+<footer class="text-center mt-5 text-dim pb-5">
+    <p>GAS Coder &copy; 2026 | Developed by <b>@NodeEarn</b></p>
 </footer>
 
 <script>
-    // Database Prompt Tersembunyi
+    // Database Prompt Spesifik
     const prompts = {
-        p1: "Buatlah kode Google Apps Script untuk sistem CRUD. Gunakan HTML Service, integrasikan dengan Bootstrap 5, dan buat fungsi doGet() serta doPost().",
-        p2: "Buat fungsi doPost(e) untuk menerima webhook dari Telegram Bot API dan simpan pesan masuk ke Spreadsheet."
+        pSiswa: "Buatlah web app menggunakan Google Apps Script untuk sistem Daftar Siswa. Fitur: Form input (Nama, Kelas, Alamat), Tabel data dari Google Sheets, tombol hapus data, dan UI menggunakan Bootstrap 5 Dark Mode.",
+        pArisan: "Buatlah aplikasi Arisan Online berbasis Web App Script. Gunakan Google Sheets sebagai database nama peserta. Sertakan tombol 'Kocok Arisan' yang akan memilih satu nama secara acak menggunakan Math.random() dan menampilkan hasilnya dengan animasi popup.",
+        pKeuangan: "Buatlah sistem Catatan Keuangan pribadi dengan GAS. Fitur: Form input (Keterangan, Kategori: Masuk/Keluar, Nominal), simpan ke Google Sheets, dan tampilkan total saldo otomatis di halaman web menggunakan fungsi reduce di JavaScript."
     };
 
     function copyText(key, btn) {
         navigator.clipboard.writeText(prompts[key]);
+        const original = btn.innerText;
         btn.innerText = "Copied!";
-        btn.classList.replace('btn-copy', 'btn-success');
+        btn.style.background = "#3b82f6";
+        btn.style.color = "#fff";
         setTimeout(() => {
-            btn.innerText = "Copy";
-            btn.classList.replace('btn-success', 'btn-copy');
+            btn.innerText = original;
+            btn.style.background = "#fff";
+            btn.style.color = "#000";
         }, 1500);
     }
 
@@ -203,7 +232,6 @@
         document.getElementById('menuTutorial').style.display = 'none';
         document.getElementById('videoPlayerArea').style.display = 'block';
         document.getElementById('btnBack').style.display = 'block';
-        // Ganti URL dengan ID Video Youtube Asli
         document.getElementById('mainIframe').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
     }
 
