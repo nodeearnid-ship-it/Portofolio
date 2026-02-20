@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrojaTools Project | Personal Mobile Control</title>
+    <title>TrojaTools Project | Professional Mobile Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
         .gradient-text { background: linear-gradient(90deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5); }
-        @media (max-width: 640px) { .hero-title { font-size: 2.5rem; line-height: 1.2; } }
+        .card-feature:hover { border-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body class="antialiased">
@@ -23,83 +23,169 @@
     <nav class="fixed w-full z-50 p-4 md:p-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-2xl px-5 py-3 md:px-8 md:py-4">
             <div class="text-xl md:text-2xl font-extrabold tracking-tighter flex items-center gap-2">
-                <i class="fas fa-microchip text-blue-500"></i> Troja<span class="text-blue-500">Tools</span>
+                <i class="fas fa-terminal text-blue-500"></i> Troja<span class="text-blue-500">Tools</span>
             </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
-                <a href="#about" class="hover:text-blue-400">About</a>
-                <a href="#privacy" class="hover:text-green-400">Privacy</a>
-                <a href="#download" class="hover:text-blue-400">Download</a>
+            <div class="hidden md:flex space-x-6 text-[11px] font-bold uppercase tracking-widest">
+                <a href="#about" class="hover:text-blue-400 transition">Info</a>
+                <a href="#privacy" class="hover:text-blue-400 transition">Privasi</a>
+                <a href="#commands" class="hover:text-blue-400 transition">Commands</a>
+                <a href="#faq" class="hover:text-blue-400 transition">FAQ</a>
             </div>
-            <a href="#download" class="btn-primary px-5 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase text-white shadow-lg">Download</a>
+            <a href="#download" class="btn-primary px-5 py-2 rounded-full text-[10px] font-bold text-white shadow-lg uppercase">Get Files</a>
         </div>
     </nav>
 
-    <header class="pt-32 md:pt-48 pb-16 px-6 text-center">
+    <header class="pt-40 pb-20 px-6 text-center">
         <div class="max-w-5xl mx-auto">
-            <h1 class="hero-title text-4xl md:text-8xl font-black mb-6 md:mb-8 leading-tight uppercase">
-                Remote Mobile <br> via <span class="gradient-text">Terminal</span>
+            <span class="px-4 py-1 glass rounded-full text-[10px] font-bold text-blue-400 border border-blue-500/20 uppercase tracking-[0.2em] mb-6 inline-block">V1.0 Stable Build</span>
+            <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight tracking-tighter">
+                COMMAND <span class="gradient-text italic">YOUR</span> PHONE.
             </h1>
-            <p class="text-gray-400 text-base md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-                Kendali penuh di tangan Anda. Integrasi terminal ke perangkat menggunakan infrastruktur cloud pribadi.
+            <p class="text-gray-400 text-base md:text-lg mb-12 max-w-3xl mx-auto leading-relaxed">
+                Platform kontrol jarak jauh berbasis terminal yang mengutamakan privasi. Modifikasi aplikasi Anda sendiri, gunakan database Anda sendiri, dan eksekusi perintah secara real-time.
             </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#download" class="btn-primary px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 text-lg text-white">
+                    <i class="fas fa-download"></i> Download Project
+                </a>
+            </div>
         </div>
     </header>
 
-    <section id="privacy" class="py-12 px-6">
-        <div class="max-w-4xl mx-auto glass p-8 md:p-12 rounded-[2.5rem] border-t-4 border-green-500 shadow-[0_20px_50px_rgba(34,197,94,0.1)]">
-            <div class="flex flex-col md:flex-row items-center gap-8">
-                <div class="text-5xl md:text-7xl text-green-500/20">
-                    <i class="fas fa-user-shield"></i>
-                </div>
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-green-400">100% Kendali Pribadi</h2>
-                    <p class="text-gray-400 leading-relaxed text-sm md:text-base">
-                        Keamanan data adalah prioritas utama. TrojaTools **tidak menggunakan database pihak ketiga** atau server kami. 
-                        Aplikasi ini sepenuhnya dikontrol oleh Anda melalui akun **Firebase pribadi** Anda. 
-                        <span class="text-white font-semibold">Semua data, log, dan akses hanya milik Anda dan hanya Anda yang memiliki kuncinya.</span>
-                    </p>
+                    <h2 class="text-3xl font-bold mb-6">Mengapa TrojaTools Berbeda?</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">TrojaTools bukan sekadar script. Ini adalah metodologi untuk menghubungkan ekosistem Android dengan kekuatan CLI (Command Line Interface). Dengan arsitektur yang ringan, Anda tidak memerlukan server berbayar yang mahal.</p>
+                    <div class="space-y-4">
+                        <div class="flex gap-4 p-4 glass rounded-xl">
+                            <i class="fas fa-bolt text-yellow-500 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold">Real-time Sync</h4>
+                                <p class="text-xs text-gray-500 italic">Latency di bawah 1 detik menggunakan Firebase WebSocket.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 p-4 glass rounded-xl">
+                            <i class="fas fa-layer-group text-blue-500 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold">Modifikasi Fleksibel</h4>
+                                <p class="text-xs text-gray-500 italic">Bisa di-inject ke hampir semua aplikasi Android berbasis Java/Kotlin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="terminal-box rounded-2xl p-6 shadow-2xl">
+                    <div class="flex gap-2 mb-4 border-b border-white/10 pb-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <code class="text-sm md:text-base block text-blue-300">$ troja-cli status</code>
+                    <code class="text-sm md:text-base block text-gray-500 mt-1">> Searching for active nodes...</code>
+                    <code class="text-sm md:text-base block text-green-400 mt-1">> Node [X-01] Connected (Online)</code>
+                    <code class="text-sm md:text-base block text-white mt-4">$ troja-cli shell "input keyevent 26"</code>
+                    <code class="text-sm md:text-base block text-gray-500 mt-1">> Executing: Toggle Power Button...</code>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="firebase" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            <div class="glass p-8 rounded-3xl">
-                <i class="fas fa-database text-orange-500 mb-4 text-2xl"></i>
-                <h3 class="text-xl font-bold mb-2">Private Database</h3>
-                <p class="text-sm text-gray-500">Anda yang membuat project di Firebase Console, Anda yang memegang kendali akses penuh.</p>
+    <section id="privacy" class="py-20 px-6 bg-blue-600/5">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="w-20 h-20 bg-green-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-green-500/20">
+                <i class="fas fa-shield-alt text-3xl text-green-500"></i>
             </div>
-            <div class="glass p-8 rounded-3xl border-b-4 border-blue-500">
-                <i class="fas fa-code text-blue-500 mb-4 text-2xl"></i>
-                <h3 class="text-xl font-bold mb-2">No Middleman</h3>
-                <p class="text-sm text-gray-500">Perintah dikirim langsung dari Terminal Anda ke Firebase, lalu ke HP. Tidak ada server perantara.</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 italic text-green-400 tracking-tight">DATA ANDA, DATABASE ANDA.</h2>
+            <p class="text-gray-400 leading-relaxed text-lg mb-8">
+                Kami percaya pada kedaulatan data. TrojaTools dirancang agar **100% bergantung pada akun Firebase milik Anda pribadi**. Tidak ada server pusat, tidak ada pengumpulan data dari kami. Anda adalah pemilik infrastruktur kontrol Anda sendiri.
+            </p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/20 rounded-full text-xs text-green-500 font-bold uppercase">
+                <i class="fas fa-check"></i> Private & Encrypted by Google Firebase
             </div>
         </div>
     </section>
 
-    <section id="download" class="py-24 px-4 md:px-6">
-        <div class="max-w-4xl mx-auto text-center glass p-10 md:p-20 rounded-[2rem] md:rounded-[3rem] border-2 border-blue-500/20 shadow-2xl">
-            <h2 class="text-3xl md:text-5xl font-black mb-6 uppercase tracking-tight">Dapatkan Project</h2>
-            <p class="text-gray-400 mb-10 text-sm md:text-lg">Unduh tutorial lengkap, script Python, dan file konfigurasi.</p>
+    <section id="commands" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Daftar Perintah Populer</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--get-sms</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Membaca pesan masuk terakhir dari perangkat target secara jarak jauh.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--get-location</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Mengambil koordinat GPS presisi dan menampilkannya di peta terminal.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--open-url [link]</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Membuka link website tertentu di browser HP target secara otomatis.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--take-photo</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Mengambil gambar melalui kamera depan/belakang dan mengirimnya ke DB.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--get-contacts</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Menyalin daftar kontak telepon ke dalam format JSON di terminal Anda.</p>
+                </div>
+                <div class="glass p-6 rounded-2xl card-feature transition border border-transparent">
+                    <code class="text-blue-400 font-bold">--toast [teks]</code>
+                    <p class="text-xs text-gray-500 mt-2 italic">Memunculkan pesan pop-up singkat pada layar perangkat target.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-20 px-6 bg-white/[0.02]">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-10 text-center uppercase tracking-widest">FAQ</h2>
+            <div class="space-y-6">
+                <details class="glass p-6 rounded-2xl group cursor-pointer">
+                    <summary class="font-bold flex justify-between items-center list-none">
+                        Apakah butuh akses Root?
+                        <span class="group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-sm text-gray-500 mt-4 leading-relaxed">Tergantung fitur. Untuk perintah dasar tidak memerlukan root, namun untuk akses sistem mendalam seperti kontrol layar penuh, akses root sangat disarankan.</p>
+                </details>
+                <details class="glass p-6 rounded-2xl group cursor-pointer">
+                    <summary class="font-bold flex justify-between items-center list-none">
+                        Apakah aplikasi target bisa terdeteksi?
+                        <span class="group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-sm text-gray-500 mt-4 leading-relaxed">TrojaTools berjalan sebagai background service. Selama integrasi smali dilakukan dengan benar, aplikasi akan tetap terlihat normal bagi user biasa.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" class="py-24 px-6">
+        <div class="max-w-4xl mx-auto text-center glass p-10 md:p-20 rounded-[3rem] border-2 border-blue-500/20 relative shadow-2xl">
+            <h2 class="text-4xl md:text-6xl font-black mb-6 italic tracking-tighter uppercase">Unduh Project</h2>
+            <p class="text-gray-400 mb-12 text-sm md:text-lg">Dapatkan Tutorial PDF, Script Python, dan Payload Editor dalam satu paket.</p>
             
-            <div class="flex flex-col justify-center items-center gap-6">
-                <a href="URL_FILE_KAMU" class="btn-primary w-full md:w-auto px-12 py-5 rounded-2xl font-bold text-xl flex items-center justify-center gap-4 text-white">
+            <div class="flex flex-col items-center gap-8">
+                <a href="URL_FILE_KAMU" class="btn-primary w-full md:w-auto px-16 py-6 rounded-2xl font-black text-xl flex items-center justify-center gap-4 text-white uppercase tracking-widest">
                     <i class="fas fa-file-archive"></i> Download ZIP
                 </a>
                 
-                <div class="mt-6 p-6 bg-red-500/5 border border-red-500/20 rounded-2xl max-w-2xl">
-                    <p class="text-xs md:text-sm text-red-400 leading-relaxed font-semibold">
+                <div class="p-6 bg-red-950/20 border border-red-500/30 rounded-2xl max-w-2xl text-center">
+                    <p class="text-xs md:text-sm text-red-400 font-bold leading-relaxed">
                         <i class="fas fa-exclamation-triangle mr-2"></i> 
-                        PENTING: Jika digunakan untuk tujuan ilegal itu diluar tanggung jawab kami karena ini berbasis edukasi.
+                        DISCLAIMER: Jika digunakan untuk tujuan ilegal itu diluar tanggung jawab kami karena ini berbasis edukasi. Kami tidak mendukung aktivitas kriminal dalam bentuk apapun.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center opacity-30 text-[10px] tracking-[0.2em] uppercase">
-        TrojaTools Open Project — Personal & Secure — 2026
+    <footer class="py-12 text-center border-t border-white/5">
+        <div class="opacity-20 text-[10px] tracking-[0.5em] uppercase mb-6">TrojaTools Command Center — 2026</div>
+        <div class="flex justify-center gap-8 text-gray-500 text-sm">
+            <a href="#" class="hover:text-white transition">GITHUB</a>
+            <a href="#" class="hover:text-white transition">TELEGRAM</a>
+            <a href="#" class="hover:text-white transition">YOUTUBE</a>
+        </div>
     </footer>
 
 </body>
