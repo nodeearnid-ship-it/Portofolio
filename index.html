@@ -3,71 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAS Coder Hub</title>
+    <title>GAS Coder | By @NodeEarn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --primary-color: #24292e; --accent-color: #0088cc; }
-        body { background-color: #f6f8fa; }
-        .navbar { background-color: var(--primary-color) !important; }
-        .hero { background: linear-gradient(135deg, #24292e 0%, #444d56 100%); color: white; padding: 40px 0; border-bottom: 5px solid var(--accent-color); }
-        .card-prompt { border-left: 5px solid var(--accent-color); transition: 0.3s; }
-        .card-prompt:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .code-box { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; position: relative; font-family: monospace; }
-        .copy-btn { position: absolute; top: 10px; right: 10px; border: none; background: #444d56; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; }
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 60px 0;
+            background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .brand-title {
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Card Style */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        /* Code Box */
+        .code-container {
+            background: #000000;
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            margin-top: 15px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #7dd3fc;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(56, 189, 248, 0.2);
+            border: none;
+            color: var(--accent-blue);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn-copy:active { transform: scale(0.95); }
+
+        /* Telegram Button */
+        .btn-tg {
+            background: #0088cc;
+            color: white;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .btn-tg:hover {
+            background: #00a2f3;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 136, 204, 0.4);
+        }
+
+        .badge-step {
+            background: var(--accent-blue);
+            color: var(--bg-dark);
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        footer {
+            padding: 40px 0;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark shadow-sm">
+<div class="hero-section text-center">
     <div class="container">
-        <a class="navbar-brand" href="#"><i class="fab fa-google me-2"></i> GAS Coder Hub</a>
-    </div>
-</nav>
-
-<div class="hero text-center">
-    <div class="container">
-        <h1>GAS Coder Library</h1>
-        <p class="lead">Kumpulan Prompt & Tutorial Apps Script untuk Developer</p>
-        <a href="https://t.me/UsernameAdminKamu" class="btn btn-info btn-lg mt-2 text-white shadow">
-            <i class="fab fa-telegram-plane"></i> Hubungi Admin
-        </a>
+        <h1 class="brand-title display-4">GAS Coder</h1>
+        <p class="text-dim">Specialized Tools for Google Apps Script Developers</p>
+        <p class="fw-bold text-info">By @NodeEarn</p>
+        <div class="mt-4">
+            <a href="https://t.me/NodeEarn" target="_blank" class="btn btn-tg">
+                <i class="fab fa-telegram me-2"></i> Chat Admin Telegram
+            </a>
+        </div>
     </div>
 </div>
 
 <div class="container my-5">
-    <div class="row">
-        <div class="col-md-4">
-            <h4 class="mb-4">Tutorial GAS</h4>
-            <div class="list-group shadow-sm">
-                <a href="#" class="list-group-item list-group-item-action">Cara Deploy Web App</a>
-                <a href="#" class="list-group-item list-group-item-action">Menghubungkan ke Sheets</a>
-                <a href="#" class="list-group-item list-group-item-action">Menggunakan Library External</a>
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <h5 class="mb-4"><i class="fas fa-graduation-cap me-2 text-info"></i> Quick Tutorial</h5>
+            <div class="glass-card p-4">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge-step">1</span>
+                        <h6 class="mb-0">Buka Proyek Baru</h6>
+                    </div>
+                    <p class="small text-dim ms-4">Kunjungi script.google.com dan buat proyek baru.</p>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge-step">2</span>
+                        <h6 class="mb-0">Tempel Prompt</h6>
+                    </div>
+                    <p class="small text-dim ms-4">Pilih salah satu prompt di samping dan berikan ke AI favoritmu.</p>
+                </div>
+                <div class="mb-0">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge-step">3</span>
+                        <h6 class="mb-0">Deploy</h6>
+                    </div>
+                    <p class="small text-dim ms-4">Klik Deploy > New Deployment > Web App agar script bisa diakses publik.</p>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-8">
-            <h4 class="mb-4">Salin Prompt</h4>
+        <div class="col-lg-8">
+            <h5 class="mb-4"><i class="fas fa-terminal me-2 text-info"></i> Ready-to-Gas Prompts</h5>
             
-            <div class="card card-prompt mb-3">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Web App CRUD Generator</h5>
-                    <p class="card-text text-muted small">Prompt untuk membuat sistem input data ke Google Sheets dengan UI Bootstrap.</p>
-                    <div class="code-box">
-                        <button class="copy-btn" onclick="copyPrompt('p1')">Salin</button>
-                        <span id="p1">Buatlah kode Google Apps Script untuk sistem CRUD. Gunakan HTML Service, integrasikan dengan Bootstrap 5, dan buat fungsi doGet() serta doPost().</span>
+            <div class="glass-card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-white mb-1">Modern CRUD Generator</h6>
+                        <span class="badge bg-primary opacity-75" style="font-size: 10px;">WEB APP</span>
                     </div>
+                </div>
+                <div class="code-container">
+                    <button class="btn-copy" onclick="copyText('p1', this)">Salin</button>
+                    <code id="p1">"Buatlah kode Google Apps Script untuk sistem CRUD. Backend (Code.gs) harus bisa membaca, menambah, mengedit, dan menghapus baris di Google Sheets. Frontend gunakan Bootstrap 5 dengan tabel interaktif dan Modal untuk form input."</code>
                 </div>
             </div>
 
-            <div class="card card-prompt mb-3">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Automated Email Report</h5>
-                    <p class="card-text text-muted small">Prompt untuk mengirim PDF otomatis dari data Spreadsheet.</p>
-                    <div class="code-box">
-                        <button class="copy-btn" onclick="copyPrompt('p2')">Salin</button>
-                        <span id="p2">Buat script untuk mengkonversi range A1:E10 di Google Sheets menjadi PDF dan kirimkan ke email admin setiap hari Senin pukul 08:00.</span>
+            <div class="glass-card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-white mb-1">Telegram Bot Integration</h6>
+                        <span class="badge bg-success opacity-75" style="font-size: 10px;">BOT API</span>
                     </div>
+                </div>
+                <div class="code-container">
+                    <button class="btn-copy" onclick="copyText('p2', this)">Salin</button>
+                    <code id="p2">"Buat fungsi doPost(e) untuk menerima webhook dari Telegram Bot API. Script harus bisa membalas pesan teks dan menyimpan log pesan yang masuk ke dalam kolom Spreadsheet tertentu secara otomatis."</code>
                 </div>
             </div>
 
@@ -75,13 +199,31 @@
     </div>
 </div>
 
+<footer class="text-center">
+    <div class="container">
+        <hr style="border-color: rgba(255,255,255,0.1)">
+        <p>&copy; 2024 GAS Coder Hub • Created with ❤️ by <b>@NodeEarn</b></p>
+    </div>
+</footer>
+
 <script>
-    function copyPrompt(id) {
+    function copyText(id, btn) {
         const text = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(text);
-        alert("Prompt tersalin!");
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = "Tersalin!";
+            btn.style.background = "#22c55e";
+            btn.style.color = "white";
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "rgba(56, 189, 248, 0.2)";
+                btn.style.color = "#38bdf8";
+            }, 2000);
+        });
     }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
