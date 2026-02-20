@@ -3,246 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAS Coder Hub | @NodeEarn</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>TrojaTools Project | Control with Command</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --bg: #050505;
-            --card: #121212;
-            --accent: #3b82f6;
-            --text-dim: #a1a1aa;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
-
-        body {
-            background-color: var(--bg);
-            color: #ffffff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Hero Section */
-        .hero-box {
-            padding: 100px 0 60px;
-            background: radial-gradient(circle at 50% -20%, #1e1e1e 0%, #050505 100%);
-        }
-        .brand-name { 
-            font-weight: 800; 
-            font-size: 3.5rem; 
-            letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff 30%, #444 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-        }
-
-        /* Tutorial Main Card */
-        .tutorial-main-card {
-            background: var(--card);
-            border: 1px solid #222;
-            border-radius: 30px;
-            padding: 40px;
-            cursor: pointer;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .tutorial-main-card:hover { 
-            border-color: var(--accent); 
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
-        }
-        .tutorial-main-card i { font-size: 3rem; color: var(--accent); margin-bottom: 20px; }
-
-        /* Prompt List */
-        .prompt-item {
-            background: var(--card);
-            border: 1px solid #1a1a1a;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.3s;
-        }
-        .prompt-item:hover { border-color: #333; background: #181818; }
-        
-        /* Modal Styling */
-        .modal-content {
-            background-color: #0f0f0f;
-            border: 1px solid #333;
-            border-radius: 35px;
-            color: white;
-            overflow: hidden;
-        }
-        .list-video-item {
-            background: #181818;
-            border: 1px solid #222;
-            margin-bottom: 12px;
-            border-radius: 15px;
-            color: #efefef;
-            transition: 0.3s;
-            text-align: left;
-            width: 100%;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-        }
-        .list-video-item:hover { background: var(--accent); border-color: var(--accent); transform: translateX(10px); }
-        .list-video-item i { margin-right: 15px; font-size: 1.2rem; }
-
-        .btn-copy {
-            background: #ffffff; color: #000; border: none; font-weight: 800;
-            border-radius: 12px; padding: 10px 22px; font-size: 14px;
-            transition: 0.2s;
-        }
-        .btn-copy:active { transform: scale(0.9); }
-
-        .video-wrapper {
-            position: relative; padding-bottom: 56.25%; height: 0; 
-            border-radius: 20px; overflow: hidden; margin-bottom: 20px;
-            display: none; border: 1px solid #333;
-        }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        .badge-new { background: #3b82f6; font-size: 10px; padding: 4px 8px; border-radius: 6px; margin-left: 8px; vertical-align: middle; }
+        body { background-color: #0a0a0a; color: #e5e7eb; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(90deg, #4ade80, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body>
+<body class="font-sans antialiased">
 
-<div class="hero-box text-center">
-    <div class="container">
-        <h1 class="brand-name">GAS Coder.</h1>
-        <p class="text-dim mb-4">Solusi Cepat Build Web App Script by <b>@NodeEarn</b></p>
-        <a href="https://t.me/NodeEarn" target="_blank" class="btn btn-outline-light rounded-pill px-4 py-2">
-            <i class="fab fa-telegram me-2"></i> Chat Admin
-        </a>
-    </div>
-</div>
+    <nav class="fixed w-full z-50 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass rounded-2xl px-8 py-4">
+            <div class="text-2xl font-bold tracking-tighter">Troja<span class="text-blue-500">Tools</span></div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="hover:text-blue-400 transition">About</a>
+                <a href="#features" class="hover:text-blue-400 transition">Features</a>
+                <a href="#docs" class="hover:text-blue-400 transition">Terminal</a>
+            </div>
+            <a href="#" class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full text-sm font-bold transition">Download</a>
+        </div>
+    </nav>
 
-<div class="container my-5">
-    <div class="row g-5">
-        <div class="col-lg-5">
-            <div class="tutorial-main-card text-center" data-bs-toggle="modal" data-bs-target="#tutorialModal">
-                <i class="fas fa-play-circle"></i>
-                <h3 class="fw-bold">Academy</h3>
-                <p class="text-dim">Panduan eksklusif cara menggunakan GAS Coder & Deploy Web untuk Client.</p>
-                <button class="btn btn-primary rounded-pill px-4 mt-2">Buka Tutorial</button>
+    <header class="pt-32 pb-20 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                Kuasai Perangkat Anda <br> Lewat <span class="gradient-text">Baris Perintah</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+                TrojaTools adalah aplikasi modifikasi revolusioner yang memungkinkan kontrol penuh perangkat Android langsung melalui terminal. Efisien, powerful, dan tanpa batas.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-white text-black font-bold py-4 px-8 rounded-xl hover:bg-gray-200 transition">Mulai Sekarang</button>
+                <button class="glass font-bold py-4 px-8 rounded-xl hover:bg-white/10 transition border border-white/20">Dokumentasi</button>
             </div>
         </div>
+    </header>
 
-        <div class="col-lg-7">
-            <h5 class="mb-4 text-dim fw-bold"><i class="fas fa-code me-2"></i> READY PROMPTS</h5>
-            
-            <div class="prompt-item">
-                <div>
-                    <h6>Daftar Siswa Online <span class="badge-new">HOT</span></h6>
-                    <p class="small text-dim mb-0">Web input data siswa ke Google Sheets.</p>
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="glass p-8 rounded-3xl">
+                <div class="bg-black rounded-xl p-4 font-mono text-sm text-green-400 shadow-2xl">
+                    <p>$ trojatools --connect device_01</p>
+                    <p class="text-white text-opacity-50">Connecting to smartphone...</p>
+                    <p class="text-blue-400">[SUCCESS] Device Connected.</p>
+                    <p>$ open-app camera --capture</p>
+                    <p class="text-white text-opacity-50">Image saved to /gallery/shot_01.jpg</p>
+                    <div class="animate-pulse">_</div>
                 </div>
-                <button class="btn-copy" onclick="copyText('pSiswa', this)">Copy</button>
             </div>
-
-            <div class="prompt-item">
-                <div>
-                    <h6>Web Arisan Online</h6>
-                    <p class="small text-dim mb-0">Sistem kocok arisan berbasis web script.</p>
-                </div>
-                <button class="btn-copy" onclick="copyText('pArisan', this)">Copy</button>
-            </div>
-
-            <div class="prompt-item">
-                <div>
-                    <h6>Catatan Keuangan</h6>
-                    <p class="small text-dim mb-0">Monitor pemasukan & pengeluaran otomatis.</p>
-                </div>
-                <button class="btn-copy" onclick="copyText('pKeuangan', this)">Copy</button>
+            <div>
+                <h2 class="text-3xl font-bold mb-6">Apa itu TrojaTools?</h2>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    Bukan sekadar aplikasi biasa. TrojaTools memodifikasi cara interaksi antara user dan sistem operasi. Dengan memanfaatkan jalur terminal, Anda bisa melakukan otomasi, manajemen file, hingga monitoring sistem tanpa perlu menyentuh layar HP.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Integrasi Terminal Seamless</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Kontrol Jarak Jauh (Remote Control)</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check-circle text-blue-500"></i> Modifikasi Sistem Tingkat Lanjut</li>
+                </ul>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<div class="modal fade" id="tutorialModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content p-4">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold">GAS Coder Academy</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                
-                <div id="videoPlayerArea" class="video-wrapper">
-                    <iframe id="mainIframe" src="" allowfullscreen></iframe>
+    <section id="features" class="py-20 bg-[#0f0f0f]">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-16">Fitur Utama</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass p-10 rounded-3xl hover:border-blue-500 transition duration-500">
+                    <i class="fas fa-terminal text-4xl text-blue-500 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">CLI Power</h3>
+                    <p class="text-gray-400">Gunakan perintah teks untuk eksekusi perintah yang biasanya butuh puluhan klik.</p>
                 </div>
-
-                <div id="menuTutorial">
-                    <p class="text-dim small mb-4">Pilih materi video by @NodeEarn:</p>
-                    <button class="list-video-item" onclick="playVideo('ID_VIDEO_1')">
-                        <i class="fas fa-desktop"></i> Cara Menggunakan GAS Coder
-                    </button>
-                    <button class="list-video-item" onclick="playVideo('ID_VIDEO_2')">
-                        <i class="fas fa-keyboard"></i> Cara Membuat Prompt yang Benar
-                    </button>
-                    <button class="list-video-item" onclick="playVideo('ID_VIDEO_3')">
-                        <i class="fas fa-image"></i> Cara Isi Gambar ke App Script
-                    </button>
-                    <button class="list-video-item" onclick="playVideo('ID_VIDEO_4')">
-                        <i class="fas fa-cloud-upload-alt"></i> Cara Deploy Web 0 - Berhasil
-                    </button>
-                    <button class="list-video-item" onclick="playVideo('ID_VIDEO_5')">
-                        <i class="fas fa-handshake"></i> Cara Buat Web untuk Client
-                    </button>
+                <div class="glass p-10 rounded-3xl hover:border-green-500 transition duration-500">
+                    <i class="fas fa-bolt text-4xl text-green-500 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">Ultra Responsive</h3>
+                    <p class="text-gray-400">Latency rendah antar perintah terminal dan aksi di smartphone Anda.</p>
                 </div>
-
-                <button id="btnBack" class="btn btn-dark w-100 rounded-pill mt-3" style="display:none;" onclick="backToMenu()">
-                    <i class="fas fa-arrow-left me-2"></i> Kembali ke Menu
-                </button>
+                <div class="glass p-10 rounded-3xl hover:border-purple-500 transition duration-500">
+                    <i class="fas fa-shield-alt text-4xl text-purple-500 mb-6"></i>
+                    <h3 class="text-xl font-bold mb-4">Secure Mod</h3>
+                    <p class="text-gray-400">Protokol keamanan yang memastikan hanya Anda yang memiliki akses kontrol.</p>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<footer class="text-center mt-5 text-dim pb-5">
-    <p>GAS Coder &copy; 2026 | Developed by <b>@NodeEarn</b></p>
-</footer>
+    <footer class="py-10 border-t border-white/10 text-center">
+        <p class="text-gray-500 text-sm">© 2026 TrojaTools Project. For educational purposes only.</p>
+    </footer>
 
-<script>
-    // Database Prompt Spesifik
-    const prompts = {
-        pSiswa: "Buatlah web app menggunakan Google Apps Script untuk sistem Daftar Siswa. Fitur: Form input (Nama, Kelas, Alamat), Tabel data dari Google Sheets, tombol hapus data, dan UI menggunakan Bootstrap 5 Dark Mode.",
-        pArisan: "Buatlah aplikasi Arisan Online berbasis Web App Script. Gunakan Google Sheets sebagai database nama peserta. Sertakan tombol 'Kocok Arisan' yang akan memilih satu nama secara acak menggunakan Math.random() dan menampilkan hasilnya dengan animasi popup.",
-        pKeuangan: "Buatlah sistem Catatan Keuangan pribadi dengan GAS. Fitur: Form input (Keterangan, Kategori: Masuk/Keluar, Nominal), simpan ke Google Sheets, dan tampilkan total saldo otomatis di halaman web menggunakan fungsi reduce di JavaScript."
-    };
-
-    function copyText(key, btn) {
-        navigator.clipboard.writeText(prompts[key]);
-        const original = btn.innerText;
-        btn.innerText = "Copied!";
-        btn.style.background = "#3b82f6";
-        btn.style.color = "#fff";
-        setTimeout(() => {
-            btn.innerText = original;
-            btn.style.background = "#fff";
-            btn.style.color = "#000";
-        }, 1500);
-    }
-
-    function playVideo(id) {
-        document.getElementById('menuTutorial').style.display = 'none';
-        document.getElementById('videoPlayerArea').style.display = 'block';
-        document.getElementById('btnBack').style.display = 'block';
-        document.getElementById('mainIframe').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
-    }
-
-    function backToMenu() {
-        document.getElementById('menuTutorial').style.display = 'block';
-        document.getElementById('videoPlayerArea').style.display = 'none';
-        document.getElementById('btnBack').style.display = 'none';
-        document.getElementById('mainIframe').src = "";
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
