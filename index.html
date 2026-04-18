@@ -3,219 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The End & The Beginning | SMKS ASKA</title>
+    <title>The Grand Finale | SMKS ASKA</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@200;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&display=swap');
 
         :root {
-            --bg-dark: #020204;
-            --gold: #c5a059;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.07);
+            --bg: #030508;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.3);
+            --border: rgba(255, 255, 255, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background: var(--bg-dark); 
-            color: #e0e0e0; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow: hidden; 
-        }
+        body { background: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; }
 
-        /* --- STARFIELD ANIMATION --- */
-        #starfield {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
-        }
-
-        /* --- SPLASH SCREEN --- */
+        /* --- CINEMATIC SPLASH --- */
         #splash {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1), visibility 2s;
+            z-index: 10000; transition: all 2s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
         .splash-title {
-            font-family: 'Cormorant Garamond', serif; font-size: 2rem;
-            color: var(--gold); letter-spacing: 5px; opacity: 0;
-            animation: focusFade 3s forwards;
+            text-align: center; font-family: 'Cinzel', serif;
+            opacity: 0; transform: translateY(30px);
+            animation: revealTitle 2.5s forwards 0.5s;
         }
 
-        @keyframes focusFade {
-            0% { opacity: 0; filter: blur(10px); transform: scale(0.9); }
-            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        .splash-title h2 { font-size: 0.7rem; letter-spacing: 10px; color: var(--gold); margin-bottom: 10px; }
+        .splash-title h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 400; line-height: 1.5; color: #fff; }
+
+        @keyframes revealTitle {
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        .btn-start {
-            margin-top: 50px; padding: 15px 40px; border: 1px solid var(--border);
-            background: transparent; color: #fff; cursor: pointer;
-            font-size: 0.7rem; letter-spacing: 5px; opacity: 0;
-            animation: fadeIn 2s forwards 2s; transition: 0.4s;
+        .btn-open {
+            margin-top: 60px; padding: 15px 45px; border: 1px solid var(--gold);
+            background: transparent; color: var(--gold); cursor: pointer;
+            font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase;
+            opacity: 0; animation: fadeIn 2s forwards 2.5s; transition: 0.5s;
         }
 
-        .btn-start:hover { background: #fff; color: #000; border-color: #fff; }
+        .btn-open:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold-glow); }
+
+        /* --- AMBIENT PARTICLES --- */
+        #canvas-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
         /* --- MAIN CONTENT --- */
         #main-wrapper { 
             height: 100vh; overflow-y: auto; opacity: 0; visibility: hidden;
-            transition: opacity 2s ease; position: relative; z-index: 1;
+            transition: opacity 2.5s ease; position: relative; z-index: 1;
+            scroll-behavior: smooth;
         }
 
-        /* --- HERO --- */
         .hero { 
             height: 100vh; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center;
-            padding: 20px;
+            padding: 40px;
         }
 
-        .tagline { color: var(--gold); letter-spacing: 8px; font-size: 0.7rem; margin-bottom: 20px; }
-        
-        .main-title { 
-            font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 10vw, 6rem);
-            font-weight: 300; line-height: 1; margin-bottom: 10px;
+        .theme-full {
+            font-family: 'Cinzel', serif; max-width: 900px;
+            margin-bottom: 30px; position: relative;
         }
 
-        .sub-title { font-style: italic; font-size: 1.2rem; color: #777; font-family: 'Cormorant Garamond', serif; }
-
-        /* --- CONTAINER & GLASS CARD --- */
-        .container { max-width: 800px; margin: 0 auto; padding: 100px 20px; }
-
-        .glass-box {
-            background: var(--glass); border: 1px solid var(--border);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 80px 40px; border-radius: 2px; text-align: center;
+        .theme-full span { 
+            display: block; font-size: clamp(2rem, 8vw, 4.5rem); 
+            line-height: 1.2; font-weight: 400;
+            background: linear-gradient(to bottom, #fff, #777);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .glass-box h2 { 
-            font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; 
-            margin-bottom: 40px; font-weight: 400; color: var(--gold);
+        .theme-full .and-sym { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: var(--gold); -webkit-text-fill-color: var(--gold); }
+
+        .location-tag { letter-spacing: 6px; font-size: 0.7rem; color: var(--gold); margin-top: 20px; opacity: 0.8; }
+
+        /* --- GLASS PANEL --- */
+        .container { max-width: 850px; margin: 0 auto; padding-bottom: 100px; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.015); border: 1px solid var(--border);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            padding: 100px 50px; border-radius: 4px; text-align: center;
+            position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        .prose { 
-            font-size: 1.05rem; line-height: 2.2; color: #a0a0a0; 
-            margin-bottom: 60px; font-weight: 200;
+        .glass-card::after {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 1px; height: 60px; background: var(--gold);
         }
 
-        /* --- DETAILS GRID --- */
-        .details {
+        .message { 
+            font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; 
+            line-height: 1.8; color: #d1d1d1; margin-bottom: 50px; font-weight: 300;
+        }
+
+        /* --- INFO BOX --- */
+        .info-row {
             display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
             border-top: 1px solid var(--border); padding-top: 50px;
         }
 
-        .detail-item span { display: block; font-size: 0.6rem; letter-spacing: 3px; color: var(--gold); margin-bottom: 10px; }
-        .detail-item p { font-size: 1.2rem; font-family: 'Cormorant Garamond', serif; }
+        .info-row label { display: block; font-size: 0.6rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 15px; }
+        .info-row p { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 1px; }
 
-        /* --- MUSIC TOGGLE --- */
-        .music-btn {
-            position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px;
-            border-radius: 50%; border: 1px solid var(--border);
+        /* --- MUSIC ICON --- */
+        .music-toggle {
+            position: fixed; bottom: 40px; right: 40px; width: 44px; height: 44px;
+            border-radius: 50%; border: 1px solid var(--border); background: rgba(0,0,0,0.6);
             display: flex; justify-content: center; align-items: center; cursor: pointer;
-            z-index: 1000; background: rgba(0,0,0,0.5);
+            z-index: 1000; transition: 0.4s; color: #fff;
         }
-        .music-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1; }
+        .music-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.2; }
 
-        /* --- UTILS --- */
+        /* --- REVEAL --- */
         @keyframes fadeIn { to { opacity: 1; } }
-        .reveal { opacity: 0; transform: translateY(40px); transition: 2.5s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 2s cubic-bezier(0.2, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        footer { padding: 80px; text-align: center; color: #333; font-size: 0.7rem; letter-spacing: 5px; }
+        footer { padding: 80px; text-align: center; color: #333; font-size: 0.65rem; letter-spacing: 5px; }
 
         @media (max-width: 600px) {
-            .details { grid-template-columns: 1fr; }
-            .main-title { font-size: 3.5rem; }
+            .info-row { grid-template-columns: 1fr; gap: 30px; }
+            .glass-card { padding: 60px 25px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="starfield"></canvas>
+    <canvas id="canvas-bg"></canvas>
 
     <div id="splash">
-        <h1 class="splash-title">THE END OF A CHAPTER</h1>
-        <button class="btn-start" onclick="init()">UNLOCK GREATNESS</button>
+        <div class="splash-title">
+            <h2>SMKS ASKA BALI MANDALA</h2>
+            <h1>The End of A Chapter<br><span style="font-family:'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; color: var(--gold);">and</span><br>The Start of Greatness</h1>
+        </div>
+        <button class="btn-open" onclick="initExperience()">Buka Lembaran</button>
     </div>
 
-    <audio id="bgm" loop>
+    <audio id="bg-audio" loop>
         <source src="Feast - Nina (Lirik).mp3" type="audio/mpeg">
     </audio>
 
     <div id="main-wrapper">
         <header class="hero reveal">
-            <p class="tagline">SMKS ASKA BALI MANDALA</p>
-            <h1 class="main-title">The Start of Greatness</h1>
-            <p class="sub-title">"Di mana satu pintu tertutup, semesta terbuka."</p>
+            <div class="theme-full">
+                <span>The End of A Chapter</span>
+                <div class="and-sym">&</div>
+                <span>The Start of Greatness</span>
+            </div>
+            <div class="location-tag">CLASS OF 2026 • GRADUATION DAY</div>
         </header>
 
         <section class="container">
-            <div class="glass-box reveal">
-                <h2>Epilog & Prolog</h2>
-                <p class="prose">
-                    Setiap pertemuan memiliki masa berlaku, namun kenangan tidak mengenal kadaluwarsa. 
-                    Tiga tahun di sekolah ini adalah bab yang telah kita tulis dengan tinta emas—penuh 
-                    dengan tawa, perjuangan, dan pelajaran hidup yang tak ternilai.
+            <div class="glass-card reveal">
+                <p class="message">
+                    "Setiap perpisahan hanyalah cara semesta menyiapkan kita untuk hal-hal yang lebih besar."
                     <br><br>
-                    Kami, <strong>Panitia Perpisahan Kelas 12</strong>, mengundang Anda untuk menyaksikan 
-                    halaman terakhir dari bab ini, sebelum kita masing-masing melangkah menuju 
-                    keagungan yang telah menanti di masa depan.
+                    Tiga tahun yang penuh kenangan kini sampai pada titik puncaknya. Mari kita rayakan akhir dari bab ini dan bersiap menyambut fajar keberhasilan kita bersama.
                 </p>
 
-                <div class="details">
-                    <div class="detail-item">
-                        <span>THE DATE</span>
-                        <p>Sabtu, 9 Mei 2026<br>09.00 WITA — Selesai</p>
+                <div class="info-row">
+                    <div class="info-box">
+                        <label>WAKTU PERAYAAN</label>
+                        <p>SABTU, 9 MEI 2026<br>09:00 WITA — SELESAI</p>
                     </div>
-                    <div class="detail-item">
-                        <span>THE PLACE</span>
-                        <p>Area Sekolah<br>SMKS ASKA Bali Mandala</p>
+                    <div class="info-box">
+                        <label>TEMPAT</label>
+                        <p>AREA SEKOLAH<br>SMKS ASKA BALI MANDALA</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <footer>
-            CLASS OF 2026 • THE GRAND FINALE
+            DISELENGGARAKAN OLEH PANITIA PERPISAHAN KELAS 12
         </footer>
     </div>
 
-    <div class="music-btn" onclick="toggleMusic()">
-        <svg id="m-icon" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+    <div class="music-toggle" onclick="toggleMusic()">
+        <svg id="music-svg" viewBox="0 0 24 24">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+        </svg>
     </div>
 
     <script>
-        const audio = document.getElementById('bgm');
-        let isPlaying = false;
+        const audio = document.getElementById('bg-audio');
+        let playing = false;
 
-        function init() {
+        function initExperience() {
             document.getElementById('splash').style.opacity = '0';
+            document.getElementById('splash').style.transform = 'translateY(-100%)';
+            
             setTimeout(() => {
                 document.getElementById('splash').style.visibility = 'hidden';
                 document.getElementById('main-wrapper').style.visibility = 'visible';
                 document.getElementById('main-wrapper').style.opacity = '1';
                 document.body.style.overflowY = 'auto';
+                
                 audio.play();
-                isPlaying = true;
+                playing = true;
                 handleReveal();
-            }, 2000);
+            }, 1800);
         }
 
         function toggleMusic() {
-            const icon = document.getElementById('m-icon');
-            if(isPlaying) {
+            const svg = document.getElementById('music-svg');
+            if(playing) {
                 audio.pause();
-                icon.style.stroke = "#555";
+                svg.style.opacity = "0.3";
             } else {
                 audio.play();
-                icon.style.stroke = "#fff";
+                svg.style.opacity = "1";
             }
-            isPlaying = !isPlaying;
+            playing = !playing;
         }
 
-        // --- STARFIELD LOGIC ---
-        const canvas = document.getElementById('starfield');
+        // --- GOLD DUST PARTICLES ---
+        const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
-        let stars = [];
+        let particles = [];
 
         function resize() {
             canvas.width = window.innerWidth;
@@ -224,31 +233,36 @@
         window.addEventListener('resize', resize);
         resize();
 
-        for(let i=0; i<150; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 1.5,
-                speed: Math.random() * 0.5 + 0.2
-            });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#fff';
-            stars.forEach(s => {
-                ctx.globalAlpha = Math.random() * 0.5 + 0.3;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * 0.5 - 0.2;
+                this.opacity = Math.random() * 0.5;
+            }
+            update() {
+                this.y += this.speedY;
+                if(this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
                 ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
                 ctx.fill();
-                s.y -= s.speed;
-                if(s.y < 0) s.y = canvas.height;
-            });
-            requestAnimationFrame(draw);
+            }
         }
-        draw();
 
-        // --- REVEAL LOGIC ---
+        for(let i=0; i<100; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- REVEAL ON SCROLL ---
         function handleReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver(entries => {
