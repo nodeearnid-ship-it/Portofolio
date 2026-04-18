@@ -1,1 +1,218 @@
-<!DOCTYPE html> <html lang="id"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>TrojaLink | Private Command Bridge</title> <script src="https://cdn.tailwindcss.com"></script> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <style> @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap'); body{background-color:#060606;color:#e5e7eb;font-family:'Plus Jakarta Sans',sans-serif;scroll-behavior:smooth}.glass{background:rgba(255,255,255,0.02);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.08)}.terminal-box{font-family:'JetBrains Mono',monospace;background:#000;border:1px solid #222}.gradient-text{background:linear-gradient(90deg,#3b82f6,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.btn-link{background:linear-gradient(135deg,#2563eb,#0891b2);transition:all .4s ease}.btn-link:hover{transform:translateY(-3px);box-shadow:0 10px 30px -10px #0891b2}.link-line{position:relative}.link-line::after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:2px;background:#3b82f6;transform:scaleX(0);transition:.3s}.link-line:hover::after{transform:scaleX(1)}@media(max-width:640px){.hero-title{font-size:2.5rem;line-height:1.2}} </style> </head> <body class="antialiased"> <nav class="fixed w-full z-50 p-4 md:p-6"> <div class="max-w-6xl mx-auto flex justify-between items-center glass rounded-full px-6 py-3 border border-white/10"> <div class="text-2xl font-black tracking-tighter flex items-center gap-2"> <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-sm"><i class="fas fa-link text-white"></i></div> Troja<span class="text-blue-500 italic">Link</span> </div> <div class="hidden md:flex space-x-8 text-[11px] font-bold uppercase tracking-widest text-gray-400"> <a href="#workflow" class="link-line hover:text-white transition">Workflow</a> <a href="#privacy" class="link-line hover:text-white transition">Privacy</a> <a href="#download" class="link-line hover:text-white transition">Download</a> </div> <a href="#download" class="btn-link px-6 py-2 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">Get Project</a> </div> </nav> <header class="pt-48 pb-24 px-6 relative overflow-hidden text-center"> <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full -z-10"></div> <div class="max-w-4xl mx-auto"> <h1 class="hero-title text-6xl md:text-9xl font-black mb-8 leading-none tracking-tighter uppercase text-white">Link <span class="gradient-text">Beyond</span> Limits.</h1> <p class="text-gray-500 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">Platform kontrol mobile berbasis shell dengan integrasi database pribadi. Cepat, aman, dan sepenuhnya di bawah kendali Anda.</p> <div class="flex flex-col sm:flex-row justify-center gap-4"> <a href="#download" class="btn-link px-12 py-5 rounded-2xl font-extrabold text-white text-lg tracking-tight shadow-xl">Download TrojaLink v1.0</a> </div> </div> </header> <section id="workflow" class="py-20 px-6"> <div class="max-w-5xl mx-auto text-center"> <h2 class="text-3xl font-bold mb-16 uppercase tracking-widest">Sistem Kerja TrojaLink</h2> <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center"> <div class="glass p-6 rounded-3xl border-blue-500/20"><i class="fas fa-terminal text-blue-500 text-2xl mb-4"></i><h4 class="font-bold text-sm">YOUR TERMINAL</h4><p class="text-[10px] text-gray-500 mt-2 italic">(Python Script)</p></div> <div class="hidden md:block text-gray-700 text-2xl"><i class="fas fa-chevron-right"></i></div> <div class="glass p-6 rounded-3xl border-orange-500/20"><i class="fas fa-fire text-orange-500 text-2xl mb-4"></i><h4 class="font-bold text-sm">PRIVATE FIREBASE</h4><p class="text-[10px] text-gray-500 mt-2 italic">(Your Own DB)</p></div> <div class="hidden md:block text-gray-700 text-2xl"><i class="fas fa-chevron-right"></i></div> <div class="glass p-6 rounded-3xl border-green-500/20"><i class="fas fa-mobile-alt text-green-500 text-2xl mb-4"></i><h4 class="font-bold text-sm">TARGET DEVICE</h4><p class="text-[10px] text-gray-500 mt-2 italic">(Modded App)</p></div> </div> <p class="text-gray-500 text-sm mt-12 italic max-w-2xl mx-auto">"Data bergerak dari terminal Anda ke Firebase, lalu diteruskan secara real-time ke aplikasi yang telah dimodifikasi secara privat."</p> </div> </section> <section id="privacy" class="py-20 px-6"> <div class="max-w-4xl mx-auto glass p-10 md:p-16 rounded-[3rem] border border-white/5 shadow-2xl"> <div class="flex flex-col md:flex-row items-center gap-10"> <div class="w-24 h-24 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/20"><i class="fas fa-user-lock text-4xl text-blue-500"></i></div> <div> <h3 class="text-3xl font-bold mb-4 text-white">Full Ownership Control</h3> <p class="text-gray-400 leading-relaxed">Dengan **TrojaLink**, Anda memegang kendali penuh. Karena menggunakan akun **Firebase Anda sendiri**, seluruh log perintah dan data hanya dapat diakses oleh Anda. Tidak ada perantara atau server tersembunyi.</p> </div> </div> </div> </section> <section id="download" class="py-24 px-4 md:px-6"> <div class="max-w-4xl mx-auto text-center glass p-12 md:p-24 rounded-[3.5rem] border-2 border-blue-500/10 relative overflow-hidden shadow-2xl"> <h2 class="text-4xl md:text-6xl font-black mb-8 tracking-tighter uppercase italic text-white leading-tight">Ready to Connect?</h2> <p class="text-gray-500 mb-12 text-base md:text-lg max-w-lg mx-auto leading-relaxed uppercase font-bold tracking-widest">Unduh paket lengkap tutorial modifikasi aplikasi & script terminal.</p> <div class="flex flex-col items-center gap-8"> <a href="URL_FILE_ZIP_KAMU" class="btn-link w-full md:w-auto px-16 py-6 rounded-3xl font-black text-xl flex items-center justify-center gap-4 text-white uppercase tracking-widest shadow-2xl"> <i class="fas fa-download"></i> Get Project ZIP </a> <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-2xl max-w-2xl"> <p class="text-xs md:text-sm text-red-500 font-bold leading-relaxed uppercase tracking-tighter"> <i class="fas fa-exclamation-triangle mr-2"></i> PENTING: Jika digunakan untuk tujuan ilegal itu diluar tanggung jawab kami karena ini berbasis edukasi. </p> </div> </div> </div> </section> <footer class="py-12 text-center border-t border-white/5"> <div class="text-[10px] font-bold text-gray-700 uppercase tracking-[0.5em]">TrojaLink — Secured Interface — 2026</div> </footer> </body> </html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Walk | SMKS ASKA BALI MANDALA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg-deep: #050608;
+            --accent-gold: #c5a059;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --glass-strong: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg-deep); 
+            color: #ffffff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow: hidden;
+            letter-spacing: -0.02em;
+        }
+
+        /* GRAIN EFFECT (Texture Film) */
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05; pointer-events: none; z-index: 9999;
+        }
+
+        /* --- SPLASH SCREEN --- */
+        #splash {
+            position: fixed; inset: 0; background: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10000; transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-title {
+            font-family: 'Playfair Display', serif; font-size: 1.2rem;
+            letter-spacing: 0.5em; text-transform: uppercase; color: var(--accent-gold);
+            opacity: 0; animation: blurFadeIn 3s forwards;
+        }
+
+        @keyframes blurFadeIn {
+            0% { filter: blur(10px); opacity: 0; transform: scale(0.9); }
+            100% { filter: blur(0); opacity: 1; transform: scale(1); }
+        }
+
+        .btn-enter {
+            margin-top: 50px; background: none; border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 15px 40px; border-radius: 100px; cursor: pointer;
+            font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+            transition: 0.5s ease;
+        }
+
+        .btn-enter:hover { border-color: var(--accent-gold); color: var(--accent-gold); letter-spacing: 5px; }
+
+        /* --- MAIN CONTENT --- */
+        #main-scroll {
+            height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory;
+            opacity: 0; transition: opacity 2s ease;
+        }
+
+        section { height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
+
+        /* --- HERO --- */
+        .hero-title { text-align: center; }
+        .hero-title h1 { 
+            font-family: 'Playfair Display', serif; font-size: clamp(4rem, 15vw, 10rem);
+            font-weight: 400; font-style: italic; line-height: 0.8; margin-bottom: 20px;
+        }
+        .hero-title p { color: var(--accent-gold); letter-spacing: 10px; font-size: 0.8rem; }
+
+        /* --- CONTENT CARD --- */
+        .glass-box {
+            background: var(--glass-strong);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 80px 40px; border-radius: 2px; /* Square edges for premium look */
+            max-width: 900px; width: 100%; text-align: center;
+        }
+
+        .message-text {
+            font-size: clamp(1rem, 2vw, 1.25rem); line-height: 2;
+            color: var(--text-dim); font-weight: 200; max-width: 700px; margin: 0 auto;
+        }
+
+        .gold-accent-text { color: var(--accent-gold); font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-top: 30px; }
+
+        /* --- EVENT DETAILS --- */
+        .event-details {
+            margin-top: 60px; display: grid; grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px;
+        }
+
+        .detail-col h3 { font-size: 0.6rem; letter-spacing: 3px; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 10px; }
+        .detail-col p { font-size: 1.1rem; font-family: 'Playfair Display', serif; }
+
+        /* --- MUSIC ICON (Floating & Subtle) --- */
+        .music-toggle {
+            position: fixed; bottom: 40px; right: 40px; z-index: 1000;
+            cursor: pointer; opacity: 0.4; transition: 0.3s;
+        }
+        .music-toggle:hover { opacity: 1; }
+        .music-toggle svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1px; }
+
+        /* REVEAL ANIMATION */
+        .reveal { opacity: 0; transform: translateY(50px); filter: blur(10px); transition: 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+        /* SCROLLBAR */
+        #main-scroll::-webkit-scrollbar { width: 0; }
+
+        @media (max-width: 768px) {
+            .event-details { grid-template-columns: 1fr; gap: 30px; }
+            .hero-title h1 { font-size: 5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash">
+        <div class="splash-title">Final Chapter: 2026</div>
+        <button class="btn-enter" onclick="startLegacy()">Buka Lembaran</button>
+    </div>
+
+    <audio id="bg-audio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" onclick="toggleMusic()">
+        <svg id="music-svg" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+    </div>
+
+    <div id="main-scroll">
+        <section>
+            <div class="hero-title reveal">
+                <p>EPILOG PERJALANAN</p>
+                <h1>Aska '26</h1>
+                <p>SMKS ASKA BALI MANDALA</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="glass-box reveal">
+                <p class="message-text">
+                    Tiga tahun lalu, kita hanyalah barisan orang asing yang berkumpul di satu titik. Hari ini, kita adalah kepingan memori yang sulit untuk dilepaskan. Panitia Perpisahan Kelas 12 mengundang Bapak/Ibu Guru dan seluruh rekan untuk berkumpul terakhir kalinya, merayakan setiap detik yang pernah kita miliki.
+                </p>
+                <div class="gold-accent-text">"Bukan akhir, hanya sekadar jeda."</div>
+                
+                <div class="event-details">
+                    <div class="detail-col">
+                        <h3>Waktu</h3>
+                        <p>Sabtu, 23 Mei 2026</p>
+                    </div>
+                    <div class="detail-col">
+                        <h3>Pukul</h3>
+                        <p>08.00 WITA — Selesai</p>
+                    </div>
+                    <div class="detail-col">
+                        <h3>Lokasi</h3>
+                        <p>Area Lingkungan Sekolah</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer style="height: 20vh; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; letter-spacing: 5px; opacity: 0.3;">
+            PANITIA KELAS 12 © 2026
+        </footer>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-audio');
+        let isPlaying = false;
+
+        function startLegacy() {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('main-scroll').style.opacity = '1';
+                audio.play();
+                isPlaying = true;
+                handleReveal();
+            }, 1500);
+        }
+
+        function toggleMusic() {
+            const svg = document.getElementById('music-svg');
+            if (isPlaying) {
+                audio.pause();
+                svg.style.opacity = "0.2";
+            } else {
+                audio.play();
+                svg.style.opacity = "1";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function handleReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            const options = { threshold: 0.4 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, options);
+            reveals.forEach(r => observer.observe(r));
+        }
+
+        document.getElementById('main-scroll').addEventListener('scroll', handleReveal);
+    </script>
+</body>
+</html>
