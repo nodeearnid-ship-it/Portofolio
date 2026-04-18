@@ -3,179 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nina | SMKS ASKA BALI MANDALA</title>
+    <title>The Last Chapter | SMKS ASKA</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
         :root {
-            --bg-deep: #05070a;
+            --bg-deep: #020305;
             --accent: #d4af37;
-            --glass: rgba(255, 255, 255, 0.02);
+            --glass-white: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: var(--bg-deep); 
-            color: #fff; 
+            color: #ffffff; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow: hidden;
-            height: 100vh;
+            overflow: hidden; 
         }
 
         /* --- SPLASH SCREEN --- */
         #splash {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000; transition: all 1.8s cubic-bezier(0.8, 0, 0.2, 1);
+            z-index: 10000; transition: all 1.5s cubic-bezier(0.65, 0, 0.35, 1);
         }
 
-        .splash-quote {
-            text-align: center; max-width: 80%;
-            font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 4vw, 1.8rem);
-            font-style: italic; opacity: 0; transform: scale(0.95);
-            animation: cinematicReveal 3s forwards 0.5s;
+        .splash-content { text-align: center; padding: 20px; }
+        
+        .splash-line {
+            font-family: 'Playfair Display', serif; font-size: clamp(1rem, 3vw, 1.5rem);
+            font-style: italic; color: #888; opacity: 0; transform: translateY(20px);
+            animation: slideUpFade 2s forwards 0.5s;
         }
 
-        @keyframes cinematicReveal {
-            to { opacity: 1; transform: scale(1); filter: blur(0); }
+        .btn-enter {
+            margin-top: 40px; padding: 12px 30px; border: 0.5px solid var(--border);
+            background: transparent; color: #fff; cursor: pointer;
+            font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+            opacity: 0; animation: fadeIn 2s forwards 2s; transition: 0.4s;
         }
 
-        .start-btn {
-            margin-top: 50px; padding: 15px 40px; border: 1px solid var(--border);
-            background: transparent; color: #fff; cursor: pointer; border-radius: 2px;
-            font-size: 0.7rem; letter-spacing: 5px; opacity: 0;
-            animation: fadeIn 2s forwards 2s; transition: 0.5s;
-        }
+        .btn-enter:hover { background: #fff; color: #000; letter-spacing: 6px; }
 
-        .start-btn:hover { border-color: #fff; letter-spacing: 7px; background: rgba(255,255,255,0.05); }
-
-        /* --- BACKGROUND ART --- */
-        .vignette {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
-            pointer-events: none; z-index: 1;
+        /* --- AMBIENT BG --- */
+        .ambient-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, rgba(20, 35, 75, 0.4) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
         }
 
         /* --- MAIN WRAPPER --- */
         #main-content { 
             height: 100vh; overflow-y: auto; opacity: 0; visibility: hidden;
-            transition: opacity 2.5s ease; position: relative; z-index: 2;
+            transition: opacity 2s ease; position: relative; z-index: 1;
         }
 
         /* --- CONTENT --- */
         .hero { 
             height: 100vh; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center;
-            padding: 20px;
         }
 
         .hero h1 { 
-            font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 15vw, 9rem); 
-            font-weight: 700; margin-bottom: 10px; letter-spacing: -2px;
-            background: linear-gradient(180deg, #fff, #444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Playfair Display', serif; font-size: clamp(3rem, 12vw, 7rem); 
+            font-weight: 400; line-height: 1.1; margin-bottom: 15px;
+            background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .hero p { letter-spacing: 10px; color: var(--accent); font-size: 0.8rem; margin-bottom: 50px; opacity: 0.7; }
+        .hero p { letter-spacing: 8px; color: var(--accent); font-size: 0.75rem; opacity: 0.6; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: 0 20px 100px 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px 100px; }
 
-        .glass-card {
-            background: var(--glass); border: 1px solid var(--border);
-            backdrop-filter: blur(20px); border-radius: 2px; padding: 80px 40px;
-            text-align: center; position: relative;
+        .glass-panel {
+            background: var(--glass-white); border: 1px solid var(--border);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 4px; padding: 80px 40px; text-align: center;
         }
 
-        .glass-card h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 40px; font-weight: 400; }
-        
-        .lyrics-style { 
-            font-size: 1.1rem; line-height: 2.2; color: #ccc; 
-            margin-bottom: 40px; font-weight: 200; font-style: italic;
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 40px; font-weight: 400; }
+
+        .prose { 
+            font-size: 1.1rem; line-height: 2.2; color: #b0b0b0; 
+            margin-bottom: 50px; font-weight: 200;
         }
 
-        /* --- INFO GRID --- */
-        .info-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; 
-            margin-top: 60px; border-top: 1px solid var(--border); padding-top: 40px;
-        }
-        .info-item label { display: block; font-size: 0.6rem; letter-spacing: 3px; color: var(--accent); margin-bottom: 15px; }
-        .info-item p { font-size: 1.2rem; font-weight: 400; font-family: 'Playfair Display', serif; }
+        .prose strong { color: #fff; font-weight: 400; }
 
-        /* --- MUSIC ICON (Minimalist Stroke) --- */
-        .music-btn {
-            position: fixed; bottom: 40px; right: 40px; width: 44px; height: 44px;
-            border-radius: 50%; border: 1px solid var(--border); background: rgba(0,0,0,0.5);
+        /* --- EVENT INFO --- */
+        .event-details {
+            display: flex; justify-content: space-around; flex-wrap: wrap;
+            border-top: 1px solid var(--border); padding-top: 50px; gap: 30px;
+        }
+
+        .info-box span { display: block; font-size: 0.65rem; letter-spacing: 3px; color: var(--accent); margin-bottom: 15px; }
+        .info-box p { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+
+        /* --- MUSIC ICON --- */
+        .music-toggle {
+            position: fixed; bottom: 40px; right: 40px; width: 40px; height: 40px;
+            border-radius: 50%; border: 1px solid var(--border); background: rgba(0,0,0,0.4);
             display: flex; justify-content: center; align-items: center; cursor: pointer;
-            z-index: 1000; transition: 0.4s;
+            z-index: 1000; transition: 0.3s;
         }
-        .music-btn svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 1; }
+        .music-toggle svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.2; }
 
-        /* --- ANIMATIONS --- */
+        /* --- KEYFRAMES --- */
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { to { opacity: 1; } }
-        .reveal { opacity: 0; transform: translateY(20px); transition: 2s cubic-bezier(0.2, 0, 0.2, 1); }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 2s cubic-bezier(0.2, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        footer { padding: 80px; text-align: center; color: #333; font-size: 0.7rem; letter-spacing: 4px; }
-
-        @media (max-width: 600px) {
-            .info-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 4rem; }
-        }
+        footer { padding: 60px; text-align: center; color: #333; font-size: 0.7rem; letter-spacing: 3px; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <div class="splash-quote">
-            "Nina, jika suatu saat nanti... <br>
-            Kau akan paham mengapa kita harus melepaskan."
+        <div class="splash-content">
+            <p class="splash-line">"Beberapa hal memang harus berakhir,"</p>
+            <p class="splash-line" style="animation-delay: 1.2s;">"Agar kenangan punya tempat untuk abadi."</p>
+            <button class="btn-enter" onclick="startApp()">Masuk ke Kenangan</button>
         </div>
-        <button class="start-btn" onclick="initExperience()">BUKA KENANGAN</button>
     </div>
 
-    <div class="vignette"></div>
+    <div class="ambient-glow"></div>
 
-    <audio id="audio" loop>
+    <audio id="bgm" loop>
         <source src="Feast - Nina (Lirik).mp3" type="audio/mpeg">
     </audio>
 
     <div id="main-content">
-        <header class="hero">
-            <p>EPILOG</p>
-            <h1>Nina & ASKA</h1>
-            <p>CLASS OF 2026</p>
+        <header class="hero reveal">
+            <p>EPILOG PERJALANAN</p>
+            <h1>Akhir yang <br>Sempurna.</h1>
+            <p>SMKS ASKA BALI MANDALA • 2026</p>
         </header>
 
         <section class="container">
-            <div class="glass-card reveal">
-                <h2>Pertemuan & Perpisahan</h2>
-                <p class="lyrics-style">
-                    Seperti lirik yang mengalun, perjalanan kita di SMKS ASKA Bali Mandala adalah bait-bait yang takkan terulang. Kami, segenap <strong>Panitia Perpisahan Kelas 12</strong>, mengundangmu untuk hadir kembali di rumah kedua kita, merayakan detik-detik terakhir sebelum semua menjadi cerita yang kita ceritakan pada Nina-Nina di masa depan.
+            <div class="glass-panel reveal">
+                <h2 class="section-title">Salam Dari Panitia</h2>
+                <p class="prose">
+                    Tiga tahun telah berlalu, dan tiba saatnya kita sampai pada halaman terakhir. 
+                    Setiap sudut sekolah ini menyimpan cerita yang tidak akan pernah bisa kita tulis ulang. 
+                    <br><br>
+                    Kami, segenap <strong>Panitia Perpisahan Kelas 12</strong>, mengundang Bapak/Ibu Guru serta rekan-rekan 
+                    seperjuangan untuk hadir dalam perayaan perpisahan ini. Mari kita luangkan waktu sejenak, 
+                    sebelum masing-masing dari kita melangkah menuju dunia yang baru.
                 </p>
 
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>WAKTU PERAYAAN</label>
-                        <p>Sabtu, 23 Mei 2026<br>08.00 WITA</p>
+                <div class="event-details">
+                    <div class="info-box">
+                        <span>WAKTU</span>
+                        <p>Sabtu, 9 Mei 2026<br>09.00 — Selesai</p>
                     </div>
-                    <div class="info-item">
-                        <label>LOKASI</label>
+                    <div class="info-box">
+                        <span>LOKASI</span>
                         <p>Area Sekolah<br>SMKS ASKA Bali Mandala</p>
                     </div>
                 </div>
-                
-                <p style="margin-top: 60px; font-size: 0.8rem; color: #555; letter-spacing: 2px;">
-                    *Pastikan kehadiranmu menjadi bagian dari sejarah kami.
-                </p>
             </div>
         </section>
 
         <footer>
-            SMKS ASKA BALI MANDALA • PANITIA KELAS 12
+            DISELENGGARAKAN OLEH PANITIA KELAS 12
         </footer>
     </div>
 
-    <div class="music-btn" id="m-btn" onclick="toggleMusic()">
+    <div class="music-toggle" onclick="togglePlay()">
         <svg id="m-icon" viewBox="0 0 24 24">
             <path d="M9 18V5l12-2v13"></path>
             <circle cx="6" cy="18" r="3"></circle>
@@ -184,52 +180,55 @@
     </div>
 
     <script>
-        const audio = document.getElementById('audio');
-        let isPlaying = false;
+        const audio = document.getElementById('bgm');
+        let playing = false;
 
-        function initExperience() {
-            // Splash out
+        function startApp() {
+            // Animasi Splash Out
             const splash = document.getElementById('splash');
             splash.style.opacity = '0';
             splash.style.transform = 'scale(1.1)';
             
             setTimeout(() => {
                 splash.style.visibility = 'hidden';
-                // Main in
+                // Tampilkan Konten
                 const main = document.getElementById('main-content');
                 main.style.visibility = 'visible';
                 main.style.opacity = '1';
                 
-                // Play audio
+                // Putar Musik
                 audio.play();
-                isPlaying = true;
+                playing = true;
 
-                // Trigger scroll animations
-                initObserver();
+                // Trigger Animasi Reveal
+                handleReveal();
             }, 1500);
         }
 
-        function toggleMusic() {
-            const btn = document.getElementById('m-btn');
-            if(isPlaying) {
+        function togglePlay() {
+            const icon = document.getElementById('m-icon');
+            if(playing) {
                 audio.pause();
-                btn.style.opacity = "0.3";
+                icon.style.stroke = "#555";
             } else {
                 audio.play();
-                btn.style.opacity = "1";
+                icon.style.stroke = "#fff";
             }
-            isPlaying = !isPlaying;
+            playing = !playing;
         }
 
-        function initObserver() {
+        function handleReveal() {
             const reveals = document.querySelectorAll('.reveal');
-            const obs = new IntersectionObserver(entries => {
+            const observer = new IntersectionObserver(entries => {
                 entries.forEach(e => {
                     if(e.isIntersecting) e.target.classList.add('active');
                 });
             }, { threshold: 0.1 });
-            reveals.forEach(r => obs.observe(r));
+            reveals.forEach(r => observer.observe(r));
         }
+
+        // Jalankan reveal saat scroll
+        document.getElementById('main-content').addEventListener('scroll', handleReveal);
     </script>
 </body>
 </html>
